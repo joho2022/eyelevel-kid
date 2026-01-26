@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 class AppColors {
   AppColors._();
 
-  static const backgroundGradientStart = Color(0xFFFBF3F9); // 251,243,249
-  static const backgroundGradientEnd = Color(0xFFF2F6FF); // 242,246,255
+  static const backgroundGradientStart = Color(0xFFF6DFF1); // 246, 223, 241
+  static const backgroundGradientEnd   = Color(0xFFE1E9FF); // 225, 233, 255
 
   static const white = Color(0xFFFFFFFF);
 
