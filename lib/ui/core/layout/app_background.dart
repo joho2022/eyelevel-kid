@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:eyelevel_kid/shared/theme/app_colors.dart';
+import 'package:eyelevel_kid/ui/core/theme/app_colors.dart';
 
 class AppBackground extends StatelessWidget {
   final Widget child;

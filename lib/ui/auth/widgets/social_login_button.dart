@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:bounce_tapper/src/bounce_tapper.dart';
+import 'package:bounce_tapper/bounce_tapper.dart';
 
-import 'package:eyelevel_kid/shared/theme/app_colors.dart';
-import 'package:eyelevel_kid/shared/theme/app_theme.dart';
+import 'package:eyelevel_kid/ui/core/theme/app_colors.dart';
+import 'package:eyelevel_kid/ui/core/theme/app_theme.dart';
 
 class SocialLoginButton extends StatelessWidget {
   final String icon;
@@ -12,6 +12,7 @@ class SocialLoginButton extends StatelessWidget {
   final VoidCallback onPressed;
 
   const SocialLoginButton({
+    super.key,
     required this.icon,
     required this.text,
     required this.onPressed,

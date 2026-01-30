@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 
 import 'app.dart';
-import 'root_screen.dart';
-import 'ui/core/layout/app_background.dart';
+import 'ui/home/home_screen.dart';
 
 void main() {
   runApp(
     const MyApp(
-      home: RootScreen(),
+      home: HomeScreen(),
     ),
   );
 }
