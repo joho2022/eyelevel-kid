@@ -17,11 +17,19 @@ class HomeViewModel extends ChangeNotifier {
   }
 
   Future<void> _loadInitialMonth() async {
-    await loadCalendarSummary(state.currentMonth);
+    await loadCalendarSummary(
+      state.currentMonth,
+      force: true,
+    );
   }
 
-  Future<void> loadCalendarSummary(DateTime month) async {
-    if (month.year == state.currentMonth.year && month.month == state.currentMonth.month) {
+  Future<void> loadCalendarSummary(
+    DateTime month, {
+    bool force = false,
+  }) async {
+    if (!force &&
+        month.year == state.currentMonth.year &&
+        month.month == state.currentMonth.month) {
       return;
     }
 
