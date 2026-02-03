@@ -1,31 +1,22 @@
-class HomeState {
-  final String title;
-  final String subtitle;
-  final bool isLoading;
+import '../../../domain/entities/calendar_day_summary.dart';
 
-  const HomeState({
-    required this.title,
-    required this.subtitle,
-    required this.isLoading,
-  });
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  factory HomeState.initial() {
-    return const HomeState(
-      title: '',
-      subtitle: '',
-      isLoading: true,
-    );
-  }
+part 'home_state.freezed.dart';
 
-  HomeState copyWith({
-    String? title,
-    String? subtitle,
-    bool? isLoading,
-  }) {
-    return HomeState(
-      title: title ?? this.title,
-      subtitle: subtitle ?? this.subtitle,
-      isLoading: isLoading ?? this.isLoading,
-    );
-  }
+@freezed
+abstract class HomeState with _$HomeState {
+  const factory HomeState({
+    @Default('오늘의 질문') String title,
+    @Default('아이의 생각을 기록해보세요') String subtitle,
+
+    @Default(false) bool isInitialLoading,
+    @Default(false) bool isCalendarLoading,
+    @Default(false) bool isQuestionLoading,
+
+    required DateTime currentMonth,
+    @Default(<DateTime>{}) Set<DateTime> questionDates,
+
+    CalendarDaySummary? selectedDay,
+  }) = _HomeState;
 }
