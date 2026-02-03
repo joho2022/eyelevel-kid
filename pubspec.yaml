@@ -37,6 +37,8 @@ dependencies:
   flutter_svg: ^2.2.3
   provider: ^6.1.5+1
   bounce_tapper: ^1.1.4
+  google_mobile_ads: ^7.0.0
+  animations: ^2.1.1
 
 
 dev_dependencies:

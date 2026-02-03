@@ -6,6 +6,8 @@ import 'package:eyelevel_kid/ui/core/theme/app_colors.dart';
 import 'package:eyelevel_kid/ui/core/theme/app_theme.dart';
 import 'package:eyelevel_kid/ui/home/widgets/home_header.dart';
 import 'package:eyelevel_kid/ui/home/view_models/home_viewmodel.dart';
+import 'package:eyelevel_kid/ui/core/widgets/inline_banner_ad.dart';
+import 'package:eyelevel_kid/ui/home/widgets/calendar/question_calendar.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -49,6 +51,12 @@ class _HomeView extends StatelessWidget {
                 ),
 
               const SizedBox(height: 24),
+
+              const InlineBannerAd(),
+
+              const SizedBox(height: 24),
+
+              const QuestionCalendar(),
 
               // 이후 홈 컨텐츠들
               // HomeCalendar()

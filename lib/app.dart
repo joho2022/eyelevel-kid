@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:eyelevel_kid/ui/core/layout/app_background.dart';
+import 'package:eyelevel_kid/ui/core/widgets/app_background.dart';
 
 class MyApp extends StatelessWidget {
   final Widget home;

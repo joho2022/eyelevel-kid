@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'app.dart';
 import 'root_screen.dart';
-import 'ui/core/layout/app_background.dart';
 
 void main() {
   runApp(
