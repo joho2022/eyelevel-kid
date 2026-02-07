@@ -46,6 +46,13 @@ class HomeHeader extends StatelessWidget {
               end: Alignment.centerRight,
               colors: [AppColors.cardGradientStart, AppColors.cardGradientEnd],
             ),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.shadow,
+                blurRadius: 8,
+                offset: const Offset(0, 4),
+              ),
+            ],
           ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,

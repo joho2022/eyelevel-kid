@@ -1,8 +1,16 @@
 class DateFormat {
   DateFormat._();
 
-  static String ymd(DateTime d) {
-    return '${d.year}-${_two(d.month)}-${_two(d.day)}';
+  static String mdKorean(DateTime d) {
+    return '${d.month}월 ${d.day}일';
+  }
+
+  static String mdKoreanHm(DateTime d) {
+    return '${mdKorean(d)} ${hm(d)}';
+  }
+
+  static String ymdKorean(DateTime d) {
+    return '${d.year}년 ${d.month}월 ${d.day}일';
   }
 
   static String hm(DateTime d) {

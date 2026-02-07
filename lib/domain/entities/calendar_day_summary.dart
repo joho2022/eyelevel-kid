@@ -1,6 +1,6 @@
 class CalendarDaySummary {
   final DateTime date;
-  final List<QuestionPreview> questions;
+  final List<CalendarQuestionPreview> questions;
 
   const CalendarDaySummary({
     required this.date,
@@ -10,12 +10,12 @@ class CalendarDaySummary {
   bool get hasQuestion => questions.isNotEmpty;
 }
 
-class QuestionPreview {
+class CalendarQuestionPreview {
   final int id;
   final String title;
   final DateTime createdAt;
 
-  const QuestionPreview({
+  const CalendarQuestionPreview({
     required this.id,
     required this.title,
     required this.createdAt,

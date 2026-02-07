@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$HomeState {
 
- String get title; String get subtitle; bool get isInitialLoading; bool get isCalendarLoading; bool get isQuestionLoading; DateTime get currentMonth; Set<DateTime> get questionDates; CalendarDaySummary? get selectedDay;
+ String get title; String get subtitle; bool get isInitialLoading; bool get isCalendarLoading; bool get isQuestionLoading; DateTime get currentMonth; Set<DateTime> get questionDates; CalendarDaySummary? get selectedDay; List<QuestionRecord> get recentQuestions;
 /// Create a copy of HomeState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $HomeStateCopyWith<HomeState> get copyWith => _$HomeStateCopyWithImpl<HomeState>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is HomeState&&(identical(other.title, title) || other.title == title)&&(identical(other.subtitle, subtitle) || other.subtitle == subtitle)&&(identical(other.isInitialLoading, isInitialLoading) || other.isInitialLoading == isInitialLoading)&&(identical(other.isCalendarLoading, isCalendarLoading) || other.isCalendarLoading == isCalendarLoading)&&(identical(other.isQuestionLoading, isQuestionLoading) || other.isQuestionLoading == isQuestionLoading)&&(identical(other.currentMonth, currentMonth) || other.currentMonth == currentMonth)&&const DeepCollectionEquality().equals(other.questionDates, questionDates)&&(identical(other.selectedDay, selectedDay) || other.selectedDay == selectedDay));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is HomeState&&(identical(other.title, title) || other.title == title)&&(identical(other.subtitle, subtitle) || other.subtitle == subtitle)&&(identical(other.isInitialLoading, isInitialLoading) || other.isInitialLoading == isInitialLoading)&&(identical(other.isCalendarLoading, isCalendarLoading) || other.isCalendarLoading == isCalendarLoading)&&(identical(other.isQuestionLoading, isQuestionLoading) || other.isQuestionLoading == isQuestionLoading)&&(identical(other.currentMonth, currentMonth) || other.currentMonth == currentMonth)&&const DeepCollectionEquality().equals(other.questionDates, questionDates)&&(identical(other.selectedDay, selectedDay) || other.selectedDay == selectedDay)&&const DeepCollectionEquality().equals(other.recentQuestions, recentQuestions));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,title,subtitle,isInitialLoading,isCalendarLoading,isQuestionLoading,currentMonth,const DeepCollectionEquality().hash(questionDates),selectedDay);
+int get hashCode => Object.hash(runtimeType,title,subtitle,isInitialLoading,isCalendarLoading,isQuestionLoading,currentMonth,const DeepCollectionEquality().hash(questionDates),selectedDay,const DeepCollectionEquality().hash(recentQuestions));
 
 @override
 String toString() {
-  return 'HomeState(title: $title, subtitle: $subtitle, isInitialLoading: $isInitialLoading, isCalendarLoading: $isCalendarLoading, isQuestionLoading: $isQuestionLoading, currentMonth: $currentMonth, questionDates: $questionDates, selectedDay: $selectedDay)';
+  return 'HomeState(title: $title, subtitle: $subtitle, isInitialLoading: $isInitialLoading, isCalendarLoading: $isCalendarLoading, isQuestionLoading: $isQuestionLoading, currentMonth: $currentMonth, questionDates: $questionDates, selectedDay: $selectedDay, recentQuestions: $recentQuestions)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $HomeStateCopyWith<$Res>  {
   factory $HomeStateCopyWith(HomeState value, $Res Function(HomeState) _then) = _$HomeStateCopyWithImpl;
 @useResult
 $Res call({
- String title, String subtitle, bool isInitialLoading, bool isCalendarLoading, bool isQuestionLoading, DateTime currentMonth, Set<DateTime> questionDates, CalendarDaySummary? selectedDay
+ String title, String subtitle, bool isInitialLoading, bool isCalendarLoading, bool isQuestionLoading, DateTime currentMonth, Set<DateTime> questionDates, CalendarDaySummary? selectedDay, List<QuestionRecord> recentQuestions
 });
 
 
@@ -62,7 +62,7 @@ class _$HomeStateCopyWithImpl<$Res>
 
 /// Create a copy of HomeState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? title = null,Object? subtitle = null,Object? isInitialLoading = null,Object? isCalendarLoading = null,Object? isQuestionLoading = null,Object? currentMonth = null,Object? questionDates = null,Object? selectedDay = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? title = null,Object? subtitle = null,Object? isInitialLoading = null,Object? isCalendarLoading = null,Object? isQuestionLoading = null,Object? currentMonth = null,Object? questionDates = null,Object? selectedDay = freezed,Object? recentQuestions = null,}) {
   return _then(_self.copyWith(
 title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,subtitle: null == subtitle ? _self.subtitle : subtitle // ignore: cast_nullable_to_non_nullable
@@ -72,7 +72,8 @@ as bool,isQuestionLoading: null == isQuestionLoading ? _self.isQuestionLoading :
 as bool,currentMonth: null == currentMonth ? _self.currentMonth : currentMonth // ignore: cast_nullable_to_non_nullable
 as DateTime,questionDates: null == questionDates ? _self.questionDates : questionDates // ignore: cast_nullable_to_non_nullable
 as Set<DateTime>,selectedDay: freezed == selectedDay ? _self.selectedDay : selectedDay // ignore: cast_nullable_to_non_nullable
-as CalendarDaySummary?,
+as CalendarDaySummary?,recentQuestions: null == recentQuestions ? _self.recentQuestions : recentQuestions // ignore: cast_nullable_to_non_nullable
+as List<QuestionRecord>,
   ));
 }
 
@@ -157,10 +158,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String title,  String subtitle,  bool isInitialLoading,  bool isCalendarLoading,  bool isQuestionLoading,  DateTime currentMonth,  Set<DateTime> questionDates,  CalendarDaySummary? selectedDay)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String title,  String subtitle,  bool isInitialLoading,  bool isCalendarLoading,  bool isQuestionLoading,  DateTime currentMonth,  Set<DateTime> questionDates,  CalendarDaySummary? selectedDay,  List<QuestionRecord> recentQuestions)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _HomeState() when $default != null:
-return $default(_that.title,_that.subtitle,_that.isInitialLoading,_that.isCalendarLoading,_that.isQuestionLoading,_that.currentMonth,_that.questionDates,_that.selectedDay);case _:
+return $default(_that.title,_that.subtitle,_that.isInitialLoading,_that.isCalendarLoading,_that.isQuestionLoading,_that.currentMonth,_that.questionDates,_that.selectedDay,_that.recentQuestions);case _:
   return orElse();
 
 }
@@ -178,10 +179,10 @@ return $default(_that.title,_that.subtitle,_that.isInitialLoading,_that.isCalend
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String title,  String subtitle,  bool isInitialLoading,  bool isCalendarLoading,  bool isQuestionLoading,  DateTime currentMonth,  Set<DateTime> questionDates,  CalendarDaySummary? selectedDay)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String title,  String subtitle,  bool isInitialLoading,  bool isCalendarLoading,  bool isQuestionLoading,  DateTime currentMonth,  Set<DateTime> questionDates,  CalendarDaySummary? selectedDay,  List<QuestionRecord> recentQuestions)  $default,) {final _that = this;
 switch (_that) {
 case _HomeState():
-return $default(_that.title,_that.subtitle,_that.isInitialLoading,_that.isCalendarLoading,_that.isQuestionLoading,_that.currentMonth,_that.questionDates,_that.selectedDay);case _:
+return $default(_that.title,_that.subtitle,_that.isInitialLoading,_that.isCalendarLoading,_that.isQuestionLoading,_that.currentMonth,_that.questionDates,_that.selectedDay,_that.recentQuestions);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -198,10 +199,10 @@ return $default(_that.title,_that.subtitle,_that.isInitialLoading,_that.isCalend
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String title,  String subtitle,  bool isInitialLoading,  bool isCalendarLoading,  bool isQuestionLoading,  DateTime currentMonth,  Set<DateTime> questionDates,  CalendarDaySummary? selectedDay)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String title,  String subtitle,  bool isInitialLoading,  bool isCalendarLoading,  bool isQuestionLoading,  DateTime currentMonth,  Set<DateTime> questionDates,  CalendarDaySummary? selectedDay,  List<QuestionRecord> recentQuestions)?  $default,) {final _that = this;
 switch (_that) {
 case _HomeState() when $default != null:
-return $default(_that.title,_that.subtitle,_that.isInitialLoading,_that.isCalendarLoading,_that.isQuestionLoading,_that.currentMonth,_that.questionDates,_that.selectedDay);case _:
+return $default(_that.title,_that.subtitle,_that.isInitialLoading,_that.isCalendarLoading,_that.isQuestionLoading,_that.currentMonth,_that.questionDates,_that.selectedDay,_that.recentQuestions);case _:
   return null;
 
 }
@@ -213,7 +214,7 @@ return $default(_that.title,_that.subtitle,_that.isInitialLoading,_that.isCalend
 
 
 class _HomeState implements HomeState {
-  const _HomeState({this.title = '오늘의 질문', this.subtitle = '아이의 생각을 기록해보세요', this.isInitialLoading = false, this.isCalendarLoading = false, this.isQuestionLoading = false, required this.currentMonth, final  Set<DateTime> questionDates = const <DateTime>{}, this.selectedDay}): _questionDates = questionDates;
+  const _HomeState({this.title = '오늘의 질문', this.subtitle = '아이의 생각을 기록해보세요', this.isInitialLoading = false, this.isCalendarLoading = false, this.isQuestionLoading = false, required this.currentMonth, final  Set<DateTime> questionDates = const <DateTime>{}, this.selectedDay, final  List<QuestionRecord> recentQuestions = const <QuestionRecord>[]}): _questionDates = questionDates,_recentQuestions = recentQuestions;
   
 
 @override@JsonKey() final  String title;
@@ -230,6 +231,13 @@ class _HomeState implements HomeState {
 }
 
 @override final  CalendarDaySummary? selectedDay;
+ final  List<QuestionRecord> _recentQuestions;
+@override@JsonKey() List<QuestionRecord> get recentQuestions {
+  if (_recentQuestions is EqualUnmodifiableListView) return _recentQuestions;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_recentQuestions);
+}
+
 
 /// Create a copy of HomeState
 /// with the given fields replaced by the non-null parameter values.
@@ -241,16 +249,16 @@ _$HomeStateCopyWith<_HomeState> get copyWith => __$HomeStateCopyWithImpl<_HomeSt
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HomeState&&(identical(other.title, title) || other.title == title)&&(identical(other.subtitle, subtitle) || other.subtitle == subtitle)&&(identical(other.isInitialLoading, isInitialLoading) || other.isInitialLoading == isInitialLoading)&&(identical(other.isCalendarLoading, isCalendarLoading) || other.isCalendarLoading == isCalendarLoading)&&(identical(other.isQuestionLoading, isQuestionLoading) || other.isQuestionLoading == isQuestionLoading)&&(identical(other.currentMonth, currentMonth) || other.currentMonth == currentMonth)&&const DeepCollectionEquality().equals(other._questionDates, _questionDates)&&(identical(other.selectedDay, selectedDay) || other.selectedDay == selectedDay));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HomeState&&(identical(other.title, title) || other.title == title)&&(identical(other.subtitle, subtitle) || other.subtitle == subtitle)&&(identical(other.isInitialLoading, isInitialLoading) || other.isInitialLoading == isInitialLoading)&&(identical(other.isCalendarLoading, isCalendarLoading) || other.isCalendarLoading == isCalendarLoading)&&(identical(other.isQuestionLoading, isQuestionLoading) || other.isQuestionLoading == isQuestionLoading)&&(identical(other.currentMonth, currentMonth) || other.currentMonth == currentMonth)&&const DeepCollectionEquality().equals(other._questionDates, _questionDates)&&(identical(other.selectedDay, selectedDay) || other.selectedDay == selectedDay)&&const DeepCollectionEquality().equals(other._recentQuestions, _recentQuestions));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,title,subtitle,isInitialLoading,isCalendarLoading,isQuestionLoading,currentMonth,const DeepCollectionEquality().hash(_questionDates),selectedDay);
+int get hashCode => Object.hash(runtimeType,title,subtitle,isInitialLoading,isCalendarLoading,isQuestionLoading,currentMonth,const DeepCollectionEquality().hash(_questionDates),selectedDay,const DeepCollectionEquality().hash(_recentQuestions));
 
 @override
 String toString() {
-  return 'HomeState(title: $title, subtitle: $subtitle, isInitialLoading: $isInitialLoading, isCalendarLoading: $isCalendarLoading, isQuestionLoading: $isQuestionLoading, currentMonth: $currentMonth, questionDates: $questionDates, selectedDay: $selectedDay)';
+  return 'HomeState(title: $title, subtitle: $subtitle, isInitialLoading: $isInitialLoading, isCalendarLoading: $isCalendarLoading, isQuestionLoading: $isQuestionLoading, currentMonth: $currentMonth, questionDates: $questionDates, selectedDay: $selectedDay, recentQuestions: $recentQuestions)';
 }
 
 
@@ -261,7 +269,7 @@ abstract mixin class _$HomeStateCopyWith<$Res> implements $HomeStateCopyWith<$Re
   factory _$HomeStateCopyWith(_HomeState value, $Res Function(_HomeState) _then) = __$HomeStateCopyWithImpl;
 @override @useResult
 $Res call({
- String title, String subtitle, bool isInitialLoading, bool isCalendarLoading, bool isQuestionLoading, DateTime currentMonth, Set<DateTime> questionDates, CalendarDaySummary? selectedDay
+ String title, String subtitle, bool isInitialLoading, bool isCalendarLoading, bool isQuestionLoading, DateTime currentMonth, Set<DateTime> questionDates, CalendarDaySummary? selectedDay, List<QuestionRecord> recentQuestions
 });
 
 
@@ -278,7 +286,7 @@ class __$HomeStateCopyWithImpl<$Res>
 
 /// Create a copy of HomeState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? title = null,Object? subtitle = null,Object? isInitialLoading = null,Object? isCalendarLoading = null,Object? isQuestionLoading = null,Object? currentMonth = null,Object? questionDates = null,Object? selectedDay = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? title = null,Object? subtitle = null,Object? isInitialLoading = null,Object? isCalendarLoading = null,Object? isQuestionLoading = null,Object? currentMonth = null,Object? questionDates = null,Object? selectedDay = freezed,Object? recentQuestions = null,}) {
   return _then(_HomeState(
 title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,subtitle: null == subtitle ? _self.subtitle : subtitle // ignore: cast_nullable_to_non_nullable
@@ -288,7 +296,8 @@ as bool,isQuestionLoading: null == isQuestionLoading ? _self.isQuestionLoading :
 as bool,currentMonth: null == currentMonth ? _self.currentMonth : currentMonth // ignore: cast_nullable_to_non_nullable
 as DateTime,questionDates: null == questionDates ? _self._questionDates : questionDates // ignore: cast_nullable_to_non_nullable
 as Set<DateTime>,selectedDay: freezed == selectedDay ? _self.selectedDay : selectedDay // ignore: cast_nullable_to_non_nullable
-as CalendarDaySummary?,
+as CalendarDaySummary?,recentQuestions: null == recentQuestions ? _self._recentQuestions : recentQuestions // ignore: cast_nullable_to_non_nullable
+as List<QuestionRecord>,
   ));
 }
 

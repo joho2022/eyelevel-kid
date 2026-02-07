@@ -7,7 +7,7 @@ abstract class CalendarRepository {
     required int month,
   });
 
-  Future<List<QuestionPreview>> fetchQuestionsByDate({
+  Future<List<CalendarQuestionPreview>> fetchQuestionsByDate({
     required int year,
     required int month,
     required int day,

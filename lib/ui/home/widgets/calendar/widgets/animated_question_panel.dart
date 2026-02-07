@@ -9,7 +9,7 @@ import '../../../../core/theme/app_theme.dart';
 
 class AnimatedQuestionPanel extends StatelessWidget {
   final CalendarDaySummary? selectedDay;
-  final ValueChanged<QuestionPreview> onQuestionTap;
+  final ValueChanged<CalendarQuestionPreview> onQuestionTap;
 
   const AnimatedQuestionPanel({
     super.key,
@@ -43,7 +43,7 @@ class AnimatedQuestionPanel extends StatelessWidget {
 
 class _QuestionPanelContent extends StatefulWidget {
   final CalendarDaySummary day;
-  final ValueChanged<QuestionPreview> onQuestionTap;
+  final ValueChanged<CalendarQuestionPreview> onQuestionTap;
 
   const _QuestionPanelContent({
     super.key,
@@ -95,7 +95,7 @@ class _QuestionPanelContentState extends State<_QuestionPanelContent> {
           const SizedBox(height: 24),
 
           Text(
-            '${DateFormat.ymd(widget.day.date)} 질문',
+            '${DateFormat.ymdKorean(widget.day.date)} 질문',
             style: AppTheme.title14.copyWith(
               color: AppColors.textSecondary,
             ),
@@ -136,7 +136,7 @@ class _QuestionPanelContentState extends State<_QuestionPanelContent> {
 }
 
 class _QuestionListCell extends StatelessWidget {
-  final QuestionPreview question;
+  final CalendarQuestionPreview question;
   final VoidCallback onTap;
 
   const _QuestionListCell({

@@ -14,7 +14,7 @@ class QuestionCalendar extends StatefulWidget {
 
   final ValueChanged<DateTime> onMonthChanged;
   final ValueChanged<DateTime> onDateSelected;
-  final ValueChanged<QuestionPreview> onQuestionSelected;
+  final ValueChanged<CalendarQuestionPreview> onQuestionSelected;
 
   const QuestionCalendar({
     super.key,
@@ -85,6 +85,13 @@ class _QuestionCalendarState extends State<QuestionCalendar> {
       decoration: BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.circular(24),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.shadow,
+            blurRadius: 8,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),

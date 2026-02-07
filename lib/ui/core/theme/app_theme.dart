@@ -63,6 +63,12 @@ class AppTheme {
     fontWeight: FontWeight.w600,
   );
 
+  static const subtitle10 = TextStyle(
+    fontFamily: 'Pretendard',
+    fontSize: 10,
+    fontWeight: FontWeight.w600,
+  );
+
   static const body16 = TextStyle(
     fontFamily: 'Pretendard',
     fontSize: 16,

@@ -1,4 +1,5 @@
 import '../../../domain/entities/calendar_day_summary.dart';
+import '../../../domain/entities/question_record.dart';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -16,7 +17,8 @@ abstract class HomeState with _$HomeState {
 
     required DateTime currentMonth,
     @Default(<DateTime>{}) Set<DateTime> questionDates,
-
     CalendarDaySummary? selectedDay,
+
+    @Default(<QuestionRecord>[]) List<QuestionRecord> recentQuestions,
   }) = _HomeState;
 }

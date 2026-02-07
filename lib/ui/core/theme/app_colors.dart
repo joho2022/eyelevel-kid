@@ -10,6 +10,8 @@ class AppColors {
   static const calendarPurple = Color(0xFFE1C7FF);
   static const calendarPink   = Color(0xFFFFC1E3);
   static const questionBackground = Color(0xFFF8F5FE);
+  static const reasonChipBackground = Color(0xFFF5E8F2);
+  static const storyChipBackground = Color(0xFFF8F5FE);
 
   static const white = Color(0xFFFFFFFF);
   static const divider = Color(0xFFF3F4F6); // 243, 244, 246
@@ -19,6 +21,12 @@ class AppColors {
   static const textTertiary = Color(0xFF4F5561); // 79, 85, 97
   static const textSub = Color(0xFF6B7280); // 107, 114, 128
   static const textInfo = Color(0xFF6E727E); // 110, 114, 126
+  static const reasonChipText = Color(0xFFB94776);
+  static const storyChipText = Color(0xFF7D3EDC);
 
   static const borderGray = Color(0xFFE6E7EB); // 230,231,235
+  static const shadow = Color.fromRGBO(0, 0, 0, 0.1);
+
+  static const bookmarkIcon = Color(0xFF9FA3AD);
+  static const bookmarkBackground = Color(0xFFF9FAFB);
 }
