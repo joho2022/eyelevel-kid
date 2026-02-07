@@ -1,5 +1,14 @@
+import '../entities/question_page.dart';
 import '../entities/question_record.dart';
 
 abstract class QuestionRepository {
-  Future<List<QuestionRecord>> fetchRecentQuestions();
+  Future<QuestionPage> getPage({
+    String? cursor,
+    int limit = 20,
+  });
+
+  Stream<List<QuestionRecord>> observeAll();
+
+  Future<void> toggleBookmark(int questionId);
+  Future<void> remove(int questionId);
 }

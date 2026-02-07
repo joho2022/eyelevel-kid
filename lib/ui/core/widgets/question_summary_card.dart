@@ -51,6 +51,7 @@ class QuestionSummaryCard extends StatelessWidget {
             SizedBox(
               height: 72,
               child: Container(
+                width: double.infinity,
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: AppColors.questionBackground,
