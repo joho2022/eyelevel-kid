@@ -104,7 +104,6 @@ class HistoryViewModel extends ChangeNotifier {
   @override
   void dispose() {
     _questionsSubscription?.cancel();
-    debugPrint('HistoryViewModel dispose');
     super.dispose();
   }
 }

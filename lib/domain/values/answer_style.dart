@@ -1,0 +1,4 @@
+enum AnswerStyle {
+  story,
+  reason
+}

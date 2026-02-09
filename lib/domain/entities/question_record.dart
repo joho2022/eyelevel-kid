@@ -1,3 +1,5 @@
+import '../values/answer_style.dart';
+
 class QuestionRecord {
   final int id;
   final String title;
@@ -14,9 +16,4 @@ class QuestionRecord {
     required this.createdAt,
     required this.isBookmarked,
   });
-}
-
-enum AnswerStyle {
-  story,
-  reason
 }

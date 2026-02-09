@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../domain/entities/question_record.dart';
+import '../../domain/values/answer_style.dart';
 
 part 'question_record_dto.freezed.dart';
 part 'question_record_dto.g.dart';
