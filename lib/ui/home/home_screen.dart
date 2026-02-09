@@ -9,59 +9,10 @@ import 'package:eyelevel_kid/ui/home/widgets/home_header.dart';
 import 'package:eyelevel_kid/ui/home/view_models/home_viewmodel.dart';
 import 'package:eyelevel_kid/ui/core/widgets/inline_banner_ad.dart';
 import 'package:eyelevel_kid/ui/home/widgets/calendar/question_calendar.dart';
-import '../../data/repositories/calendar_repository_impl.dart';
-import '../../data/repositories/question_repository_impl.dart';
-import '../../data/sources/local/question_local_data_source.dart';
-import '../../data/sources/mock/mock_calendar_remote_data_source.dart';
-import '../../domain/usecases/get_calendar_summary_use_case.dart';
-import '../../domain/usecases/get_question_page_use_case.dart';
-import '../../domain/usecases/get_questions_by_date_use_case.dart';
-import '../../domain/usecases/observe_recent_questions_use_case.dart';
-import '../../domain/usecases/toggle_bookmark_usecase.dart';
 import '../core/widgets/question_summary_card.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final calendarRemote = MockCalendarRemoteDataSource();
-    final questionRemote = MockQuestionRemoteDataSource();
-
-    final questionLocal = QuestionLocalDataSource();
-
-    final calendarRepository = CalendarRepositoryImpl(calendarRemote);
-    final questionRepository = QuestionRepositoryImpl(remote: questionRemote, local: questionLocal);
-
-    final getQuestionPage =
-    GetQuestionPageUseCase(questionRepository);
-
-    final getCalendarSummary =
-    GetCalendarSummaryUseCase(calendarRepository);
-
-    final getQuestionsByDate =
-    GetQuestionsByDateUseCase(calendarRepository);
-
-    final observeRecentQuestions =
-    ObserveRecentQuestionsUseCase(questionRepository);
-
-    final toggleBookmark = ToggleBookmarkUseCase(questionRepository);
-
-    return ChangeNotifierProvider<HomeViewModel>(
-      create: (_) => HomeViewModel(
-        getQuestionPage,
-        getCalendarSummary,
-        getQuestionsByDate,
-        observeRecentQuestions,
-        toggleBookmark
-      ),
-      child: const _HomeView(),
-    );
-  }
-}
-
-class _HomeView extends StatelessWidget {
-  const _HomeView();
 
   @override
   Widget build(BuildContext context) {

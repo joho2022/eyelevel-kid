@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 
 import '../../../domain/entities/calendar_day_summary.dart';
 import '../../../domain/entities/question_record.dart';
