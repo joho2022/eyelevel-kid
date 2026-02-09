@@ -116,7 +116,7 @@ class _StyleChip extends StatelessWidget {
     };
 
     final textColor = switch (style) {
-      AnswerStyle.story => AppColors.storyChipText,
+      AnswerStyle.story => AppColors.storyPurple,
       AnswerStyle.reason => AppColors.reasonChipText,
     };
 
@@ -161,7 +161,7 @@ class _BookmarkButton extends StatelessWidget {
         child: Icon(
           isBookmarked ? Icons.bookmark : Icons.bookmark_border,
           size: 20,
-          color: isBookmarked ? AppColors.storyChipText : AppColors.bookmarkIcon,
+          color: isBookmarked ? AppColors.storyPurple : AppColors.bookmarkIcon,
         ),
       ),
     );

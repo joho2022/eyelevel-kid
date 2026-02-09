@@ -22,7 +22,10 @@ class AppColors {
   static const textSub = Color(0xFF6B7280); // 107, 114, 128
   static const textInfo = Color(0xFF6E727E); // 110, 114, 126
   static const reasonChipText = Color(0xFFB94776);
-  static const storyChipText = Color(0xFF7D3EDC);
+  static const storyPurple = Color(0xFF7D3EDC);
+  static const storyPurpleLight = Color(0xFF9B7AF2);
+  static const storyPurpleMain  = Color(0xFF7D3EDC);
+  static const storyPurpleDeep  = Color(0xFF5B2ABF);
 
   static const borderGray = Color(0xFFE6E7EB); // 230,231,235
   static const shadow = Color.fromRGBO(0, 0, 0, 0.1);

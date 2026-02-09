@@ -9,6 +9,8 @@ abstract class QuestionRepository {
 
   Stream<List<QuestionRecord>> observeAll();
 
+  List<QuestionRecord> getAllCached();
+
   Future<void> toggleBookmark(int questionId);
   Future<void> remove(int questionId);
 }
