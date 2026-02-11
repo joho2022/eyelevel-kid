@@ -12,6 +12,10 @@ class AppColors {
   static const questionBackground = Color(0xFFF8F5FE);
   static const reasonChipBackground = Color(0xFFF5E8F2);
   static const storyChipBackground = Color(0xFFF8F5FE);
+  static const profilePlaceholderBackground = Color(0xFFEDE6FF);
+  static const cameraButtonBackgroundVivid = Color(0xFF6E35C9);
+  static const storySliderBackground = Color(0xFFEDE7FD);
+  static const reasonSliderBackground = Color(0xFFF0DDEB);
 
   static const white = Color(0xFFFFFFFF);
   static const divider = Color(0xFFF3F4F6); // 243, 244, 246
@@ -32,4 +36,6 @@ class AppColors {
 
   static const bookmarkIcon = Color(0xFF9FA3AD);
   static const bookmarkBackground = Color(0xFFF9FAFB);
+  static const profilePlaceholderIcon = Color(0xFF9B8ACF);
+  static const iconSecondary = Color(0xFF8E8E93);
 }

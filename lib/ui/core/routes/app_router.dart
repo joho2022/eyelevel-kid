@@ -1,4 +1,5 @@
 import 'package:eyelevel_kid/app_providers.dart';
+import 'package:eyelevel_kid/ui/my/my_screen.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../history/history_screen.dart';
@@ -34,6 +35,14 @@ final appRouter = GoRouter(
             ),
           ],
         ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: MainTab.my.path,
+              builder: (_, __) => const MyScreen(),
+            ),
+          ],
+        )
       ],
     ),
   ],

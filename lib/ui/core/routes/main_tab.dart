@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 
 enum MainTab {
   home,
-  history;
+  history,
+  my;
 
   String get label {
     switch (this) {
@@ -11,6 +12,8 @@ enum MainTab {
         return '홈';
       case MainTab.history:
         return '기록';
+      case MainTab.my:
+        return '내정보';
     }
   }
 
@@ -20,6 +23,8 @@ enum MainTab {
         return Icons.home;
       case MainTab.history:
         return Icons.history;
+      case MainTab.my:
+        return Icons.person;
     }
   }
 
@@ -29,6 +34,8 @@ enum MainTab {
         return RoutePaths.home;
       case MainTab.history:
         return RoutePaths.history;
+      case MainTab.my:
+        return RoutePaths.my;
     }
   }
 }
