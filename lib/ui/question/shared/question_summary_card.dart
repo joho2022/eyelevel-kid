@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../../../../core/utils/date_format.dart';
 import '../../../domain/values/answer_style.dart';
-import '../theme/app_colors.dart';
-import '../theme/app_theme.dart';
+import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_theme.dart';
 import '../../../domain/entities/question_record.dart';
 
 class QuestionSummaryCard extends StatelessWidget {

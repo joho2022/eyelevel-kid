@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../domain/entities/question_record.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_theme.dart';
-import '../../core/widgets/question_summary_card.dart';
+import '../../question/shared/question_summary_card.dart';
 
 class HistorySliverList extends StatelessWidget {
   final Map<int, List<QuestionRecord>> groupedByYear;
