@@ -1,3 +1,4 @@
+import '../entities/question_record.dart';
 import '../repositories/question_repository.dart';
 
 class ToggleBookmarkUseCase {
@@ -5,7 +6,7 @@ class ToggleBookmarkUseCase {
 
   ToggleBookmarkUseCase(this.repository);
 
-  Future<void> call(int questionId) {
+  Future<QuestionRecord> call(int questionId) {
     return repository.toggleBookmark(questionId);
   }
 }

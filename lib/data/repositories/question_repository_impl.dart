@@ -46,8 +46,14 @@ class QuestionRepositoryImpl implements QuestionRepository {
   }
 
   @override
-  Future<void> toggleBookmark(int questionId) async {
+  Future<QuestionRecord?> getById(int id) async {
+    return local.getById(id);
+  }
+
+  @override
+  Future<QuestionRecord> toggleBookmark(int questionId) async {
     local.toggleBookmark(questionId);
+    return local.getById(questionId)!;
     // 나중에 서버 생기면 여기서 API 호출
   }
 

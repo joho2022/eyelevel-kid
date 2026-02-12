@@ -143,10 +143,6 @@ class HomeViewModel extends ChangeNotifier {
     debugPrint('캘린더 질문 선택됨 id=${question.id}');
   }
 
-  void onRecentQuestionSelected(QuestionRecord question) {
-    debugPrint('최근 질문 선택: ${question.id}');
-  }
-
   @override
   void dispose() {
     _recentSub?.cancel();

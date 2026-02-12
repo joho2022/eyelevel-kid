@@ -16,27 +16,15 @@ class AppProviders extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (_) => HomeViewModel(
-            DIContainer.getQuestionPage,
-            DIContainer.getCalendarSummary,
-            DIContainer.getQuestionsByDate,
-            DIContainer.observeRecentQuestions,
-            DIContainer.toggleBookmark,
-          ),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => HistoryViewModel(
-            DIContainer.observeAllQuestions,
-            DIContainer.toggleBookmark,
-            DIContainer.deleteQuestion,
-            DIContainer.getAllQuestionsSnapshot,
-          ),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => MyViewModel(
-          ),
-        ),
+        Provider.value(value: DIContainer.getQuestionPage),
+        Provider.value(value: DIContainer.observeRecentQuestions),
+        Provider.value(value: DIContainer.observeAllQuestions),
+        Provider.value(value: DIContainer.toggleBookmark),
+        Provider.value(value: DIContainer.deleteQuestion),
+        Provider.value(value: DIContainer.getCalendarSummary),
+        Provider.value(value: DIContainer.getQuestionsByDate),
+        Provider.value(value: DIContainer.getAllQuestionsSnapshot),
+        Provider.value(value: DIContainer.getQuestionDetail),
       ],
       child: child,
     );

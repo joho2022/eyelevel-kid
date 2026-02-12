@@ -1,9 +1,12 @@
 import 'package:eyelevel_kid/app_providers.dart';
+import 'package:eyelevel_kid/ui/core/routes/route_paths.dart';
 import 'package:eyelevel_kid/ui/my/my_screen.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../history/history_screen.dart';
 import '../../home/home_screen.dart';
+import '../../question/detail/detail_screen.dart';
 import 'main_tab.dart';
 import 'main_tab_scaffold.dart';
 
@@ -12,11 +15,9 @@ final appRouter = GoRouter(
   routes: [
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {
-        return AppProviders(
-          child: MainTabScaffold(
+        return  MainTabScaffold(
             navigationShell: navigationShell,
-          ),
-        );
+          );
       },
       branches: [
         StatefulShellBranch(
@@ -44,6 +45,24 @@ final appRouter = GoRouter(
           ],
         )
       ],
+    ),
+
+    GoRoute(
+      path: RoutePaths.questionDetail,
+      builder: (context, state) {
+        final idString = state.pathParameters['id'];
+        final id = int.tryParse(idString ?? '');
+
+        if (id == null) {
+          return const Scaffold(
+            body: Center(
+              child: Text('잘못된 접근입니다'),
+            ),
+          );
+        }
+
+        return DetailScreen(questionId: id);
+      },
     ),
   ],
 );

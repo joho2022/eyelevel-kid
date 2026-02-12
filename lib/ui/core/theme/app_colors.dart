@@ -9,9 +9,9 @@ class AppColors {
   static const cardGradientEnd = Color(0xFFECEBFF);
   static const calendarPurple = Color(0xFFE1C7FF);
   static const calendarPink   = Color(0xFFFFC1E3);
-  static const questionBackground = Color(0xFFF8F5FE);
+  static const questionBackground = Color(0xFFF3EEFD);
   static const reasonChipBackground = Color(0xFFF5E8F2);
-  static const storyChipBackground = Color(0xFFF8F5FE);
+  static const storyChipBackground = Color(0xFFF3EEFD);
   static const profilePlaceholderBackground = Color(0xFFEDE6FF);
   static const cameraButtonBackgroundVivid = Color(0xFF6E35C9);
   static const storySliderBackground = Color(0xFFEDE7FD);
@@ -35,7 +35,7 @@ class AppColors {
   static const shadow = Color.fromRGBO(0, 0, 0, 0.1);
 
   static const bookmarkIcon = Color(0xFF9FA3AD);
-  static const bookmarkBackground = Color(0xFFF9FAFB);
+  static const bookmarkBackground = Color(0xFFF1F3F5);
   static const profilePlaceholderIcon = Color(0xFF9B8ACF);
   static const iconSecondary = Color(0xFF8E8E93);
 }

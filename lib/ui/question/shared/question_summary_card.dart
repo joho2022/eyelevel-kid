@@ -1,3 +1,4 @@
+import 'package:eyelevel_kid/ui/question/shared/style_chip.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../core/utils/date_format.dart';
@@ -72,7 +73,7 @@ class QuestionSummaryCard extends StatelessWidget {
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                _StyleChip(style: question.style),
+                StyleChip(style: question.style),
 
                 const SizedBox(width: 12),
 
@@ -90,47 +91,6 @@ class QuestionSummaryCard extends StatelessWidget {
               ],
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class _StyleChip extends StatelessWidget {
-  final AnswerStyle style;
-
-  const _StyleChip({
-    super.key,
-    required this.style,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final label = switch (style) {
-      AnswerStyle.story => '이야기처럼',
-      AnswerStyle.reason => '이유까지',
-    };
-
-    final backgroundColor = switch (style) {
-      AnswerStyle.story => AppColors.storyChipBackground,
-      AnswerStyle.reason => AppColors.reasonChipBackground,
-    };
-
-    final textColor = switch (style) {
-      AnswerStyle.story => AppColors.storyPurple,
-      AnswerStyle.reason => AppColors.reasonChipText,
-    };
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      decoration: BoxDecoration(
-        color: backgroundColor,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Text(
-        label,
-        style: AppTheme.subtitle10.copyWith(
-          color: textColor,
         ),
       ),
     );

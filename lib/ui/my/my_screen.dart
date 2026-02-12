@@ -13,6 +13,21 @@ class MyScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (_) => MyViewModel(
+        // context.read<GetProfileUseCase>(),
+        // context.read<LogoutUseCase>(),
+      ),
+      child: const _MyView(),
+    );
+  }
+}
+
+class _MyView extends StatelessWidget {
+  const _MyView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
     final viewModel = context.watch<MyViewModel>();
     final state = viewModel.state;
 

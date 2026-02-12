@@ -25,6 +25,14 @@ class QuestionLocalDataSource {
     _controller.add(getAll());
   }
 
+  QuestionRecord? getById(int id) {
+    try {
+      return _cache.firstWhere((e) => e.id == id);
+    } catch (_) {
+      return null;
+    }
+  }
+
   void toggleBookmark(int id) {
     final index = _cache.indexWhere((e) => e.id == id);
     if (index == -1) return;

@@ -11,6 +11,7 @@ abstract class QuestionRepository {
 
   List<QuestionRecord> getAllCached();
 
-  Future<void> toggleBookmark(int questionId);
+  Future<QuestionRecord?> getById(int id);
+  Future<QuestionRecord> toggleBookmark(int questionId);
   Future<void> remove(int questionId);
 }

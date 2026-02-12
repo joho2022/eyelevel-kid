@@ -9,6 +9,7 @@ import 'domain/usecases/delete_question_use_case.dart';
 import 'domain/usecases/get_all_questions_snapshot_use_case.dart';
 import 'domain/usecases/get_calendar_summary_use_case.dart';
 import 'domain/usecases/get_question_page_use_case.dart';
+import 'domain/usecases/get_question_use_case.dart';
 import 'domain/usecases/get_questions_by_date_use_case.dart';
 import 'domain/usecases/observe_all_questions_use_case.dart';
 import 'domain/usecases/observe_recent_questions_use_case.dart';
@@ -61,4 +62,7 @@ class DIContainer {
 
   static final GetAllQuestionsSnapshotUseCase getAllQuestionsSnapshot =
   GetAllQuestionsSnapshotUseCase(questionRepository);
+
+  static final GetQuestionUseCase getQuestionDetail =
+  GetQuestionUseCase(questionRepository);
 }

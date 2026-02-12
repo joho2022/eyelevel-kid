@@ -3,6 +3,8 @@ import 'package:eyelevel_kid/ui/core/widgets/app_background.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
+import 'app_providers.dart';
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   MobileAds.instance.initialize();
@@ -15,10 +17,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppBackground(
-      child: MaterialApp.router(
-        debugShowCheckedModeBanner: false,
-        routerConfig: appRouter,
+    return AppProviders(
+      child: AppBackground(
+        child: MaterialApp.router(
+          debugShowCheckedModeBanner: false,
+          routerConfig: appRouter,
+        ),
       ),
     );
   }

@@ -1,5 +1,5 @@
-import 'package:eyelevel_kid/data/sources/mock/mock_question_remote_data_source.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:provider/provider.dart';
 
@@ -9,10 +9,34 @@ import 'package:eyelevel_kid/ui/home/widgets/home_header.dart';
 import 'package:eyelevel_kid/ui/home/view_models/home_viewmodel.dart';
 import 'package:eyelevel_kid/ui/core/widgets/inline_banner_ad.dart';
 import 'package:eyelevel_kid/ui/home/widgets/calendar/question_calendar.dart';
+import '../../domain/usecases/get_calendar_summary_use_case.dart';
+import '../../domain/usecases/get_question_page_use_case.dart';
+import '../../domain/usecases/get_questions_by_date_use_case.dart';
+import '../../domain/usecases/observe_recent_questions_use_case.dart';
+import '../../domain/usecases/toggle_bookmark_usecase.dart';
+import '../core/routes/route_paths.dart';
 import '../question/shared/question_summary_card.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (_) => HomeViewModel(
+        context.read<GetQuestionPageUseCase>(),
+        context.read<GetCalendarSummaryUseCase>(),
+        context.read<GetQuestionsByDateUseCase>(),
+        context.read<ObserveRecentQuestionsUseCase>(),
+        context.read<ToggleBookmarkUseCase>(),
+      ),
+      child: const HomeView(),
+    );
+  }
+}
+
+class HomeView extends StatelessWidget {
+  const HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +77,9 @@ class HomeScreen extends StatelessWidget {
                 selectedDay: state.selectedDay,
                 onMonthChanged: viewModel.loadCalendarSummary,
                 onDateSelected: viewModel.selectDate,
-                onQuestionSelected: viewModel.onCalendarQuestionSelected,
+                onQuestionSelected: (question) {
+                  context.push('/question/${question.id}');
+                },
               ),
 
               const SizedBox(height: 32),
@@ -76,7 +102,12 @@ class HomeScreen extends StatelessWidget {
                     child: QuestionSummaryCard(
                       key: ValueKey(question.id),
                       question: question,
-                      onTap: () => viewModel.onRecentQuestionSelected(question),
+                      onTap: () {
+                        debugPrint('최근 질문 선택: ${question.id}');
+                        context.push(
+                          RoutePaths.questionDetailPath(question.id),
+                        );
+                      },
                       onBookmarkTap: () => viewModel.toggleBookmark(question),
                     ),
                   );
