@@ -7,12 +7,14 @@ import '../../question/shared/question_summary_card.dart';
 
 class HistorySliverList extends StatelessWidget {
   final Map<int, List<QuestionRecord>> groupedByYear;
+  final ValueChanged<int> onTapQuestion;
   final ValueChanged<int> onToggleBookmark;
   final ValueChanged<int> onDelete;
 
   const HistorySliverList({
     super.key,
     required this.groupedByYear,
+    required this.onTapQuestion,
     required this.onToggleBookmark,
     required this.onDelete,
   });
@@ -72,6 +74,7 @@ class HistorySliverList extends StatelessWidget {
                       ),
                       child: QuestionSummaryCard(
                         question: q,
+                        onTap: () => onTapQuestion(q.id),
                         onBookmarkTap: () => onToggleBookmark(q.id),
                       ),
                     ),

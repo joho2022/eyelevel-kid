@@ -2,12 +2,14 @@ import 'package:eyelevel_kid/ui/history/view_models/history_viewmodel.dart';
 import 'package:eyelevel_kid/ui/history/widgets/history_filter_header_delegate.dart';
 import 'package:eyelevel_kid/ui/history/widgets/history_sliver_list.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../domain/usecases/delete_question_use_case.dart';
 import '../../domain/usecases/get_all_questions_snapshot_use_case.dart';
 import '../../domain/usecases/observe_all_questions_use_case.dart';
 import '../../domain/usecases/toggle_bookmark_usecase.dart';
+import '../core/routes/route_paths.dart';
 import '../core/theme/app_colors.dart';
 import '../core/theme/app_theme.dart';
 
@@ -109,6 +111,11 @@ class _HistoryViewState extends State<_HistoryView> {
             else
               HistorySliverList(
                 groupedByYear: state.groupedByYear,
+                onTapQuestion: (id) {
+                  context.push(
+                    RoutePaths.questionDetailPath(id),
+                  );
+                },
                 onToggleBookmark: viewModel.toggleBookmark,
                 onDelete: viewModel.deleteQuestion,
               ),

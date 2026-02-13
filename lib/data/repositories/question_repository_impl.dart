@@ -1,6 +1,7 @@
 import '../../domain/entities/question_page.dart';
 import '../../domain/entities/question_record.dart';
 import '../../domain/repositories/question_repository.dart';
+import '../../domain/values/answer_style.dart';
 import '../dto/question_page_dto.dart';
 import '../sources/local/question_local_data_source.dart';
 import '../sources/mock/mock_question_remote_data_source.dart';
@@ -13,6 +14,31 @@ class QuestionRepositoryImpl implements QuestionRepository {
     required this.remote,
     required this.local,
   });
+
+  @override
+  Future<QuestionRecord> askQuestion({
+    required String question,
+    required AnswerStyle style,
+  }) async {
+
+    final answer = await remote.askQuestion(
+      question: question,
+      style: style,
+    );
+
+    final record = QuestionRecord(
+      id: DateTime.now().millisecondsSinceEpoch,
+      title: question,
+      answer: answer,
+      style: style,
+      createdAt: DateTime.now(),
+      isBookmarked: false,
+    );
+
+    local.upsertAll([record]);
+
+    return record;
+  }
 
   @override
   Future<QuestionPage> getPage({

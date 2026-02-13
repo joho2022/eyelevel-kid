@@ -20,7 +20,7 @@ class QuestionLocalDataSource {
   void upsertAll(List<QuestionRecord> items) {
     for (final item in items) {
       _cache.removeWhere((e) => e.id == item.id);
-      _cache.add(item);
+      _cache.insert(0, item);
     }
     _controller.add(getAll());
   }

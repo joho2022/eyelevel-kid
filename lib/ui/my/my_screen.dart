@@ -1,5 +1,5 @@
 import 'package:eyelevel_kid/ui/my/view_models/my_viewmodel.dart';
-import 'package:eyelevel_kid/ui/my/widgets/answer_style_slider.dart';
+import 'package:eyelevel_kid/ui/core/widgets/answer_style_slider.dart';
 import 'package:eyelevel_kid/ui/my/widgets/profile_header.dart';
 import 'package:eyelevel_kid/ui/my/widgets/settings_section.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +34,7 @@ class _MyView extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             children: [
               const SizedBox(height: 32),

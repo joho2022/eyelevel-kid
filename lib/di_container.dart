@@ -1,3 +1,5 @@
+import 'package:eyelevel_kid/domain/usecases/ask_question_use_case.dart';
+
 import 'data/repositories/calendar_repository_impl.dart';
 import 'data/repositories/question_repository_impl.dart';
 import 'data/sources/local/question_local_data_source.dart';
@@ -65,4 +67,7 @@ class DIContainer {
 
   static final GetQuestionUseCase getQuestionDetail =
   GetQuestionUseCase(questionRepository);
+
+  static final AskQuestionUseCase askQuestion =
+  AskQuestionUseCase(questionRepository);
 }

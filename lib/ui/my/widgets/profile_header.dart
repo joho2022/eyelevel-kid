@@ -17,9 +17,7 @@ class ProfileHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Row(
+    return Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Expanded(
@@ -92,7 +90,6 @@ class ProfileHeader extends StatelessWidget {
             ),
           ),
         ],
-      ),
     );
   }
 }

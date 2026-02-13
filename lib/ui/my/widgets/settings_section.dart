@@ -22,9 +22,7 @@ class SettingsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: Container(
+    return Container(
         decoration: BoxDecoration(
           color: AppColors.white,
           borderRadius: BorderRadius.circular(16),
@@ -93,7 +91,6 @@ class SettingsSection extends StatelessWidget {
             }),
           ],
         ),
-      ),
     );
   }
 

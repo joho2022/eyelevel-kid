@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../../domain/values/answer_style.dart';
-import '../../core/theme/app_colors.dart';
-import '../../core/theme/app_theme.dart';
+import '../theme/app_colors.dart';
+import '../theme/app_theme.dart';
 
 class AnswerStyleSlider extends StatefulWidget {
   final AnswerStyle selected;
@@ -88,9 +88,7 @@ class _AnswerStyleSliderState
   Widget build(BuildContext context) {
     final isStory = _currentValue < 0.5;
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Container(
+    return Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           color: AppColors.white,
@@ -213,7 +211,6 @@ class _AnswerStyleSliderState
             )
           ],
         ),
-      ),
     );
   }
 }

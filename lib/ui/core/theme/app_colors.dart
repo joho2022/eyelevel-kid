@@ -32,6 +32,8 @@ class AppColors {
   static const storyPurpleDeep  = Color(0xFF5B2ABF);
 
   static const borderGray = Color(0xFFE6E7EB); // 230,231,235
+  static const answerReasonBorder = Color(0xFFE4A6BC);
+  static const answerStoryBorder = Color(0xFFB99CF0);
   static const shadow = Color.fromRGBO(0, 0, 0, 0.1);
 
   static const bookmarkIcon = Color(0xFF9FA3AD);

@@ -151,12 +151,12 @@ class _AnswerCard extends StatelessWidget {
     required this.style,
   });
 
-  Color _backgroundColor() {
+  Color _borderColor() {
     switch (style) {
       case AnswerStyle.story:
-        return AppColors.storyPurple.withValues(alpha: 0.4);
+        return AppColors.answerStoryBorder;
       case AnswerStyle.reason:
-        return AppColors.reasonChipText.withValues(alpha: 0.4);
+        return AppColors.answerReasonBorder;
     }
   }
 
@@ -166,8 +166,12 @@ class _AnswerCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: _backgroundColor(),
+        color: AppColors.white,
         borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: _borderColor(),
+          width: 2,
+        ),
         boxShadow: [
           BoxShadow(
             color: AppColors.shadow,
@@ -176,20 +180,13 @@ class _AnswerCard extends StatelessWidget {
           ),
         ],
       ),
-      child: Container(
-        padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          color: AppColors.white,
-          borderRadius: BorderRadius.circular(12),
+      child: Text(
+        answer,
+        style: AppTheme.body14.copyWith(
+          color: AppColors.textDefault,
+          height: 1.6,
         ),
-        child: Text(
-          answer,
-          style: AppTheme.body14.copyWith(
-            color: AppColors.textDefault,
-            height: 1.6,
-          ),
-        ),
-      )
+      ),
     );
   }
 }
