@@ -6,6 +6,7 @@ class RoutePaths {
   static const String history = '/history';
   static const String my = '/my';
 
+  static const String profileEdit = '/profile-edit';
   static const String questionDetail = '/question/:id';
   static String questionDetailPath(int id) => '/question/$id';
 

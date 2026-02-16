@@ -9,6 +9,7 @@ import '../../question/ask/ask_screen.dart';
 import '../../question/detail/detail_screen.dart';
 import '../../user/my/my_screen.dart';
 import '../../user/nickname_setup/nickname_setup_screen.dart';
+import '../../user/profile_edit/profile_edit_screen.dart';
 import 'main_tab.dart';
 import 'main_tab_scaffold.dart';
 
@@ -80,6 +81,11 @@ final appRouter = GoRouter(
     GoRoute(
       path: RoutePaths.askQuestion,
       builder: (_, __) => const AskQuestionScreen(),
+    ),
+
+    GoRoute(
+      path: RoutePaths.profileEdit,
+      builder: (_, __) => const ProfileEditScreen(),
     ),
   ],
 );

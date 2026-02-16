@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import '../../../domain/entities/user.dart';
 import '../../../domain/values/answer_style.dart';
 
@@ -9,21 +11,14 @@ class UserLocalDataSource {
     answerStyle: AnswerStyle.story,
   );
 
+  final _controller = StreamController<User>.broadcast();
+
   User getUser() => _user;
+
+  Stream<User> observeUser() => _controller.stream;
 
   void saveUser(User user) {
     _user = user;
-  }
-
-  void updateNickname(String nickname) {
-    _user = _user.copyWith(nickname: nickname);
-  }
-
-  void updateAnswerStyle(AnswerStyle style) {
-    _user = _user.copyWith(answerStyle: style);
-  }
-
-  void updateProfileImage(String? path) {
-    _user = _user.copyWith(profileImagePath: path);
+    _controller.add(_user);
   }
 }

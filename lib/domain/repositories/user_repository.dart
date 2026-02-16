@@ -1,3 +1,7 @@
+import '../entities/user.dart';
+
 abstract class UserRepository {
-  Future<void> saveNickname(String nickname);
+  User getUser();
+  Stream<User> observeUser();
+  Future<void> saveUser(User user);
 }

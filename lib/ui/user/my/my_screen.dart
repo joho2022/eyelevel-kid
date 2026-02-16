@@ -3,8 +3,10 @@ import 'package:eyelevel_kid/ui/core/widgets/answer_style_slider.dart';
 import 'package:eyelevel_kid/ui/user/my/widgets/profile_header.dart';
 import 'package:eyelevel_kid/ui/user/my/widgets/settings_section.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import '../../core/routes/route_paths.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_theme.dart';
 
@@ -42,7 +44,9 @@ class _MyView extends StatelessWidget {
               ProfileHeader(
                 nickname: state.nickname,
                 imagePath: state.profileImagePath,
-                onImageTap: viewModel.onProfileImageTap,
+                onImageTap: () {
+                  context.push(RoutePaths.profileEdit);
+                },
               ),
 
               const SizedBox(height: 32),

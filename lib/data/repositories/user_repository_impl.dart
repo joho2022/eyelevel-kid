@@ -1,21 +1,20 @@
+import '../../domain/entities/user.dart';
 import '../../domain/repositories/user_repository.dart';
 import '../sources/local/user_local_data_source.dart';
-import '../sources/mock/mock_user_remote_data_source.dart';
 
 class UserRepositoryImpl implements UserRepository {
-  final MockUserRemoteDataSource remote;
   final UserLocalDataSource local;
 
-  UserRepositoryImpl({
-    required this.remote,
-    required this.local,
-  });
+  UserRepositoryImpl(this.local);
 
   @override
-  Future<void> saveNickname(String nickname) async {
-    await remote.saveNickname(nickname);
+  User getUser() => local.getUser();
 
-    final user = local.getUser();
-    local.saveUser(user.copyWith(nickname: nickname));
+  @override
+  Stream<User> observeUser() => local.observeUser();
+
+  @override
+  Future<void> saveUser(User user) async {
+    local.saveUser(user);
   }
 }

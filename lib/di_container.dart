@@ -1,6 +1,8 @@
 import 'package:eyelevel_kid/data/sources/mock/mock_user_remote_data_source.dart';
 import 'package:eyelevel_kid/domain/usecases/ask_question_use_case.dart';
+import 'package:eyelevel_kid/domain/usecases/get_user_use_case.dart';
 import 'package:eyelevel_kid/domain/usecases/save_nickname_use_case.dart';
+import 'package:eyelevel_kid/domain/usecases/save_profile_use_case.dart';
 
 import 'data/repositories/calendar_repository_impl.dart';
 import 'data/repositories/question_repository_impl.dart';
@@ -21,6 +23,7 @@ import 'domain/usecases/get_questions_by_date_use_case.dart';
 import 'domain/usecases/observe_all_questions_use_case.dart';
 import 'domain/usecases/observe_recent_questions_use_case.dart';
 import 'domain/usecases/toggle_bookmark_usecase.dart';
+import 'domain/usecases/update_answer_style_use_case.dart';
 
 class DIContainer {
   DIContainer._();
@@ -52,10 +55,7 @@ class DIContainer {
   );
 
   static final UserRepository userRepository =
-  UserRepositoryImpl(
-    remote: userRemote,
-    local: userLocal,
-  );
+  UserRepositoryImpl(userLocal,);
 
 
   // ===== UseCases =====
@@ -91,4 +91,13 @@ class DIContainer {
 
   static final SaveNicknameUseCase saveNickname =
   SaveNicknameUseCase(userRepository);
+
+  static final GetUserUseCase getUser =
+  GetUserUseCase(userRepository);
+
+  static final SaveProfileUseCase saveProfile =
+  SaveProfileUseCase(userRepository);
+
+  static final UpdateAnswerStyleUseCase updateAnswerStyle =
+  UpdateAnswerStyleUseCase(userRepository);
 }
