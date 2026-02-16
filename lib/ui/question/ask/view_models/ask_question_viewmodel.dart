@@ -17,7 +17,13 @@ class AskQuestionViewModel extends ChangeNotifier {
   void updateQuestion(String value) {
     if (value.length > 200) return;
 
-    state = state.copyWith(question: value);
+    final cleaned = value.trim();
+
+    state = state.copyWith(
+      question: value,
+      canSubmit: cleaned.isNotEmpty,
+    );
+
     notifyListeners();
   }
 
@@ -27,14 +33,14 @@ class AskQuestionViewModel extends ChangeNotifier {
   }
 
   Future<QuestionRecord?> submit() async {
-    if (state.question.trim().isEmpty) return null;
+    if (!state.canSubmit || state.isLoading) return null;
 
     state = state.copyWith(isLoading: true);
     notifyListeners();
 
     try {
       final record = await askQuestionUseCase(
-        question: state.question,
+        question: state.question.trim(),
         style: state.style,
       );
 
@@ -42,7 +48,7 @@ class AskQuestionViewModel extends ChangeNotifier {
       notifyListeners();
 
       return record;
-    } catch (e) {
+    } catch (_) {
       state = state.copyWith(isLoading: false);
       notifyListeners();
       return null;

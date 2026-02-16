@@ -1,4 +1,5 @@
 import 'package:bounce_tapper/bounce_tapper.dart';
+import 'package:eyelevel_kid/ui/question/ask/state/ask_question_state.dart';
 import 'package:eyelevel_kid/ui/question/ask/view_models/ask_question_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -32,6 +33,18 @@ class _AskQuestionView extends StatelessWidget {
   Widget build(BuildContext context) {
     final viewModel = context.watch<AskQuestionViewModel>();
     final state = viewModel.state;
+
+    Color _buttonColor(AskQuestionState state) {
+      if (state.isLoading) {
+        return AppColors.storyPurple.withValues(alpha: 0.5);
+      }
+
+      if (!state.canSubmit) {
+        return AppColors.disabledGray;
+      }
+
+      return AppColors.storyPurple;
+    }
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -132,9 +145,7 @@ class _AskQuestionView extends StatelessWidget {
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 200),
                 decoration: BoxDecoration(
-                  color: state.isLoading
-                      ? AppColors.storyPurple.withValues(alpha: 0.4)
-                      : AppColors.storyPurple,
+                  color: _buttonColor(state),
                   borderRadius: BorderRadius.circular(14),
                 ),
                 alignment: Alignment.center,

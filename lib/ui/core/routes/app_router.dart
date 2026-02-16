@@ -2,17 +2,29 @@ import 'package:eyelevel_kid/ui/core/routes/route_paths.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../auth/login/login_screen.dart';
 import '../../history/history_screen.dart';
 import '../../home/home_screen.dart';
 import '../../question/ask/ask_screen.dart';
 import '../../question/detail/detail_screen.dart';
 import '../../user/my/my_screen.dart';
+import '../../user/nickname_setup/nickname_setup_screen.dart';
 import 'main_tab.dart';
 import 'main_tab_scaffold.dart';
 
 final appRouter = GoRouter(
-  initialLocation: MainTab.home.path,
+  initialLocation: RoutePaths.login,
   routes: [
+    GoRoute(
+      path: RoutePaths.login,
+      builder: (_, __) => const LoginScreen(),
+    ),
+
+    GoRoute(
+      path: RoutePaths.nicknameSetup,
+      builder: (_, __) => const NicknameSetupScreen(),
+    ),
+
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {
         return  MainTabScaffold(

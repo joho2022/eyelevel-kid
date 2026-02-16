@@ -35,6 +35,7 @@ class AppColors {
   static const answerReasonBorder = Color(0xFFE4A6BC);
   static const answerStoryBorder = Color(0xFFB99CF0);
   static const shadow = Color.fromRGBO(0, 0, 0, 0.1);
+  static const disabledGray = Color(0xFFD9D9D9);
 
   static const bookmarkIcon = Color(0xFF9FA3AD);
   static const bookmarkBackground = Color(0xFFF1F3F5);

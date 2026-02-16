@@ -1,12 +1,17 @@
+import 'package:eyelevel_kid/data/sources/mock/mock_user_remote_data_source.dart';
 import 'package:eyelevel_kid/domain/usecases/ask_question_use_case.dart';
+import 'package:eyelevel_kid/domain/usecases/save_nickname_use_case.dart';
 
 import 'data/repositories/calendar_repository_impl.dart';
 import 'data/repositories/question_repository_impl.dart';
+import 'data/repositories/user_repository_impl.dart';
 import 'data/sources/local/question_local_data_source.dart';
+import 'data/sources/local/user_local_data_source.dart';
 import 'data/sources/mock/mock_calendar_remote_data_source.dart';
 import 'data/sources/mock/mock_question_remote_data_source.dart';
 import 'domain/repositories/calendar_repository.dart';
 import 'domain/repositories/question_repository.dart';
+import 'domain/repositories/user_repository.dart';
 import 'domain/usecases/delete_question_use_case.dart';
 import 'domain/usecases/get_all_questions_snapshot_use_case.dart';
 import 'domain/usecases/get_calendar_summary_use_case.dart';
@@ -27,8 +32,14 @@ class DIContainer {
   static final MockQuestionRemoteDataSource questionRemote =
   MockQuestionRemoteDataSource();
 
+  static final MockUserRemoteDataSource userRemote =
+  MockUserRemoteDataSource();
+
   static final QuestionLocalDataSource questionLocal =
   QuestionLocalDataSource();
+
+  static final UserLocalDataSource userLocal =
+  UserLocalDataSource();
 
   // ===== Repository =====
   static final CalendarRepository calendarRepository =
@@ -39,6 +50,13 @@ class DIContainer {
     remote: questionRemote,
     local: questionLocal,
   );
+
+  static final UserRepository userRepository =
+  UserRepositoryImpl(
+    remote: userRemote,
+    local: userLocal,
+  );
+
 
   // ===== UseCases =====
   static final GetQuestionPageUseCase getQuestionPage =
@@ -70,4 +88,7 @@ class DIContainer {
 
   static final AskQuestionUseCase askQuestion =
   AskQuestionUseCase(questionRepository);
+
+  static final SaveNicknameUseCase saveNickname =
+  SaveNicknameUseCase(userRepository);
 }

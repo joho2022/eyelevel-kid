@@ -23,6 +23,7 @@ class AppProviders extends StatelessWidget {
         Provider.value(value: DIContainer.getAllQuestionsSnapshot),
         Provider.value(value: DIContainer.getQuestionDetail),
         Provider.value(value: DIContainer.askQuestion),
+        Provider.value(value: DIContainer.saveNickname),
       ],
       child: child,
     );

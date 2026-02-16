@@ -10,5 +10,6 @@ abstract class AskQuestionState with _$AskQuestionState {
     @Default('') String question,
     @Default(AnswerStyle.story) AnswerStyle style,
     @Default(false) bool isLoading,
+    @Default(false) bool canSubmit,
   }) = _AskQuestionState;
 }

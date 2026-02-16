@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:eyelevel_kid/ui/core/theme/app_colors.dart';
 import 'package:eyelevel_kid/ui/core/theme/app_theme.dart';
 import 'package:eyelevel_kid/ui/core/theme/app_images.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../core/routes/route_paths.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -91,6 +94,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                     text: 'Apple로 계속하기',
                     onPressed: () {
                       debugPrint('Apple 로그인 클릭');
+                      context.go(RoutePaths.nicknameSetup);
                     },
                   ),
 
@@ -101,6 +105,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                     text: 'Google로 계속하기',
                     onPressed: () {
                       debugPrint('Google 로그인 클릭');
+                      context.go(RoutePaths.nicknameSetup);
                     },
                   ),
 

@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AskQuestionState {
 
- String get question; AnswerStyle get style; bool get isLoading;
+ String get question; AnswerStyle get style; bool get isLoading; bool get canSubmit;
 /// Create a copy of AskQuestionState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $AskQuestionStateCopyWith<AskQuestionState> get copyWith => _$AskQuestionStateCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AskQuestionState&&(identical(other.question, question) || other.question == question)&&(identical(other.style, style) || other.style == style)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AskQuestionState&&(identical(other.question, question) || other.question == question)&&(identical(other.style, style) || other.style == style)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.canSubmit, canSubmit) || other.canSubmit == canSubmit));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,question,style,isLoading);
+int get hashCode => Object.hash(runtimeType,question,style,isLoading,canSubmit);
 
 @override
 String toString() {
-  return 'AskQuestionState(question: $question, style: $style, isLoading: $isLoading)';
+  return 'AskQuestionState(question: $question, style: $style, isLoading: $isLoading, canSubmit: $canSubmit)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $AskQuestionStateCopyWith<$Res>  {
   factory $AskQuestionStateCopyWith(AskQuestionState value, $Res Function(AskQuestionState) _then) = _$AskQuestionStateCopyWithImpl;
 @useResult
 $Res call({
- String question, AnswerStyle style, bool isLoading
+ String question, AnswerStyle style, bool isLoading, bool canSubmit
 });
 
 
@@ -62,11 +62,12 @@ class _$AskQuestionStateCopyWithImpl<$Res>
 
 /// Create a copy of AskQuestionState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? question = null,Object? style = null,Object? isLoading = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? question = null,Object? style = null,Object? isLoading = null,Object? canSubmit = null,}) {
   return _then(_self.copyWith(
 question: null == question ? _self.question : question // ignore: cast_nullable_to_non_nullable
 as String,style: null == style ? _self.style : style // ignore: cast_nullable_to_non_nullable
 as AnswerStyle,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
+as bool,canSubmit: null == canSubmit ? _self.canSubmit : canSubmit // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }
@@ -152,10 +153,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String question,  AnswerStyle style,  bool isLoading)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String question,  AnswerStyle style,  bool isLoading,  bool canSubmit)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AskQuestionState() when $default != null:
-return $default(_that.question,_that.style,_that.isLoading);case _:
+return $default(_that.question,_that.style,_that.isLoading,_that.canSubmit);case _:
   return orElse();
 
 }
@@ -173,10 +174,10 @@ return $default(_that.question,_that.style,_that.isLoading);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String question,  AnswerStyle style,  bool isLoading)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String question,  AnswerStyle style,  bool isLoading,  bool canSubmit)  $default,) {final _that = this;
 switch (_that) {
 case _AskQuestionState():
-return $default(_that.question,_that.style,_that.isLoading);case _:
+return $default(_that.question,_that.style,_that.isLoading,_that.canSubmit);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -193,10 +194,10 @@ return $default(_that.question,_that.style,_that.isLoading);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String question,  AnswerStyle style,  bool isLoading)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String question,  AnswerStyle style,  bool isLoading,  bool canSubmit)?  $default,) {final _that = this;
 switch (_that) {
 case _AskQuestionState() when $default != null:
-return $default(_that.question,_that.style,_that.isLoading);case _:
+return $default(_that.question,_that.style,_that.isLoading,_that.canSubmit);case _:
   return null;
 
 }
@@ -208,12 +209,13 @@ return $default(_that.question,_that.style,_that.isLoading);case _:
 
 
 class _AskQuestionState implements AskQuestionState {
-  const _AskQuestionState({this.question = '', this.style = AnswerStyle.story, this.isLoading = false});
+  const _AskQuestionState({this.question = '', this.style = AnswerStyle.story, this.isLoading = false, this.canSubmit = false});
   
 
 @override@JsonKey() final  String question;
 @override@JsonKey() final  AnswerStyle style;
 @override@JsonKey() final  bool isLoading;
+@override@JsonKey() final  bool canSubmit;
 
 /// Create a copy of AskQuestionState
 /// with the given fields replaced by the non-null parameter values.
@@ -225,16 +227,16 @@ _$AskQuestionStateCopyWith<_AskQuestionState> get copyWith => __$AskQuestionStat
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AskQuestionState&&(identical(other.question, question) || other.question == question)&&(identical(other.style, style) || other.style == style)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AskQuestionState&&(identical(other.question, question) || other.question == question)&&(identical(other.style, style) || other.style == style)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.canSubmit, canSubmit) || other.canSubmit == canSubmit));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,question,style,isLoading);
+int get hashCode => Object.hash(runtimeType,question,style,isLoading,canSubmit);
 
 @override
 String toString() {
-  return 'AskQuestionState(question: $question, style: $style, isLoading: $isLoading)';
+  return 'AskQuestionState(question: $question, style: $style, isLoading: $isLoading, canSubmit: $canSubmit)';
 }
 
 
@@ -245,7 +247,7 @@ abstract mixin class _$AskQuestionStateCopyWith<$Res> implements $AskQuestionSta
   factory _$AskQuestionStateCopyWith(_AskQuestionState value, $Res Function(_AskQuestionState) _then) = __$AskQuestionStateCopyWithImpl;
 @override @useResult
 $Res call({
- String question, AnswerStyle style, bool isLoading
+ String question, AnswerStyle style, bool isLoading, bool canSubmit
 });
 
 
@@ -262,11 +264,12 @@ class __$AskQuestionStateCopyWithImpl<$Res>
 
 /// Create a copy of AskQuestionState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? question = null,Object? style = null,Object? isLoading = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? question = null,Object? style = null,Object? isLoading = null,Object? canSubmit = null,}) {
   return _then(_AskQuestionState(
 question: null == question ? _self.question : question // ignore: cast_nullable_to_non_nullable
 as String,style: null == style ? _self.style : style // ignore: cast_nullable_to_non_nullable
 as AnswerStyle,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
+as bool,canSubmit: null == canSubmit ? _self.canSubmit : canSubmit // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }
