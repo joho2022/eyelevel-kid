@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_theme.dart';
 
-class NicknameTextField extends StatelessWidget {
+class NicknameTextField extends StatefulWidget {
   final String value;
   final ValueChanged<String> onChanged;
   final String? errorText;
@@ -15,7 +16,42 @@ class NicknameTextField extends StatelessWidget {
   });
 
   @override
+  State<NicknameTextField> createState() => _NicknameTextFieldState();
+}
+
+class _NicknameTextFieldState extends State<NicknameTextField> {
+  late final TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController(text: widget.value);
+  }
+
+  @override
+  void didUpdateWidget(covariant NicknameTextField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (widget.value != _controller.text) {
+      _controller.value = TextEditingValue(
+        text: widget.value,
+        selection: TextSelection.collapsed(
+          offset: widget.value.length,
+        ),
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final hasError = widget.errorText != null;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -26,34 +62,36 @@ class NicknameTextField extends StatelessWidget {
             color: AppColors.white,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
-              color: errorText == null
-                  ? AppColors.borderGray
-                  : Colors.red,
+              color: hasError
+                  ? Colors.red
+                  : AppColors.borderGray,
             ),
           ),
           child: TextField(
-            controller: TextEditingController(text: value)
-              ..selection = TextSelection.collapsed(
-                offset: value.length,
-              ),
+            controller: _controller,
             maxLength: 8,
-            decoration: const InputDecoration(
+            style: AppTheme.subtitle16.copyWith(
+              color: AppColors.textDefault,
+            ),
+            decoration: InputDecoration(
               counterText: '',
               border: InputBorder.none,
-              hintText: '닉네임을 입력해주세요',
+              hintText: '닉네임을 입력해주세요 (2~8자)',
+              hintStyle: AppTheme.subtitle16.copyWith(
+                color: AppColors.textInfo,
+              ),
             ),
-            onChanged: onChanged,
+            onChanged: widget.onChanged,
           ),
         ),
 
         const SizedBox(height: 6),
 
-        if (errorText != null)
+        if (widget.errorText != null)
           Text(
-            errorText!,
-            style: const TextStyle(
+            widget.errorText!,
+            style: AppTheme.label12.copyWith(
               color: Colors.red,
-              fontSize: 12,
             ),
           ),
       ],

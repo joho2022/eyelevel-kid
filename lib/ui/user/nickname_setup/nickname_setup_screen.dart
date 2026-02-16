@@ -53,19 +53,18 @@ class _NicknameSetupView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '이름을 알려주세요 🌷',
-                style: AppTheme.title20.copyWith(
+                '만나서 반가워요',
+                style: AppTheme.title24.copyWith(
                   color: AppColors.textDefault,
                 ),
               ),
 
-              const SizedBox(height: 8),
+              const SizedBox(height: 2),
 
               Text(
-                '아이에게 어떻게 불러주면 좋을까요?\n따뜻한 이름을 적어주세요.',
-                style: AppTheme.body14.copyWith(
-                  color: AppColors.textTertiary,
-                  height: 1.5,
+                '아이시선에서 사용할 닉네임을 입력해주세요.',
+                style: AppTheme.subtitle14.copyWith(
+                  color: AppColors.textSub,
                 ),
               ),
 
