@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'ui/auth/login_screen.dart';
+import 'ui/auth/login/login_screen.dart';
 
 class RootScreen extends StatelessWidget {
   const RootScreen({super.key});
