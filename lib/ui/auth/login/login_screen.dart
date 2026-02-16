@@ -1,9 +1,9 @@
+import 'package:eyelevel_kid/ui/auth/login/widgets/social_login_button.dart';
 import 'package:flutter/material.dart';
 
 import 'package:eyelevel_kid/ui/core/theme/app_colors.dart';
 import 'package:eyelevel_kid/ui/core/theme/app_theme.dart';
 import 'package:eyelevel_kid/ui/core/theme/app_images.dart';
-import 'package:eyelevel_kid/ui/auth/widgets/social_login_button.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

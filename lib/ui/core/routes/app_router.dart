@@ -1,6 +1,4 @@
-import 'package:eyelevel_kid/app_providers.dart';
 import 'package:eyelevel_kid/ui/core/routes/route_paths.dart';
-import 'package:eyelevel_kid/ui/my/my_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -8,6 +6,7 @@ import '../../history/history_screen.dart';
 import '../../home/home_screen.dart';
 import '../../question/ask/ask_screen.dart';
 import '../../question/detail/detail_screen.dart';
+import '../../user/my/my_screen.dart';
 import 'main_tab.dart';
 import 'main_tab_scaffold.dart';
 

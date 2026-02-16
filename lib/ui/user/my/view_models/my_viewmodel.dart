@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-import '../../../domain/values/answer_style.dart';
+import '../../../../domain/values/answer_style.dart';
 import '../state/my_state.dart';
 
 class MyViewModel extends ChangeNotifier {

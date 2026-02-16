@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:bounce_tapper/bounce_tapper.dart';
 
-import '../../core/theme/app_colors.dart';
-import '../../core/theme/app_theme.dart';
+import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_theme.dart';
 
 class SettingsSection extends StatelessWidget {
   final String? title;

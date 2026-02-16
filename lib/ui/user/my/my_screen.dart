@@ -1,12 +1,12 @@
-import 'package:eyelevel_kid/ui/my/view_models/my_viewmodel.dart';
+import 'package:eyelevel_kid/ui/user/my/view_models/my_viewmodel.dart';
 import 'package:eyelevel_kid/ui/core/widgets/answer_style_slider.dart';
-import 'package:eyelevel_kid/ui/my/widgets/profile_header.dart';
-import 'package:eyelevel_kid/ui/my/widgets/settings_section.dart';
+import 'package:eyelevel_kid/ui/user/my/widgets/profile_header.dart';
+import 'package:eyelevel_kid/ui/user/my/widgets/settings_section.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../core/theme/app_colors.dart';
-import '../core/theme/app_theme.dart';
+import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_theme.dart';
 
 class MyScreen extends StatelessWidget {
   const MyScreen({super.key});

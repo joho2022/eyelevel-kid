@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../domain/values/answer_style.dart';
+import '../../../../domain/values/answer_style.dart';
+
 
 part 'my_state.freezed.dart';
 
