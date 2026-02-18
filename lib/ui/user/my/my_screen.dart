@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import '../../core/routes/route_paths.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_theme.dart';
+import '../../core/widgets/confirm_dialog.dart';
 
 class MyScreen extends StatelessWidget {
   const MyScreen({super.key});
@@ -113,7 +114,17 @@ class _MyView extends StatelessWidget {
                       Icons.chevron_right,
                       color: AppColors.iconSecondary
                   ),
-                  onTap: viewModel.logout,
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (_) => ConfirmDialog(
+                        title: '로그아웃 하시겠어요?',
+                        description: '다시 로그인해야 사용할 수 있어요.',
+                        confirmText: '로그아웃',
+                        onConfirm: viewModel.logout,
+                      ),
+                    );
+                  },
                   textColor: AppColors.textDefault
                   ),
                   (
@@ -122,7 +133,18 @@ class _MyView extends StatelessWidget {
                       Icons.chevron_right,
                       color: AppColors.iconSecondary
                   ),
-                  onTap: viewModel.withdraw,
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (_) => ConfirmDialog(
+                        title: '정말 탈퇴하시겠어요?',
+                        description: '모든 기록이 삭제되고 복구할 수 없어요.',
+                        confirmText: '탈퇴하기',
+                        isDanger: true,
+                        onConfirm: viewModel.withdraw,
+                      ),
+                    );
+                  },
                   textColor: AppColors.iconSecondary,
                   ),
                 ],

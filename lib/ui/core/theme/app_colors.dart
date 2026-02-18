@@ -41,4 +41,5 @@ class AppColors {
   static const bookmarkBackground = Color(0xFFF1F3F5);
   static const profilePlaceholderIcon = Color(0xFF9B8ACF);
   static const iconSecondary = Color(0xFF8E8E93);
+  static const errorRed = Color(0xFFE35D6A);
 }
