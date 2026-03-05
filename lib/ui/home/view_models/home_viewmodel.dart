@@ -26,13 +26,13 @@ class HomeViewModel extends ChangeNotifier {
 
   StreamSubscription<List<QuestionRecord>>? _recentSub;
 
-  HomeViewModel(
-      this.getQuestionPage,
-      this.getCalendarSummary,
-      this.getQuestionsByDate,
-      this.observeRecentQuestions,
-      this.toggleBookmarkUseCase,
-  )  {
+  HomeViewModel({
+    required this.getQuestionPage,
+    required this.getCalendarSummary,
+    required this.getQuestionsByDate,
+    required this.observeRecentQuestions,
+    required this.toggleBookmarkUseCase,
+  }) {
     _init();
   }
 
@@ -53,10 +53,7 @@ class HomeViewModel extends ChangeNotifier {
     state = state.copyWith(isInitialLoading: true);
     notifyListeners();
 
-    await loadCalendarSummary(
-      state.currentMonth,
-      force: true,
-    );
+    await loadCalendarSummary(state.currentMonth, force: true);
 
     state = state.copyWith(isInitialLoading: false);
     notifyListeners();
@@ -82,9 +79,7 @@ class HomeViewModel extends ChangeNotifier {
         month: month.month,
       );
 
-      state = state.copyWith(
-        questionDates: summary.questionDates,
-      );
+      state = state.copyWith(questionDates: summary.questionDates);
     } catch (e) {
       state = state.copyWith(questionDates: const {});
     } finally {
@@ -97,9 +92,7 @@ class HomeViewModel extends ChangeNotifier {
     if (state.isCalendarLoading) return;
 
     final hasQuestion = state.questionDates.any(
-          (d) => d.year == date.year &&
-          d.month == date.month &&
-          d.day == date.day,
+      (d) => d.year == date.year && d.month == date.month && d.day == date.day,
     );
 
     if (!hasQuestion) {
@@ -123,10 +116,7 @@ class HomeViewModel extends ChangeNotifier {
       );
 
       state = state.copyWith(
-        selectedDay: CalendarDaySummary(
-          date: date,
-          questions: questions,
-        ),
+        selectedDay: CalendarDaySummary(date: date, questions: questions),
       );
     } finally {
       state = state.copyWith(isQuestionLoading: false);

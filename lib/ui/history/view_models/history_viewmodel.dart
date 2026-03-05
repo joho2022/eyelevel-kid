@@ -21,12 +21,12 @@ class HistoryViewModel extends ChangeNotifier {
 
   List<QuestionRecord> _allQuestions = [];
 
-  HistoryViewModel(
-      this.observeAllQuestionsUseCase,
-      this.toggleBookmarkUseCase,
-      this.deleteQuestionUseCase,
-      this.getAllQuestionsSnapshotUseCase,
-      ) {
+  HistoryViewModel({
+    required this.observeAllQuestionsUseCase,
+    required this.toggleBookmarkUseCase,
+    required this.deleteQuestionUseCase,
+    required this.getAllQuestionsSnapshotUseCase,
+  }) {
     _subscribeToQuestions();
   }
 

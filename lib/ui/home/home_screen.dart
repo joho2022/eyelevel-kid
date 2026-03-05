@@ -10,13 +10,9 @@ import 'package:eyelevel_kid/ui/home/widgets/home_header.dart';
 import 'package:eyelevel_kid/ui/home/view_models/home_viewmodel.dart';
 import 'package:eyelevel_kid/ui/core/widgets/inline_banner_ad.dart';
 import 'package:eyelevel_kid/ui/home/widgets/calendar/question_calendar.dart';
-import '../../domain/usecases/get_calendar_summary_use_case.dart';
-import '../../domain/usecases/get_question_page_use_case.dart';
-import '../../domain/usecases/get_questions_by_date_use_case.dart';
-import '../../domain/usecases/observe_recent_questions_use_case.dart';
-import '../../domain/usecases/toggle_bookmark_usecase.dart';
 import '../core/routes/route_paths.dart';
 import '../question/shared/question_summary_card.dart';
+import 'home_factory.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -24,13 +20,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => HomeViewModel(
-        context.read<GetQuestionPageUseCase>(),
-        context.read<GetCalendarSummaryUseCase>(),
-        context.read<GetQuestionsByDateUseCase>(),
-        context.read<ObserveRecentQuestionsUseCase>(),
-        context.read<ToggleBookmarkUseCase>(),
-      ),
+      create: (_) => createHomeViewModel(),
       child: const HomeView(),
     );
   }

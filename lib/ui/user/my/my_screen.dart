@@ -1,3 +1,4 @@
+import 'package:eyelevel_kid/ui/user/my/my_factory.dart';
 import 'package:eyelevel_kid/ui/user/my/view_models/my_viewmodel.dart';
 import 'package:eyelevel_kid/ui/core/widgets/answer_style_slider.dart';
 import 'package:eyelevel_kid/ui/user/my/widgets/profile_header.dart';
@@ -17,10 +18,7 @@ class MyScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => MyViewModel(
-        // context.read<GetProfileUseCase>(),
-        // context.read<LogoutUseCase>(),
-      ),
+      create: (_) => createMyViewModel(),
       child: const _MyView(),
     );
   }

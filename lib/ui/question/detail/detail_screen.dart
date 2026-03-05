@@ -1,13 +1,12 @@
 import 'package:bounce_tapper/bounce_tapper.dart';
 import 'package:eyelevel_kid/core/utils/date_format.dart';
+import 'package:eyelevel_kid/ui/question/detail/detail_factory.dart';
 import 'package:eyelevel_kid/ui/question/detail/view_models/detail_viewmodel.dart';
 import 'package:eyelevel_kid/ui/question/shared/style_chip.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../domain/entities/question_record.dart';
-import '../../../domain/usecases/get_question_use_case.dart';
-import '../../../domain/usecases/toggle_bookmark_usecase.dart';
 import '../../../domain/values/answer_style.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_theme.dart';
@@ -23,11 +22,7 @@ class DetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => DetailViewModel(
-        questionId: questionId,
-        getQuestionUseCase: context.read<GetQuestionUseCase>(),
-        toggleBookmarkUseCase: context.read<ToggleBookmarkUseCase>(),
-      ),
+      create: (_) => createDetailViewModel(questionId),
       child: const _DetailView(),
     );
   }

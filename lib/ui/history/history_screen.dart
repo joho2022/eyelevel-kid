@@ -5,13 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-import '../../domain/usecases/delete_question_use_case.dart';
-import '../../domain/usecases/get_all_questions_snapshot_use_case.dart';
-import '../../domain/usecases/observe_all_questions_use_case.dart';
-import '../../domain/usecases/toggle_bookmark_usecase.dart';
 import '../core/routes/route_paths.dart';
 import '../core/theme/app_colors.dart';
 import '../core/theme/app_theme.dart';
+import 'history_factory.dart';
 
 class HistoryScreen extends StatelessWidget {
   const HistoryScreen({super.key});
@@ -19,12 +16,7 @@ class HistoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => HistoryViewModel(
-        context.read<ObserveAllQuestionsUseCase>(),
-        context.read<ToggleBookmarkUseCase>(),
-        context.read<DeleteQuestionUseCase>(),
-        context.read<GetAllQuestionsSnapshotUseCase>(),
-      ),
+      create: (_) => createHistoryViewModel(),
       child: const _HistoryView(),
     );
   }

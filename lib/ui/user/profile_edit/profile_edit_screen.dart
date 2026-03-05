@@ -1,12 +1,11 @@
 import 'package:bounce_tapper/bounce_tapper.dart';
 import 'package:eyelevel_kid/ui/user/profile_edit/state/profile_edit_state.dart';
+import 'package:eyelevel_kid/ui/user/profile_edit/profile_edit_factory.dart';
 import 'package:eyelevel_kid/ui/user/profile_edit/view_models/profile_edit_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-import '../../../domain/usecases/get_user_use_case.dart';
-import '../../../domain/usecases/user/save_profile_use_case.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_theme.dart';
 import '../shared/nickname_text_field.dart';
@@ -17,10 +16,7 @@ class ProfileEditScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => ProfileEditViewModel(
-        saveProfileUseCase: context.read<SaveProfileUseCase>(),
-        getUserUseCase: context.read<GetUserUseCase>(),
-      ),
+      create: (_) => createProfileEditViewModel(),
       child: const _ProfileEditView(),
     );
   }

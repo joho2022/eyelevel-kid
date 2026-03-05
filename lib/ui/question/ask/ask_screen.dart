@@ -1,11 +1,11 @@
 import 'package:bounce_tapper/bounce_tapper.dart';
 import 'package:eyelevel_kid/ui/question/ask/state/ask_question_state.dart';
+import 'package:eyelevel_kid/ui/question/ask/ask_factory.dart';
 import 'package:eyelevel_kid/ui/question/ask/view_models/ask_question_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-import '../../../domain/usecases/ask_question_use_case.dart';
 import '../../core/routes/route_paths.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_theme.dart';
@@ -16,11 +16,8 @@ class AskQuestionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final askQuestionUseCase = context.read<AskQuestionUseCase>();
-
     return ChangeNotifierProvider(
-      create: (_) =>
-          AskQuestionViewModel(askQuestionUseCase: askQuestionUseCase),
+      create: (_) => createAskQuestionViewModel(),
       child: const _AskQuestionView(),
     );
   }
