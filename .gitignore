@@ -48,6 +48,6 @@ app.*.map.json
 .env
 
 # Firebase / Google secret files
- android/app/google-services.json
- ios/Runner/GoogleService-Info.plist
- ios/Flutter/Secrets.xcconfig
+android/app/google-services.json
+ios/Runner/GoogleService-Info.plist
+ios/Flutter/Secrets.xcconfig
