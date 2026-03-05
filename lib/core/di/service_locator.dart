@@ -1,3 +1,4 @@
+import 'package:eyelevel_kid/data/sources/remote/user_remote_data_source.dart';
 import 'package:get_it/get_it.dart';
 import 'package:dio/dio.dart';
 
@@ -11,7 +12,6 @@ import '../../data/sources/local/user_local_data_source.dart';
 
 import '../../data/sources/mock/mock_calendar_remote_data_source.dart';
 import '../../data/sources/mock/mock_question_remote_data_source.dart';
-import '../../data/sources/mock/mock_user_remote_data_source.dart';
 import '../../data/sources/remote/auth_remote_data_source.dart';
 
 import 'package:eyelevel_kid/data/sources/external/google_auth_data_source.dart';
@@ -41,34 +41,77 @@ import '../../domain/usecases/logout_usecase.dart';
 import '../../domain/usecases/observe_all_questions_use_case.dart';
 import '../../domain/usecases/observe_recent_questions_use_case.dart';
 import '../../domain/usecases/refresh_token_usecase.dart';
-import '../../domain/usecases/save_nickname_use_case.dart';
-import '../../domain/usecases/save_profile_use_case.dart';
+import '../../domain/usecases/user/save_nickname_use_case.dart';
+import '../../domain/usecases/user/save_profile_use_case.dart';
 import '../../domain/usecases/social_login_usecase.dart';
 import '../../domain/usecases/toggle_bookmark_usecase.dart';
-import '../../domain/usecases/update_answer_style_use_case.dart';
+import '../../domain/usecases/user/update_answer_style_use_case.dart';
 import '../auth/app_auth_viewmodel.dart';
 
 final serviceLocator = GetIt.instance;
 
 void setupDependencies() {
+
+  // MARK: - TokenLocalDataSource
+  serviceLocator.registerLazySingleton(() => TokenLocalDataSource());
+
+  // MARK: - Repository
+  serviceLocator.registerLazySingleton<TokenRepository>(
+        () => TokenRepositoryImpl(serviceLocator<TokenLocalDataSource>()),
+  );
+
+  // MARK: - UseCase (refresh / logout 먼저 필요)
+  serviceLocator.registerLazySingleton(
+        () => LogoutUseCase(serviceLocator<TokenRepository>()),
+  );
+
+  // MARK: - Dio
   serviceLocator.registerLazySingleton<Dio>(
-    () => DioClient.create(),
+        () => DioClient.create(),
     instanceName: 'retryDio',
+  );
+
+  serviceLocator.registerLazySingleton<Dio>(
+        () {
+      final dio = DioClient.create();
+      final retryDio = serviceLocator<Dio>(instanceName: 'retryDio');
+
+      dio.interceptors.add(
+        AuthInterceptor(serviceLocator<TokenRepository>()),
+      );
+
+      dio.interceptors.add(
+        RefreshInterceptor(
+          retryDio: retryDio,
+          refreshUseCase: serviceLocator<RefreshTokenUseCase>(),
+          logoutUseCase: serviceLocator<LogoutUseCase>(),
+        ),
+      );
+
+      return dio;
+    },
+    instanceName: 'mainDio',
   );
 
   // MARK: - Remote DataSource
   serviceLocator.registerLazySingleton(() => MockCalendarRemoteDataSource());
   serviceLocator.registerLazySingleton(() => MockQuestionRemoteDataSource());
-  serviceLocator.registerLazySingleton(() => MockUserRemoteDataSource());
+
+  serviceLocator.registerLazySingleton(
+        () => UserRemoteDataSource(
+      serviceLocator<Dio>(instanceName: 'mainDio'),
+    ),
+  );
 
   serviceLocator.registerLazySingleton<AuthRemoteDataSource>(
-    () => AuthRemoteDataSource(serviceLocator<Dio>(instanceName: 'retryDio')),
+        () => AuthRemoteDataSource(
+      serviceLocator<Dio>(instanceName: 'retryDio'),
+    ),
   );
 
   // MARK: - Local DataSource
   serviceLocator.registerLazySingleton(() => QuestionLocalDataSource());
   serviceLocator.registerLazySingleton(() => UserLocalDataSource());
-  serviceLocator.registerLazySingleton(() => TokenLocalDataSource());
 
   // MARK: - external DataSource
   serviceLocator.registerLazySingleton(() => GoogleAuthDataSource());
@@ -76,123 +119,99 @@ void setupDependencies() {
 
   // MARK: - Repository
   serviceLocator.registerLazySingleton<CalendarRepository>(
-    () =>
-        CalendarRepositoryImpl(serviceLocator<MockCalendarRemoteDataSource>()),
+        () => CalendarRepositoryImpl(
+      serviceLocator<MockCalendarRemoteDataSource>(),
+    ),
   );
 
   serviceLocator.registerLazySingleton<QuestionRepository>(
-    () => QuestionRepositoryImpl(
+        () => QuestionRepositoryImpl(
       remote: serviceLocator<MockQuestionRemoteDataSource>(),
       local: serviceLocator<QuestionLocalDataSource>(),
     ),
   );
 
   serviceLocator.registerLazySingleton<UserRepository>(
-    () => UserRepositoryImpl(serviceLocator<UserLocalDataSource>()),
-  );
-
-  serviceLocator.registerLazySingleton<TokenRepository>(
-    () => TokenRepositoryImpl(serviceLocator<TokenLocalDataSource>()),
+        () => UserRepositoryImpl(
+      remote: serviceLocator<UserRemoteDataSource>(),
+      local: serviceLocator<UserLocalDataSource>(),
+    ),
   );
 
   serviceLocator.registerLazySingleton<AuthRepository>(
-    () => AuthRepositoryImpl(serviceLocator<AuthRemoteDataSource>()),
+        () => AuthRepositoryImpl(serviceLocator<AuthRemoteDataSource>()),
   );
 
   // MARK: - UseCase
   serviceLocator.registerLazySingleton(
-    () => GetQuestionPageUseCase(serviceLocator<QuestionRepository>()),
+        () => GetQuestionPageUseCase(serviceLocator<QuestionRepository>()),
   );
 
   serviceLocator.registerLazySingleton(
-    () => ObserveRecentQuestionsUseCase(serviceLocator<QuestionRepository>()),
+        () => ObserveRecentQuestionsUseCase(serviceLocator<QuestionRepository>()),
   );
 
   serviceLocator.registerLazySingleton(
-    () => ObserveAllQuestionsUseCase(serviceLocator<QuestionRepository>()),
+        () => ObserveAllQuestionsUseCase(serviceLocator<QuestionRepository>()),
   );
 
   serviceLocator.registerLazySingleton(
-    () => ToggleBookmarkUseCase(serviceLocator<QuestionRepository>()),
+        () => ToggleBookmarkUseCase(serviceLocator<QuestionRepository>()),
   );
 
   serviceLocator.registerLazySingleton(
-    () => DeleteQuestionUseCase(serviceLocator<QuestionRepository>()),
+        () => DeleteQuestionUseCase(serviceLocator<QuestionRepository>()),
   );
 
   serviceLocator.registerLazySingleton(
-    () => GetCalendarSummaryUseCase(serviceLocator<CalendarRepository>()),
+        () => GetCalendarSummaryUseCase(serviceLocator<CalendarRepository>()),
   );
 
   serviceLocator.registerLazySingleton(
-    () => GetQuestionsByDateUseCase(serviceLocator<CalendarRepository>()),
+        () => GetQuestionsByDateUseCase(serviceLocator<CalendarRepository>()),
   );
 
   serviceLocator.registerLazySingleton(
-    () => GetAllQuestionsSnapshotUseCase(serviceLocator<QuestionRepository>()),
+        () => GetAllQuestionsSnapshotUseCase(serviceLocator<QuestionRepository>()),
   );
 
   serviceLocator.registerLazySingleton(
-    () => GetQuestionUseCase(serviceLocator<QuestionRepository>()),
+        () => GetQuestionUseCase(serviceLocator<QuestionRepository>()),
   );
 
   serviceLocator.registerLazySingleton(
-    () => AskQuestionUseCase(serviceLocator<QuestionRepository>()),
+        () => AskQuestionUseCase(serviceLocator<QuestionRepository>()),
   );
 
   serviceLocator.registerLazySingleton(
-    () => SaveNicknameUseCase(serviceLocator<UserRepository>()),
+        () => SaveNicknameUseCase(serviceLocator<UserRepository>()),
   );
 
   serviceLocator.registerLazySingleton(
-    () => GetUserUseCase(serviceLocator<UserRepository>()),
+        () => GetUserUseCase(serviceLocator<UserRepository>()),
   );
 
   serviceLocator.registerLazySingleton(
-    () => SaveProfileUseCase(serviceLocator<UserRepository>()),
+        () => SaveProfileUseCase(serviceLocator<UserRepository>()),
   );
 
   serviceLocator.registerLazySingleton(
-    () => UpdateAnswerStyleUseCase(serviceLocator<UserRepository>()),
+        () => UpdateAnswerStyleUseCase(serviceLocator<UserRepository>()),
   );
 
   serviceLocator.registerLazySingleton(
-    () => SocialLoginUseCase(serviceLocator<AuthRepository>()),
+        () => SocialLoginUseCase(serviceLocator<AuthRepository>()),
   );
 
   serviceLocator.registerLazySingleton(
-    () => RefreshTokenUseCase(
+        () => RefreshTokenUseCase(
       serviceLocator<AuthRepository>(),
       serviceLocator<TokenRepository>(),
     ),
   );
 
-  serviceLocator.registerLazySingleton(
-    () => LogoutUseCase(serviceLocator<TokenRepository>()),
-  );
-
   // MARK: - ViewModel (전역 상태)
   serviceLocator.registerLazySingleton<AppAuthViewModel>(
-        () => AppAuthViewModel(
-      serviceLocator<TokenRepository>(),
-    ),
+        () => AppAuthViewModel(serviceLocator<TokenRepository>()),
   );
-
-  // MARK: - Dio
-  serviceLocator.registerLazySingleton<Dio>(() {
-    final dio = DioClient.create();
-    final retryDio = serviceLocator<Dio>(instanceName: 'retryDio');
-
-    dio.interceptors.add(AuthInterceptor(serviceLocator<TokenRepository>()));
-
-    dio.interceptors.add(
-      RefreshInterceptor(
-        retryDio: retryDio,
-        refreshUseCase: serviceLocator<RefreshTokenUseCase>(),
-        logoutUseCase: serviceLocator<LogoutUseCase>(),
-      ),
-    );
-
-    return dio;
-  });
 }

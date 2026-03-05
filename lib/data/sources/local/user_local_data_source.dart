@@ -5,8 +5,8 @@ import '../../../domain/values/answer_style.dart';
 
 class UserLocalDataSource {
   User _user = const User(
-    id: 'local-user',
-    nickname: '카이',
+    id: 0,
+    nickname: '',
     profileImagePath: null,
     answerStyle: AnswerStyle.story,
   );
@@ -19,6 +19,11 @@ class UserLocalDataSource {
 
   void saveUser(User user) {
     _user = user;
+    _controller.add(user);
+  }
+
+  void updateAnswerStyle(AnswerStyle style) {
+    _user = _user.copyWith(answerStyle: style);
     _controller.add(_user);
   }
 }

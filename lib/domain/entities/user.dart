@@ -1,7 +1,7 @@
 import '../values/answer_style.dart';
 
 class User {
-  final String id;
+  final int id;
   final String nickname;
   final String? profileImagePath;
   final AnswerStyle answerStyle;
@@ -14,7 +14,7 @@ class User {
   });
 
   User copyWith({
-    String? id,
+    int? id,
     String? nickname,
     String? profileImagePath,
     AnswerStyle? answerStyle,
