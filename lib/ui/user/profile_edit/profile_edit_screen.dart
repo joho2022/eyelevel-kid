@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../../domain/usecases/get_user_use_case.dart';
-import '../../../domain/usecases/save_profile_use_case.dart';
+import '../../../domain/usecases/user/save_profile_use_case.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_theme.dart';
 import '../shared/nickname_text_field.dart';

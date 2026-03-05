@@ -1,14 +1,18 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
-import '../../../../domain/usecases/save_nickname_use_case.dart';
+import '../../../../core/auth/app_auth_viewmodel.dart';
+import '../../../../domain/usecases/user/save_nickname_use_case.dart';
 import '../state/nickname_setup_state.dart';
 
 class NicknameSetupViewModel extends ChangeNotifier {
+  final AppAuthViewModel appAuthViewModel;
   final SaveNicknameUseCase saveNicknameUseCase;
 
   NicknameSetupState state = const NicknameSetupState();
 
   NicknameSetupViewModel({
+    required this.appAuthViewModel,
     required this.saveNicknameUseCase,
   });
 
@@ -51,7 +55,7 @@ class NicknameSetupViewModel extends ChangeNotifier {
     return null;
   }
 
-  Future<bool> submit() async {
+  Future<void> submit() async {
     final cleaned = state.nickname.trim();
     final error = _validate(cleaned);
 
@@ -61,7 +65,7 @@ class NicknameSetupViewModel extends ChangeNotifier {
         canSubmit: false,
       );
       notifyListeners();
-      return false;
+      return;
     }
 
     state = state.copyWith(isLoading: true);
@@ -70,19 +74,35 @@ class NicknameSetupViewModel extends ChangeNotifier {
     try {
       await saveNicknameUseCase(cleaned);
 
+      appAuthViewModel.completeOnboarding();
+
       state = state.copyWith(isLoading: false);
       notifyListeners();
 
-      return true;
+      return;
     } catch (e) {
+      String message = "알 수 없는 오류가 발생했습니다";
+
+      if (e is DioException) {
+        final data = e.response?.data;
+
+        print(data);
+
+        if (data != null && data['message'] != null) {
+          message = data['message'];
+        }
+      }
+
+      print("==== submit 에러 발생 ====");
+      print(message);
+
       state = state.copyWith(
         isLoading: false,
-        errorMessage: e.toString(),
+        errorMessage: message,
         canSubmit: false,
       );
-      notifyListeners();
 
-      return false;
+      notifyListeners();
     }
   }
 }

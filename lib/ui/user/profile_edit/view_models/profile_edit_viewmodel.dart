@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 import '../../../../domain/usecases/get_user_use_case.dart';
-import '../../../../domain/usecases/save_profile_use_case.dart';
+import '../../../../domain/usecases/user/save_profile_use_case.dart';
 import '../state/profile_edit_state.dart';
 
 class ProfileEditViewModel extends ChangeNotifier {
@@ -120,7 +120,7 @@ class ProfileEditViewModel extends ChangeNotifier {
     try {
       await saveProfileUseCase(
         nickname: state.nickname.trim(),
-        imagePath: state.imagePath,
+        profileImagePath: state.imagePath,
       );
 
       state = state.copyWith(isLoading: false);
