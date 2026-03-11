@@ -10,6 +10,9 @@ abstract class HistoryState with _$HistoryState {
     @Default({}) Map<int, List<QuestionRecord>> groupedByYear,
     @Default(HistoryFilter.all) HistoryFilter filter,
     @Default(false) bool isInitialLoading,
+    @Default(false) bool isLoadingMore,
+    String? nextCursor,
+    @Default(true) bool hasNext,
   }) = _HistoryState;
 }
 

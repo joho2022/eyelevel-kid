@@ -6,25 +6,56 @@ class QuestionLocalDataSource {
   final List<QuestionRecord> _cache = [];
   final _controller = StreamController<List<QuestionRecord>>.broadcast();
 
-  Stream<List<QuestionRecord>> observeAll() => _controller.stream;
+  Stream<List<QuestionRecord>> observeAll() async* {
+    yield getAll();
+    yield* _controller.stream;
+  }
 
   List<QuestionRecord> getAll() => List.unmodifiable(_cache);
 
+  // MARK: - 전체 저장
   void saveAll(List<QuestionRecord> items) {
     _cache
       ..clear()
       ..addAll(items);
+
     _controller.add(getAll());
   }
 
-  void upsertAll(List<QuestionRecord> items) {
+  // MARK: - 질문 생성
+  void insert(QuestionRecord item) {
+    _cache.insert(0, item);
+
+    _controller.add(getAll());
+  }
+
+  // MARK: - 페이지 추가
+  void insertAll(List<QuestionRecord> items) {
     for (final item in items) {
-      _cache.removeWhere((e) => e.id == item.id);
-      _cache.insert(0, item);
+      final index = _cache.indexWhere((e) => e.id == item.id);
+
+      if (index == -1) {
+        _cache.add(item);
+      } else {
+        _cache[index] = item;
+      }
     }
+
     _controller.add(getAll());
   }
 
+  // MARK: - 질문 업데이트 (북마크 등)
+  void update(QuestionRecord item) {
+    final index = _cache.indexWhere((e) => e.id == item.id);
+
+    if (index == -1) return;
+
+    _cache[index] = item;
+
+    _controller.add(getAll());
+  }
+
+  // MARK: - 단일 조회
   QuestionRecord? getById(int id) {
     try {
       return _cache.firstWhere((e) => e.id == id);
@@ -33,25 +64,10 @@ class QuestionLocalDataSource {
     }
   }
 
-  void toggleBookmark(int id) {
-    final index = _cache.indexWhere((e) => e.id == id);
-    if (index == -1) return;
-
-    final q = _cache[index];
-    _cache[index] = QuestionRecord(
-      id: q.id,
-      title: q.title,
-      answer: q.answer,
-      style: q.style,
-      createdAt: q.createdAt,
-      isBookmarked: !q.isBookmarked,
-    );
-
-    _controller.add(getAll());
-  }
-
+  // MARK: - 삭제
   void remove(int id) {
     _cache.removeWhere((e) => e.id == id);
+
     _controller.add(getAll());
   }
 }

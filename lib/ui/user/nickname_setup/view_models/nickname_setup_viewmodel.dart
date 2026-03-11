@@ -2,12 +2,12 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
 import '../../../../core/auth/app_auth_viewmodel.dart';
-import '../../../../domain/usecases/user/save_nickname_use_case.dart';
+import '../../../../domain/usecases/user/update_nickname_use_case.dart';
 import '../state/nickname_setup_state.dart';
 
 class NicknameSetupViewModel extends ChangeNotifier {
   final AppAuthViewModel appAuthViewModel;
-  final SaveNicknameUseCase saveNicknameUseCase;
+  final UpdateNicknameUseCase saveNicknameUseCase;
 
   NicknameSetupState state = const NicknameSetupState();
 

@@ -1,5 +1,5 @@
-import '../entities/question_page.dart';
-import '../repositories/question_repository.dart';
+import '../../entities/question_page.dart';
+import '../../repositories/question_repository.dart';
 
 class GetQuestionPageUseCase {
   final QuestionRepository repository;
@@ -10,7 +10,7 @@ class GetQuestionPageUseCase {
     String? cursor,
     int limit = 20,
   }) {
-    return repository.getPage(
+    return repository.fetchQuestionPage(
       cursor: cursor,
       limit: limit,
     );

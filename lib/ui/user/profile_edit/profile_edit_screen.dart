@@ -37,6 +37,33 @@ class _ProfileEditView extends StatelessWidget {
     return AppColors.storyPurple;
   }
 
+  Widget _buildProfileImage(ProfileEditState state) {
+
+    if (state.imageFile != null) {
+      return Image.file(
+        state.imageFile!,
+        fit: BoxFit.cover,
+        width: 120,
+        height: 120,
+      );
+    }
+
+    if (state.imagePath != null) {
+      return Image.network(
+        state.imagePath!,
+        fit: BoxFit.cover,
+        width: 120,
+        height: 120,
+      );
+    }
+
+    return Icon(
+      Icons.person,
+      size: 64,
+      color: AppColors.profilePlaceholderIcon,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<ProfileEditViewModel>();
@@ -65,23 +92,13 @@ class _ProfileEditView extends StatelessWidget {
                       Container(
                         width: 120,
                         height: 120,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           shape: BoxShape.circle,
                           color: AppColors.profilePlaceholderBackground,
-                          image: state.imagePath != null
-                              ? DecorationImage(
-                            image: AssetImage(state.imagePath!),
-                            fit: BoxFit.cover,
-                          )
-                              : null,
                         ),
-                        child: state.imagePath == null
-                            ? Icon(
-                          Icons.person,
-                          size: 64,
-                          color: AppColors.profilePlaceholderIcon,
-                        )
-                            : null,
+                        child: ClipOval(
+                          child: _buildProfileImage(state),
+                        ),
                       ),
 
                       Positioned(
@@ -135,11 +152,13 @@ class _ProfileEditView extends StatelessWidget {
             child: BounceTapper(
               onTap: state.canSubmit && !state.isLoading
                   ? () async {
+
                 final success = await viewModel.submit();
 
                 if (success && context.mounted) {
                   context.pop();
                 }
+
               }
                   : null,
               child: AnimatedContainer(

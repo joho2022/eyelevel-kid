@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 
 import '../core/routes/route_paths.dart';
 import '../core/theme/app_colors.dart';
+import '../core/theme/app_images.dart';
 import '../core/theme/app_theme.dart';
 import 'history_factory.dart';
 
@@ -36,12 +37,78 @@ class _HistoryViewState extends State<_HistoryView> {
   void initState() {
     super.initState();
     _scrollController = ScrollController();
+    _scrollController.addListener(_onScroll);
   }
 
   @override
   void dispose() {
     _scrollController.dispose();
     super.dispose();
+  }
+
+  void _onScroll() {
+    final viewModel = context.read<HistoryViewModel>();
+
+    if (!_scrollController.hasClients) return;
+
+    final threshold = 200.0;
+
+    if (_scrollController.position.pixels >
+        _scrollController.position.maxScrollExtent - threshold) {
+      viewModel.loadMore();
+    }
+  }
+
+  List<Widget> _buildBody(HistoryViewModel viewModel) {
+    final state = viewModel.state;
+
+    if (state.isInitialLoading) {
+      return const [
+        SliverFillRemaining(child: Center(child: CircularProgressIndicator())),
+      ];
+    }
+
+    if (state.groupedByYear.isEmpty) {
+      return [
+        SliverFillRemaining(
+          hasScrollBody: false,
+          child: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Image.asset(AppImages.appSadLogo, width: 60),
+
+                const SizedBox(height: 8),
+
+                Text(
+                  '현재 기록이 없어요',
+                  style: AppTheme.title20.copyWith(color: AppColors.textSub),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ];
+    }
+
+    return [
+      HistorySliverList(
+        groupedByYear: state.groupedByYear,
+        onTapQuestion: (id) {
+          context.push(RoutePaths.questionDetailPath(id));
+        },
+        onToggleBookmark: viewModel.toggleBookmark,
+        onDelete: viewModel.deleteQuestion,
+      ),
+
+      if (state.isLoadingMore)
+        const SliverToBoxAdapter(
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 24),
+            child: Center(child: CircularProgressIndicator()),
+          ),
+        ),
+    ];
   }
 
   @override
@@ -66,9 +133,7 @@ class _HistoryViewState extends State<_HistoryView> {
                         color: AppColors.textDefault,
                       ),
                     ),
-
                     const SizedBox(height: 2),
-
                     Text(
                       '이전에 물어본 질문들이에요',
                       style: AppTheme.subtitle14.copyWith(
@@ -96,21 +161,7 @@ class _HistoryViewState extends State<_HistoryView> {
               ),
             ),
 
-            if (state.isInitialLoading)
-              const SliverFillRemaining(
-                child: Center(child: CircularProgressIndicator()),
-              )
-            else
-              HistorySliverList(
-                groupedByYear: state.groupedByYear,
-                onTapQuestion: (id) {
-                  context.push(
-                    RoutePaths.questionDetailPath(id),
-                  );
-                },
-                onToggleBookmark: viewModel.toggleBookmark,
-                onDelete: viewModel.deleteQuestion,
-              ),
+            ..._buildBody(viewModel),
           ],
         ),
       ),

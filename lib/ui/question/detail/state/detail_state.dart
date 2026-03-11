@@ -7,7 +7,7 @@ part 'detail_state.freezed.dart';
 abstract class DetailState with _$DetailState {
   const factory DetailState({
     required QuestionRecord? record,
-    @Default(false) bool isInitialLoading,
+    @Default(true) bool isInitialLoading,
   }) = _DetailState;
 
   factory DetailState.initial(QuestionRecord record) =>

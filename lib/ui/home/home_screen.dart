@@ -110,38 +110,54 @@ class _HomeViewState extends State<HomeView> {
 
               const SizedBox(height: 32),
 
-              Text(
-                '최근 질문',
-                style: AppTheme.title20.copyWith(
-                  color: AppColors.textDefault,
+              if (state.recentQuestions.isEmpty) ...[
+                Text(
+                  '아직 질문이 없어요',
+                  style: AppTheme.title20.copyWith(
+                    color: AppColors.textDefault,
+                  ),
                 ),
-              ),
 
-              const SizedBox(height: 12),
-
-              Column(
-                children: List.generate(
-                  state.recentQuestions.length,
-                      (index) {
-                    final question = state.recentQuestions[index];
-
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 20),
-                      child: QuestionSummaryCard(
-                        key: ValueKey(question.id),
-                        question: question,
-                        onTap: () {
-                          context.push(
-                            RoutePaths.questionDetailPath(question.id),
-                          );
-                        },
-                        onBookmarkTap: () =>
-                            viewModel.toggleBookmark(question),
-                      ),
-                    );
-                  },
+                Text(
+                  '아이의 첫 시선을 남겨보세요!',
+                  style: AppTheme.subtitle14.copyWith(
+                    color: AppColors.textSub,
+                  ),
                 ),
-              ),
+              ] else ...[
+                Text(
+                  '최근 질문',
+                  style: AppTheme.title20.copyWith(
+                    color: AppColors.textDefault,
+                  ),
+                ),
+
+                const SizedBox(height: 12),
+
+                Column(
+                  children: List.generate(
+                    state.recentQuestions.length,
+                        (index) {
+                      final question = state.recentQuestions[index];
+
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 20),
+                        child: QuestionSummaryCard(
+                          key: ValueKey(question.id),
+                          question: question,
+                          onTap: () {
+                            context.push(
+                              RoutePaths.questionDetailPath(question.id),
+                            );
+                          },
+                          onBookmarkTap: () =>
+                              viewModel.toggleBookmark(question),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
 
               const SizedBox(height: 100),
             ],

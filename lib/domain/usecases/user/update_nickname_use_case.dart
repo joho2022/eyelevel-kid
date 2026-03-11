@@ -1,9 +1,9 @@
 import '../../repositories/user_repository.dart';
 
-class SaveNicknameUseCase {
+class UpdateNicknameUseCase {
   final UserRepository repository;
 
-  SaveNicknameUseCase(this.repository);
+  UpdateNicknameUseCase(this.repository);
 
   Future<void> call(String nickname) {
     return repository.updateNickname(nickname);

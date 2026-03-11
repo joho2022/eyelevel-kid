@@ -4,10 +4,12 @@ import 'package:eyelevel_kid/ui/question/detail/detail_factory.dart';
 import 'package:eyelevel_kid/ui/question/detail/view_models/detail_viewmodel.dart';
 import 'package:eyelevel_kid/ui/question/shared/style_chip.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../../domain/entities/question_record.dart';
 import '../../../domain/values/answer_style.dart';
+import '../../core/routes/route_paths.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_theme.dart';
 
@@ -78,7 +80,9 @@ class _DetailView extends StatelessWidget {
             _DetailBottomBar(
                 isBookmarked: record.isBookmarked,
                 onBookmark: viewModel.toggleBookmark,
-                onReAsk: viewModel.askAgain
+                onReAsk: () {
+                  context.push(RoutePaths.askQuestion);
+                },
             ),
           ],
         ),

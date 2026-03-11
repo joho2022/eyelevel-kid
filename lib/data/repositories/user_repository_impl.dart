@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:eyelevel_kid/data/sources/external/image_upload_service.dart';
+
 import '../../domain/entities/user.dart';
 import '../../domain/repositories/user_repository.dart';
 import '../../domain/values/answer_style.dart';
@@ -7,10 +11,12 @@ import '../sources/remote/user_remote_data_source.dart';
 class UserRepositoryImpl implements UserRepository {
   final UserRemoteDataSource remote;
   final UserLocalDataSource local;
+  final ImageUploadService imageUpload;
 
   UserRepositoryImpl({
     required this.remote,
     required this.local,
+    required this.imageUpload,
   });
 
   @override
@@ -68,4 +74,16 @@ class UserRepositoryImpl implements UserRepository {
 
   @override
   Stream<User> observeUser() => local.observeUser();
+
+  @override
+  Future<String> uploadProfileImage(File file) async {
+    final uploadInfo = await remote.createProfileImageUploadUrl();
+
+    final uploadUrl = uploadInfo.uploadUrl;
+    final imageUrl = uploadInfo.imageUrl;
+
+    await imageUpload.uploadImage(uploadUrl: uploadUrl, file: file);
+
+    return imageUrl;
+  }
 }

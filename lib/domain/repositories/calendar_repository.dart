@@ -1,15 +1,8 @@
-import 'package:eyelevel_kid/domain/entities/calendar_summary.dart';
 import '../entities/calendar_day_summary.dart';
+import '../entities/calendar_summary.dart';
 
 abstract class CalendarRepository {
-  Future<CalendarSummary> fetchCalendarSummary({
-    required int year,
-    required int month,
-  });
+  Future<CalendarSummary> getCalendarSummary(int year, int month);
 
-  Future<List<CalendarQuestionPreview>> fetchQuestionsByDate({
-    required int year,
-    required int month,
-    required int day,
-  });
+  Future<CalendarDaySummary> getQuestionsByDate(int year, int month, int day);
 }

@@ -1,21 +1,30 @@
 import 'package:flutter/foundation.dart';
 
-import '../../../../domain/usecases/get_user_use_case.dart';
-import '../../../../domain/usecases/user/save_profile_use_case.dart';
+import '../../../../core/image/image_compress_service.dart';
+import '../../../../core/image/image_picker_service.dart';
+import '../../../../domain/usecases/user/get_user_use_case.dart';
+import '../../../../domain/usecases/user/update_profile_use_case.dart';
+import '../../../../domain/usecases/user/upload_profile_image_Use_Case.dart';
 import '../state/profile_edit_state.dart';
 
 class ProfileEditViewModel extends ChangeNotifier {
-  final SaveProfileUseCase saveProfileUseCase;
+  final UpdateProfileUseCase updateProfileUseCase;
   final GetUserUseCase getUserUseCase;
+  final UploadProfileImageUseCase uploadProfileImageUseCase;
+
+  final ImagePickerService imagePickerService;
+  final ImageCompressService imageCompressService;
 
   late final String _originalNickname;
-  late final String? _originalImagePath;
 
   ProfileEditState state = const ProfileEditState();
 
   ProfileEditViewModel({
-    required this.saveProfileUseCase,
+    required this.updateProfileUseCase,
     required this.getUserUseCase,
+    required this.uploadProfileImageUseCase,
+    required this.imagePickerService,
+    required this.imageCompressService,
   }) {
     _init();
   }
@@ -24,11 +33,11 @@ class ProfileEditViewModel extends ChangeNotifier {
     final user = getUserUseCase();
 
     _originalNickname = user.nickname;
-    _originalImagePath = user.profileImagePath;
 
     state = state.copyWith(
       nickname: user.nickname,
       imagePath: user.profileImagePath,
+      imageFile: null,
       errorMessage: null,
       canSubmit: false,
     );
@@ -52,22 +61,20 @@ class ProfileEditViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateImage(String path) {
-    state = state.copyWith(
-      imagePath: path,
-      canSubmit: _computeCanSubmit(
-        nickname: state.nickname,
-        imagePath: path,
-        error: state.errorMessage,
-      ),
-    );
+  Future<void> onImageTap() async {
+    try {
+      final file = await imagePickerService.pickFromGallery();
+      if (file == null) return;
 
-    notifyListeners();
-  }
+      final compressed = await imageCompressService.compress(file);
 
-  void onImageTap() {
-    /// 실제로는 이미지 피커 열면 됨
-    updateImage('assets/sample_profile.png');
+      state = state.copyWith(imageFile: compressed, canSubmit: true);
+
+      notifyListeners();
+    } catch (e) {
+      state = state.copyWith(errorMessage: "이미지 선택 실패");
+      notifyListeners();
+    }
   }
 
   String? _validate(String value) {
@@ -102,13 +109,9 @@ class ProfileEditViewModel extends ChangeNotifier {
     required String? imagePath,
     required String? error,
   }) {
-    final isChanged =
-        nickname != _originalNickname ||
-            imagePath != _originalImagePath;
+    final isChanged = nickname != _originalNickname || state.imageFile != null;
 
-    return error == null &&
-        nickname.isNotEmpty &&
-        isChanged;
+    return error == null && nickname.isNotEmpty && isChanged;
   }
 
   Future<bool> submit() async {
@@ -118,9 +121,15 @@ class ProfileEditViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
-      await saveProfileUseCase(
+      String? imageUrl = state.imagePath;
+
+      if (state.imageFile != null) {
+        imageUrl = await uploadProfileImageUseCase(state.imageFile!);
+      }
+
+      await updateProfileUseCase(
         nickname: state.nickname.trim(),
-        profileImagePath: state.imagePath,
+        profileImagePath: imageUrl,
       );
 
       state = state.copyWith(isLoading: false);
@@ -128,10 +137,8 @@ class ProfileEditViewModel extends ChangeNotifier {
 
       return true;
     } catch (e) {
-      state = state.copyWith(
-        isLoading: false,
-        errorMessage: '저장 중 오류가 발생했어요',
-      );
+      state = state.copyWith(isLoading: false, errorMessage: '저장 중 오류가 발생했어요');
+
       notifyListeners();
 
       return false;

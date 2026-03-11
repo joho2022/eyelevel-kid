@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ProfileEditState {
 
- String get nickname; String? get errorMessage; String? get imagePath; bool get isLoading; bool get canSubmit;
+ String get nickname; String? get errorMessage; String? get imagePath; File? get imageFile; bool get isLoading; bool get canSubmit;
 /// Create a copy of ProfileEditState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $ProfileEditStateCopyWith<ProfileEditState> get copyWith => _$ProfileEditStateCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProfileEditState&&(identical(other.nickname, nickname) || other.nickname == nickname)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage)&&(identical(other.imagePath, imagePath) || other.imagePath == imagePath)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.canSubmit, canSubmit) || other.canSubmit == canSubmit));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProfileEditState&&(identical(other.nickname, nickname) || other.nickname == nickname)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage)&&(identical(other.imagePath, imagePath) || other.imagePath == imagePath)&&(identical(other.imageFile, imageFile) || other.imageFile == imageFile)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.canSubmit, canSubmit) || other.canSubmit == canSubmit));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,nickname,errorMessage,imagePath,isLoading,canSubmit);
+int get hashCode => Object.hash(runtimeType,nickname,errorMessage,imagePath,imageFile,isLoading,canSubmit);
 
 @override
 String toString() {
-  return 'ProfileEditState(nickname: $nickname, errorMessage: $errorMessage, imagePath: $imagePath, isLoading: $isLoading, canSubmit: $canSubmit)';
+  return 'ProfileEditState(nickname: $nickname, errorMessage: $errorMessage, imagePath: $imagePath, imageFile: $imageFile, isLoading: $isLoading, canSubmit: $canSubmit)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $ProfileEditStateCopyWith<$Res>  {
   factory $ProfileEditStateCopyWith(ProfileEditState value, $Res Function(ProfileEditState) _then) = _$ProfileEditStateCopyWithImpl;
 @useResult
 $Res call({
- String nickname, String? errorMessage, String? imagePath, bool isLoading, bool canSubmit
+ String nickname, String? errorMessage, String? imagePath, File? imageFile, bool isLoading, bool canSubmit
 });
 
 
@@ -62,12 +62,13 @@ class _$ProfileEditStateCopyWithImpl<$Res>
 
 /// Create a copy of ProfileEditState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? nickname = null,Object? errorMessage = freezed,Object? imagePath = freezed,Object? isLoading = null,Object? canSubmit = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? nickname = null,Object? errorMessage = freezed,Object? imagePath = freezed,Object? imageFile = freezed,Object? isLoading = null,Object? canSubmit = null,}) {
   return _then(_self.copyWith(
 nickname: null == nickname ? _self.nickname : nickname // ignore: cast_nullable_to_non_nullable
 as String,errorMessage: freezed == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
 as String?,imagePath: freezed == imagePath ? _self.imagePath : imagePath // ignore: cast_nullable_to_non_nullable
-as String?,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
+as String?,imageFile: freezed == imageFile ? _self.imageFile : imageFile // ignore: cast_nullable_to_non_nullable
+as File?,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
 as bool,canSubmit: null == canSubmit ? _self.canSubmit : canSubmit // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
@@ -154,10 +155,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String nickname,  String? errorMessage,  String? imagePath,  bool isLoading,  bool canSubmit)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String nickname,  String? errorMessage,  String? imagePath,  File? imageFile,  bool isLoading,  bool canSubmit)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ProfileEditState() when $default != null:
-return $default(_that.nickname,_that.errorMessage,_that.imagePath,_that.isLoading,_that.canSubmit);case _:
+return $default(_that.nickname,_that.errorMessage,_that.imagePath,_that.imageFile,_that.isLoading,_that.canSubmit);case _:
   return orElse();
 
 }
@@ -175,10 +176,10 @@ return $default(_that.nickname,_that.errorMessage,_that.imagePath,_that.isLoadin
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String nickname,  String? errorMessage,  String? imagePath,  bool isLoading,  bool canSubmit)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String nickname,  String? errorMessage,  String? imagePath,  File? imageFile,  bool isLoading,  bool canSubmit)  $default,) {final _that = this;
 switch (_that) {
 case _ProfileEditState():
-return $default(_that.nickname,_that.errorMessage,_that.imagePath,_that.isLoading,_that.canSubmit);case _:
+return $default(_that.nickname,_that.errorMessage,_that.imagePath,_that.imageFile,_that.isLoading,_that.canSubmit);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -195,10 +196,10 @@ return $default(_that.nickname,_that.errorMessage,_that.imagePath,_that.isLoadin
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String nickname,  String? errorMessage,  String? imagePath,  bool isLoading,  bool canSubmit)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String nickname,  String? errorMessage,  String? imagePath,  File? imageFile,  bool isLoading,  bool canSubmit)?  $default,) {final _that = this;
 switch (_that) {
 case _ProfileEditState() when $default != null:
-return $default(_that.nickname,_that.errorMessage,_that.imagePath,_that.isLoading,_that.canSubmit);case _:
+return $default(_that.nickname,_that.errorMessage,_that.imagePath,_that.imageFile,_that.isLoading,_that.canSubmit);case _:
   return null;
 
 }
@@ -210,12 +211,13 @@ return $default(_that.nickname,_that.errorMessage,_that.imagePath,_that.isLoadin
 
 
 class _ProfileEditState implements ProfileEditState {
-  const _ProfileEditState({this.nickname = '', this.errorMessage, this.imagePath, this.isLoading = false, this.canSubmit = false});
+  const _ProfileEditState({this.nickname = '', this.errorMessage, this.imagePath, this.imageFile, this.isLoading = false, this.canSubmit = false});
   
 
 @override@JsonKey() final  String nickname;
 @override final  String? errorMessage;
 @override final  String? imagePath;
+@override final  File? imageFile;
 @override@JsonKey() final  bool isLoading;
 @override@JsonKey() final  bool canSubmit;
 
@@ -229,16 +231,16 @@ _$ProfileEditStateCopyWith<_ProfileEditState> get copyWith => __$ProfileEditStat
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProfileEditState&&(identical(other.nickname, nickname) || other.nickname == nickname)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage)&&(identical(other.imagePath, imagePath) || other.imagePath == imagePath)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.canSubmit, canSubmit) || other.canSubmit == canSubmit));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProfileEditState&&(identical(other.nickname, nickname) || other.nickname == nickname)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage)&&(identical(other.imagePath, imagePath) || other.imagePath == imagePath)&&(identical(other.imageFile, imageFile) || other.imageFile == imageFile)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.canSubmit, canSubmit) || other.canSubmit == canSubmit));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,nickname,errorMessage,imagePath,isLoading,canSubmit);
+int get hashCode => Object.hash(runtimeType,nickname,errorMessage,imagePath,imageFile,isLoading,canSubmit);
 
 @override
 String toString() {
-  return 'ProfileEditState(nickname: $nickname, errorMessage: $errorMessage, imagePath: $imagePath, isLoading: $isLoading, canSubmit: $canSubmit)';
+  return 'ProfileEditState(nickname: $nickname, errorMessage: $errorMessage, imagePath: $imagePath, imageFile: $imageFile, isLoading: $isLoading, canSubmit: $canSubmit)';
 }
 
 
@@ -249,7 +251,7 @@ abstract mixin class _$ProfileEditStateCopyWith<$Res> implements $ProfileEditSta
   factory _$ProfileEditStateCopyWith(_ProfileEditState value, $Res Function(_ProfileEditState) _then) = __$ProfileEditStateCopyWithImpl;
 @override @useResult
 $Res call({
- String nickname, String? errorMessage, String? imagePath, bool isLoading, bool canSubmit
+ String nickname, String? errorMessage, String? imagePath, File? imageFile, bool isLoading, bool canSubmit
 });
 
 
@@ -266,12 +268,13 @@ class __$ProfileEditStateCopyWithImpl<$Res>
 
 /// Create a copy of ProfileEditState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? nickname = null,Object? errorMessage = freezed,Object? imagePath = freezed,Object? isLoading = null,Object? canSubmit = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? nickname = null,Object? errorMessage = freezed,Object? imagePath = freezed,Object? imageFile = freezed,Object? isLoading = null,Object? canSubmit = null,}) {
   return _then(_ProfileEditState(
 nickname: null == nickname ? _self.nickname : nickname // ignore: cast_nullable_to_non_nullable
 as String,errorMessage: freezed == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
 as String?,imagePath: freezed == imagePath ? _self.imagePath : imagePath // ignore: cast_nullable_to_non_nullable
-as String?,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
+as String?,imageFile: freezed == imageFile ? _self.imageFile : imageFile // ignore: cast_nullable_to_non_nullable
+as File?,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
 as bool,canSubmit: null == canSubmit ? _self.canSubmit : canSubmit // ignore: cast_nullable_to_non_nullable
 as bool,
   ));

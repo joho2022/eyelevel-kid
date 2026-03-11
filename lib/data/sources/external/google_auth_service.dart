@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'social_auth_data_source.dart';
+import 'social_auth_service.dart';
 
-class GoogleAuthDataSource implements SocialAuthDataSource {
+class GoogleAuthService implements SocialAuthService {
   final GoogleSignIn _googleSignIn = GoogleSignIn.instance;
 
   @override

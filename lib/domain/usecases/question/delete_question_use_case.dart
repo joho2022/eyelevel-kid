@@ -6,6 +6,6 @@ class DeleteQuestionUseCase {
   DeleteQuestionUseCase(this.repository);
 
   Future<void> call(int questionId) {
-    return repository.remove(questionId);
+    return repository.deleteQuestion(questionId);
   }
 }

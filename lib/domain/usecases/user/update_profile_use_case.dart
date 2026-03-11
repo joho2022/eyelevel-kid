@@ -1,9 +1,9 @@
 import '../../repositories/user_repository.dart';
 
-class SaveProfileUseCase {
+class UpdateProfileUseCase {
   final UserRepository repository;
 
-  SaveProfileUseCase(this.repository);
+  UpdateProfileUseCase(this.repository);
 
   Future<void> call({
     String? nickname,

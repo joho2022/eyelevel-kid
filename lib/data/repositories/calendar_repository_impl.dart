@@ -1,37 +1,43 @@
 import '../../domain/entities/calendar_day_summary.dart';
 import '../../domain/entities/calendar_summary.dart';
 import '../../domain/repositories/calendar_repository.dart';
-import '../dto/calendar_summary_dto.dart';
-import '../sources/mock/mock_calendar_remote_data_source.dart';
+import '../dto/calendar/response/calendar_day_response_dto.dart';
+import '../dto/calendar/response/calendar_summary_response_dto.dart';
+import '../sources/remote/question_remote_data_source.dart';
 
 class CalendarRepositoryImpl implements CalendarRepository {
-  final MockCalendarRemoteDataSource remote;
+
+  final QuestionRemoteDataSource remote;
 
   CalendarRepositoryImpl(this.remote);
 
   @override
-  Future<CalendarSummary> fetchCalendarSummary({
-    required int year,
-    required int month,
-  }) async {
-    final dto = await remote.fetchCalendarSummary(
+  Future<CalendarSummary> getCalendarSummary(
+      int year,
+      int month,
+      ) async {
+
+    final dto = await remote.getCalendarSummary(
       year: year,
       month: month,
     );
 
-    return dto.toEntity();
+    return dto.toDomain();
   }
 
   @override
-  Future<List<CalendarQuestionPreview>> fetchQuestionsByDate({
-    required int year,
-    required int month,
-    required int day,
-  }) {
-    return remote.fetchQuestionsByDate(
+  Future<CalendarDaySummary> getQuestionsByDate(
+      int year,
+      int month,
+      int day,
+      ) async {
+
+    final dto = await remote.getQuestionsByDate(
       year: year,
       month: month,
       day: day,
     );
+
+    return dto.toDomain();
   }
 }

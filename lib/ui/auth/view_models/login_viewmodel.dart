@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import '../../../core/auth/app_auth_viewmodel.dart';
-import '../../../data/sources/external/social_auth_data_source.dart';
+import '../../../data/sources/external/social_auth_service.dart';
 import '../../../domain/usecases/social_login_usecase.dart';
 import '../state/login_state.dart';
 
 class LoginViewModel extends ChangeNotifier {
-  final SocialAuthDataSource googleAuthDataSource;
-  final SocialAuthDataSource appleAuthDataSource;
+  final SocialAuthService googleAuthDataSource;
+  final SocialAuthService appleAuthDataSource;
   final SocialLoginUseCase socialLoginUseCase;
   final AppAuthViewModel appAuthViewModel;
 

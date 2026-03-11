@@ -207,7 +207,7 @@ return $default(_that.record,_that.isInitialLoading);case _:
 
 
 class _DetailState implements DetailState {
-  const _DetailState({required this.record, this.isInitialLoading = false});
+  const _DetailState({required this.record, this.isInitialLoading = true});
   
 
 @override final  QuestionRecord? record;

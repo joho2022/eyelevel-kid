@@ -1,6 +1,6 @@
-import 'social_auth_data_source.dart';
+import 'social_auth_service.dart';
 
-class AppleAuthDataSource implements SocialAuthDataSource {
+class AppleAuthService implements SocialAuthService {
   @override
   Future<String> getIdToken() async {
     // TODO: Apple 로그인 로직 구현

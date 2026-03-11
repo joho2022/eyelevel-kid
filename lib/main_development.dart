@@ -18,9 +18,9 @@ Future<void> main() async {
   setupDependencies();
 
   // MARK: - 토큰 초기화
-  if (kDebugMode) {
-    await serviceLocator<TokenLocalDataSource>().clear();
-  }
+  // if (kDebugMode) {
+  //   await serviceLocator<TokenLocalDataSource>().clear();
+  // }
 
   MobileAds.instance.initialize();
 

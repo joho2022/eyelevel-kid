@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$HistoryState {
 
- Map<int, List<QuestionRecord>> get groupedByYear; HistoryFilter get filter; bool get isInitialLoading;
+ Map<int, List<QuestionRecord>> get groupedByYear; HistoryFilter get filter; bool get isInitialLoading; bool get isLoadingMore; String? get nextCursor; bool get hasNext;
 /// Create a copy of HistoryState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $HistoryStateCopyWith<HistoryState> get copyWith => _$HistoryStateCopyWithImpl<H
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is HistoryState&&const DeepCollectionEquality().equals(other.groupedByYear, groupedByYear)&&(identical(other.filter, filter) || other.filter == filter)&&(identical(other.isInitialLoading, isInitialLoading) || other.isInitialLoading == isInitialLoading));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is HistoryState&&const DeepCollectionEquality().equals(other.groupedByYear, groupedByYear)&&(identical(other.filter, filter) || other.filter == filter)&&(identical(other.isInitialLoading, isInitialLoading) || other.isInitialLoading == isInitialLoading)&&(identical(other.isLoadingMore, isLoadingMore) || other.isLoadingMore == isLoadingMore)&&(identical(other.nextCursor, nextCursor) || other.nextCursor == nextCursor)&&(identical(other.hasNext, hasNext) || other.hasNext == hasNext));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(groupedByYear),filter,isInitialLoading);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(groupedByYear),filter,isInitialLoading,isLoadingMore,nextCursor,hasNext);
 
 @override
 String toString() {
-  return 'HistoryState(groupedByYear: $groupedByYear, filter: $filter, isInitialLoading: $isInitialLoading)';
+  return 'HistoryState(groupedByYear: $groupedByYear, filter: $filter, isInitialLoading: $isInitialLoading, isLoadingMore: $isLoadingMore, nextCursor: $nextCursor, hasNext: $hasNext)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $HistoryStateCopyWith<$Res>  {
   factory $HistoryStateCopyWith(HistoryState value, $Res Function(HistoryState) _then) = _$HistoryStateCopyWithImpl;
 @useResult
 $Res call({
- Map<int, List<QuestionRecord>> groupedByYear, HistoryFilter filter, bool isInitialLoading
+ Map<int, List<QuestionRecord>> groupedByYear, HistoryFilter filter, bool isInitialLoading, bool isLoadingMore, String? nextCursor, bool hasNext
 });
 
 
@@ -62,11 +62,14 @@ class _$HistoryStateCopyWithImpl<$Res>
 
 /// Create a copy of HistoryState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? groupedByYear = null,Object? filter = null,Object? isInitialLoading = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? groupedByYear = null,Object? filter = null,Object? isInitialLoading = null,Object? isLoadingMore = null,Object? nextCursor = freezed,Object? hasNext = null,}) {
   return _then(_self.copyWith(
 groupedByYear: null == groupedByYear ? _self.groupedByYear : groupedByYear // ignore: cast_nullable_to_non_nullable
 as Map<int, List<QuestionRecord>>,filter: null == filter ? _self.filter : filter // ignore: cast_nullable_to_non_nullable
 as HistoryFilter,isInitialLoading: null == isInitialLoading ? _self.isInitialLoading : isInitialLoading // ignore: cast_nullable_to_non_nullable
+as bool,isLoadingMore: null == isLoadingMore ? _self.isLoadingMore : isLoadingMore // ignore: cast_nullable_to_non_nullable
+as bool,nextCursor: freezed == nextCursor ? _self.nextCursor : nextCursor // ignore: cast_nullable_to_non_nullable
+as String?,hasNext: null == hasNext ? _self.hasNext : hasNext // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }
@@ -152,10 +155,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( Map<int, List<QuestionRecord>> groupedByYear,  HistoryFilter filter,  bool isInitialLoading)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( Map<int, List<QuestionRecord>> groupedByYear,  HistoryFilter filter,  bool isInitialLoading,  bool isLoadingMore,  String? nextCursor,  bool hasNext)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _HistoryState() when $default != null:
-return $default(_that.groupedByYear,_that.filter,_that.isInitialLoading);case _:
+return $default(_that.groupedByYear,_that.filter,_that.isInitialLoading,_that.isLoadingMore,_that.nextCursor,_that.hasNext);case _:
   return orElse();
 
 }
@@ -173,10 +176,10 @@ return $default(_that.groupedByYear,_that.filter,_that.isInitialLoading);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( Map<int, List<QuestionRecord>> groupedByYear,  HistoryFilter filter,  bool isInitialLoading)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( Map<int, List<QuestionRecord>> groupedByYear,  HistoryFilter filter,  bool isInitialLoading,  bool isLoadingMore,  String? nextCursor,  bool hasNext)  $default,) {final _that = this;
 switch (_that) {
 case _HistoryState():
-return $default(_that.groupedByYear,_that.filter,_that.isInitialLoading);case _:
+return $default(_that.groupedByYear,_that.filter,_that.isInitialLoading,_that.isLoadingMore,_that.nextCursor,_that.hasNext);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -193,10 +196,10 @@ return $default(_that.groupedByYear,_that.filter,_that.isInitialLoading);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( Map<int, List<QuestionRecord>> groupedByYear,  HistoryFilter filter,  bool isInitialLoading)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( Map<int, List<QuestionRecord>> groupedByYear,  HistoryFilter filter,  bool isInitialLoading,  bool isLoadingMore,  String? nextCursor,  bool hasNext)?  $default,) {final _that = this;
 switch (_that) {
 case _HistoryState() when $default != null:
-return $default(_that.groupedByYear,_that.filter,_that.isInitialLoading);case _:
+return $default(_that.groupedByYear,_that.filter,_that.isInitialLoading,_that.isLoadingMore,_that.nextCursor,_that.hasNext);case _:
   return null;
 
 }
@@ -208,7 +211,7 @@ return $default(_that.groupedByYear,_that.filter,_that.isInitialLoading);case _:
 
 
 class _HistoryState implements HistoryState {
-  const _HistoryState({final  Map<int, List<QuestionRecord>> groupedByYear = const {}, this.filter = HistoryFilter.all, this.isInitialLoading = false}): _groupedByYear = groupedByYear;
+  const _HistoryState({final  Map<int, List<QuestionRecord>> groupedByYear = const {}, this.filter = HistoryFilter.all, this.isInitialLoading = false, this.isLoadingMore = false, this.nextCursor, this.hasNext = true}): _groupedByYear = groupedByYear;
   
 
  final  Map<int, List<QuestionRecord>> _groupedByYear;
@@ -220,6 +223,9 @@ class _HistoryState implements HistoryState {
 
 @override@JsonKey() final  HistoryFilter filter;
 @override@JsonKey() final  bool isInitialLoading;
+@override@JsonKey() final  bool isLoadingMore;
+@override final  String? nextCursor;
+@override@JsonKey() final  bool hasNext;
 
 /// Create a copy of HistoryState
 /// with the given fields replaced by the non-null parameter values.
@@ -231,16 +237,16 @@ _$HistoryStateCopyWith<_HistoryState> get copyWith => __$HistoryStateCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HistoryState&&const DeepCollectionEquality().equals(other._groupedByYear, _groupedByYear)&&(identical(other.filter, filter) || other.filter == filter)&&(identical(other.isInitialLoading, isInitialLoading) || other.isInitialLoading == isInitialLoading));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HistoryState&&const DeepCollectionEquality().equals(other._groupedByYear, _groupedByYear)&&(identical(other.filter, filter) || other.filter == filter)&&(identical(other.isInitialLoading, isInitialLoading) || other.isInitialLoading == isInitialLoading)&&(identical(other.isLoadingMore, isLoadingMore) || other.isLoadingMore == isLoadingMore)&&(identical(other.nextCursor, nextCursor) || other.nextCursor == nextCursor)&&(identical(other.hasNext, hasNext) || other.hasNext == hasNext));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_groupedByYear),filter,isInitialLoading);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_groupedByYear),filter,isInitialLoading,isLoadingMore,nextCursor,hasNext);
 
 @override
 String toString() {
-  return 'HistoryState(groupedByYear: $groupedByYear, filter: $filter, isInitialLoading: $isInitialLoading)';
+  return 'HistoryState(groupedByYear: $groupedByYear, filter: $filter, isInitialLoading: $isInitialLoading, isLoadingMore: $isLoadingMore, nextCursor: $nextCursor, hasNext: $hasNext)';
 }
 
 
@@ -251,7 +257,7 @@ abstract mixin class _$HistoryStateCopyWith<$Res> implements $HistoryStateCopyWi
   factory _$HistoryStateCopyWith(_HistoryState value, $Res Function(_HistoryState) _then) = __$HistoryStateCopyWithImpl;
 @override @useResult
 $Res call({
- Map<int, List<QuestionRecord>> groupedByYear, HistoryFilter filter, bool isInitialLoading
+ Map<int, List<QuestionRecord>> groupedByYear, HistoryFilter filter, bool isInitialLoading, bool isLoadingMore, String? nextCursor, bool hasNext
 });
 
 
@@ -268,11 +274,14 @@ class __$HistoryStateCopyWithImpl<$Res>
 
 /// Create a copy of HistoryState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? groupedByYear = null,Object? filter = null,Object? isInitialLoading = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? groupedByYear = null,Object? filter = null,Object? isInitialLoading = null,Object? isLoadingMore = null,Object? nextCursor = freezed,Object? hasNext = null,}) {
   return _then(_HistoryState(
 groupedByYear: null == groupedByYear ? _self._groupedByYear : groupedByYear // ignore: cast_nullable_to_non_nullable
 as Map<int, List<QuestionRecord>>,filter: null == filter ? _self.filter : filter // ignore: cast_nullable_to_non_nullable
 as HistoryFilter,isInitialLoading: null == isInitialLoading ? _self.isInitialLoading : isInitialLoading // ignore: cast_nullable_to_non_nullable
+as bool,isLoadingMore: null == isLoadingMore ? _self.isLoadingMore : isLoadingMore // ignore: cast_nullable_to_non_nullable
+as bool,nextCursor: freezed == nextCursor ? _self.nextCursor : nextCursor // ignore: cast_nullable_to_non_nullable
+as String?,hasNext: null == hasNext ? _self.hasNext : hasNext // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }

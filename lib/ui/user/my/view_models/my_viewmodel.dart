@@ -1,40 +1,56 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 
+import '../../../../domain/entities/user.dart';
+import '../../../../domain/usecases/user/fetch_user_use_case.dart';
+import '../../../../domain/usecases/user/observe_user_use_case.dart';
+import '../../../../domain/usecases/user/update_answer_style_use_case.dart';
 import '../../../../domain/values/answer_style.dart';
 import '../state/my_state.dart';
 
 class MyViewModel extends ChangeNotifier {
+  final ObserveUserUseCase observeUserUseCase;
+  final FetchUserUseCase fetchUserUseCase;
+  final UpdateAnswerStyleUseCase updateAnswerStyleUseCase;
+
   MyState state = MyState.initial();
 
-  // ===== 프로필 이미지 =====
-  void onProfileImageTap() {
-    debugPrint('[MyViewModel] 프로필 이미지 클릭');
+  StreamSubscription<User>? _subscription;
 
-
-    notifyListeners();
+  MyViewModel({
+    required this.observeUserUseCase,
+    required this.fetchUserUseCase,
+    required this.updateAnswerStyleUseCase,
+  }) {
+    _init();
   }
 
-  // ===== 닉네임 =====
-  void changeNickname(String nickname) {
-    debugPrint('[MyViewModel] 닉네임 변경: $nickname');
-
-    state = state.copyWith(
-      nickname: nickname,
-    );
-    notifyListeners();
+  // MARK: - 초기화
+  void _init() {
+    _observeUser();
+    fetchUserUseCase();
   }
 
-  // ===== 질문 스타일 (이야기 / 이유) =====
-  void changePreferredStyle(AnswerStyle style) {
-    debugPrint('[MyViewModel] 질문 스타일 변경: $style');
+  // MARK: - 유저 상태 구독
+  void _observeUser() {
+    _subscription = observeUserUseCase().listen((user) {
+      state = state.copyWith(
+        nickname: user.nickname,
+        profileImagePath: user.profileImagePath,
+        answerStyle: user.answerStyle,
+      );
 
-    state = state.copyWith(
-      answerStyle: style,
-    );
-    notifyListeners();
+      notifyListeners();
+    });
   }
 
-  // ===== 앱 정보 =====
+  // MARK: - 질문 스타일 변경
+  Future<void> changePreferredStyle(AnswerStyle style) async {
+    await updateAnswerStyleUseCase(style);
+  }
+
+  // MARK: - 앱 정보
   void onTapAppVersion() {
     debugPrint('[MyViewModel] 앱 버전 클릭');
   }
@@ -51,12 +67,18 @@ class MyViewModel extends ChangeNotifier {
     debugPrint('[MyViewModel] 문의하기 클릭');
   }
 
-  // ===== 계정 =====
+  // MARK: - 계정
   void logout() {
     debugPrint('[MyViewModel] 로그아웃 클릭');
   }
 
   void withdraw() {
     debugPrint('[MyViewModel] 회원탈퇴 클릭');
+  }
+
+  @override
+  void dispose() {
+    _subscription?.cancel();
+    super.dispose();
   }
 }
