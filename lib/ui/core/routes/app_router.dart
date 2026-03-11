@@ -12,54 +12,40 @@ import '../../question/detail/detail_screen.dart';
 import '../../user/my/my_screen.dart';
 import '../../user/nickname_setup/nickname_setup_screen.dart';
 import '../../user/profile_edit/profile_edit_screen.dart';
-import '../widgets/splash_screen.dart';
 import 'main_tab.dart';
 import 'main_tab_scaffold.dart';
 
 GoRouter createAppRouter(AppAuthViewModel authViewModel) {
   return GoRouter(
-    initialLocation: RoutePaths.splash,
+    initialLocation: RoutePaths.login,
 
     refreshListenable: authViewModel,
 
     redirect: (context, state) {
-      final currentPath = state.matchedLocation;
+      final current = state.matchedLocation;
 
       return authViewModel.state.when(
-        splash: () {
-          if (currentPath != RoutePaths.splash) {
-            return RoutePaths.splash;
-          }
-          return null;
-        },
+        splash: () => null,
 
         unauthenticated: () {
-          if (currentPath != RoutePaths.login) {
+          if (current != RoutePaths.login) {
             return RoutePaths.login;
           }
           return null;
         },
 
-        authenticated: (needsOnboarding) {
-          if (currentPath == RoutePaths.login ||
-              currentPath == RoutePaths.splash) {
+        authenticated: (_) {
+          if (current == RoutePaths.login) {
             return MainTab.home.path;
           }
-
           return null;
         },
 
-        error: (_) {
-          return RoutePaths.login;
-        },
+        error: (_) => RoutePaths.login,
       );
     },
-    routes: [
-      GoRoute(
-        path: RoutePaths.splash,
-        builder: (_, __) => const SplashScreen(),
-      ),
 
+    routes: [
       GoRoute(
         path: RoutePaths.login,
         builder: (_, __) => const LoginScreen(),
@@ -112,7 +98,9 @@ GoRouter createAppRouter(AppAuthViewModel authViewModel) {
           final id = int.tryParse(idString ?? '');
 
           if (id == null) {
-            return const Scaffold(body: Center(child: Text('잘못된 접근입니다')));
+            return const Scaffold(
+              body: Center(child: Text('잘못된 접근입니다')),
+            );
           }
 
           return DetailScreen(questionId: id);

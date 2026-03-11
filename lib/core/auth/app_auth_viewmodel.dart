@@ -9,26 +9,41 @@ class AppAuthViewModel extends ChangeNotifier {
   late final StreamSubscription _subscription;
 
   AppAuthState _state = const AppAuthState.splash();
+
   AppAuthState get state => _state;
 
   bool _needsOnboarding = false;
 
+  bool _isInitializing = true;
+  String? _pendingToken;
+
   AppAuthViewModel(this.tokenRepository) {
-    _subscription =
-        tokenRepository.accessTokenStream.listen((token) {
-          if (token == null) {
-            _state = const AppAuthState.unauthenticated();
-          } else {
-            _state = AppAuthState.authenticated(
-              needsOnboarding: _needsOnboarding,
-            );
-          }
-          notifyListeners();
-        });
+    _subscription = tokenRepository.accessTokenStream.listen((token) {
+      if (_isInitializing) {
+        _pendingToken = token;
+        return;
+      }
+
+      _applyAuthState(token);
+    });
   }
 
   Future<void> initialize() async {
     await tokenRepository.hydrate();
+
+    _isInitializing = false;
+
+    _applyAuthState(_pendingToken);
+  }
+
+  void _applyAuthState(String? token) {
+    if (token == null) {
+      _state = const AppAuthState.unauthenticated();
+    } else {
+      _state = AppAuthState.authenticated(needsOnboarding: _needsOnboarding);
+    }
+
+    notifyListeners();
   }
 
   Future<void> loginSuccess({
@@ -43,7 +58,9 @@ class AppAuthViewModel extends ChangeNotifier {
 
   void completeOnboarding() {
     _needsOnboarding = false;
+
     _state = const AppAuthState.authenticated(needsOnboarding: false);
+
     notifyListeners();
   }
 
