@@ -26,7 +26,7 @@ class UserRepositoryImpl implements UserRepository {
     final updatedUser = local.getUser().copyWith(
       id: dto.id,
       nickname: dto.nickname,
-      profileImagePath: dto.profileImagePath,
+      profileImage: dto.profileImage,
     );
 
     local.saveUser(updatedUser);
@@ -35,17 +35,17 @@ class UserRepositoryImpl implements UserRepository {
   @override
   Future<void> updateProfile({
     String? nickname,
-    String? profileImagePath,
+    String? profileImage,
   }) async {
     final dto = await remote.updateUser(
       nickname: nickname,
-      profileImagePath: profileImagePath,
+      profileImage: profileImage,
     );
 
     final updatedUser = local.getUser().copyWith(
       id: dto.id,
       nickname: dto.nickname,
-      profileImagePath: dto.profileImagePath,
+      profileImage: dto.profileImage,
     );
 
     local.saveUser(updatedUser);
@@ -58,7 +58,7 @@ class UserRepositoryImpl implements UserRepository {
     final updatedUser = local.getUser().copyWith(
       id: dto.id,
       nickname: dto.nickname,
-      profileImagePath: dto.profileImagePath,
+      profileImage: dto.profileImage,
     );
 
     local.saveUser(updatedUser);

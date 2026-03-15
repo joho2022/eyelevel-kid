@@ -9,13 +9,13 @@ part 'my_state.freezed.dart';
 abstract class MyState with _$MyState {
   const factory MyState({
     required String nickname,
-    String? profileImagePath,
+    String? profileImage,
     required AnswerStyle answerStyle,
   }) = _MyState;
 
   factory MyState.initial() => const MyState(
     nickname: '카이',
-    profileImagePath: null,
+    profileImage: null,
     answerStyle: AnswerStyle.story,
   );
 }

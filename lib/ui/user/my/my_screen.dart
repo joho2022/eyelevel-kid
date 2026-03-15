@@ -42,7 +42,7 @@ class _MyView extends StatelessWidget {
 
               ProfileHeader(
                 nickname: state.nickname,
-                imagePath: state.profileImagePath,
+                imagePath: state.profileImage,
                 onImageTap: () {
                   context.push(RoutePaths.profileEdit);
                 },

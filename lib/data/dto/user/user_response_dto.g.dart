@@ -10,12 +10,12 @@ _UserResponseDto _$UserResponseDtoFromJson(Map<String, dynamic> json) =>
     _UserResponseDto(
       id: (json['id'] as num).toInt(),
       nickname: json['nickname'] as String,
-      profileImagePath: json['profileImagePath'] as String?,
+      profileImage: json['profileImage'] as String?,
     );
 
 Map<String, dynamic> _$UserResponseDtoToJson(_UserResponseDto instance) =>
     <String, dynamic>{
       'id': instance.id,
       'nickname': instance.nickname,
-      'profileImagePath': instance.profileImagePath,
+      'profileImage': instance.profileImage,
     };

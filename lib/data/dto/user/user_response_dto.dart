@@ -11,7 +11,7 @@ abstract class UserResponseDto with _$UserResponseDto {
   const factory UserResponseDto({
     required int id,
     required String nickname,
-    String? profileImagePath,
+    String? profileImage,
   }) = _UserResponseDto;
 
   factory UserResponseDto.fromJson(Map<String, dynamic> json) =>
@@ -23,7 +23,7 @@ extension UserResponseDtoMapper on UserResponseDto {
     return User(
       id: id,
       nickname: nickname,
-      profileImagePath: profileImagePath,
+      profileImage: profileImage,
       answerStyle: localStyle,
     );
   }

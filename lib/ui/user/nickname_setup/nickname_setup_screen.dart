@@ -41,76 +41,103 @@ class _NicknameSetupView extends StatelessWidget {
     final viewModel = context.watch<NicknameSetupViewModel>();
     final state = viewModel.state;
 
-    return Scaffold(
-        appBar: AppBar(
-          backgroundColor: AppColors.white,
-          elevation: 0,
-          leading: BackButton(color: AppColors.storyPurple),
-        ),
-        body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(24, 32, 24, 24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                '만나서 반가워요',
-                style: AppTheme.title24.copyWith(color: AppColors.textDefault),
+    return PopScope(
+      canPop: !state.isLoading,
+      child: GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: Stack(
+          children: [
+            Scaffold(
+              resizeToAvoidBottomInset: true,
+
+              appBar: AppBar(
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                scrolledUnderElevation: 0,
+                leading: BackButton(color: AppColors.storyPurple),
               ),
 
-              const SizedBox(height: 2),
+              body: SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(24, 32, 24, 24),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '만나서 반가워요',
+                        style: AppTheme.title24.copyWith(
+                          color: AppColors.textDefault,
+                        ),
+                      ),
 
-              Text(
-                '아이시선에서 사용할 닉네임을 입력해주세요.',
-                style: AppTheme.subtitle14.copyWith(color: AppColors.textSub),
-              ),
+                      const SizedBox(height: 2),
 
-              const SizedBox(height: 32),
+                      Text(
+                        '아이시선에서 사용할 닉네임을 입력해주세요.',
+                        style: AppTheme.subtitle14.copyWith(
+                          color: AppColors.textSub,
+                        ),
+                      ),
 
-              NicknameTextField(
-                value: state.nickname,
-                errorText: state.errorMessage,
-                onChanged: viewModel.updateNickname,
-              ),
+                      const SizedBox(height: 32),
 
-              const Spacer(),
+                      NicknameTextField(
+                        value: state.nickname,
+                        errorText: state.errorMessage,
+                        onChanged: viewModel.updateNickname,
+                      ),
 
-              SizedBox(
-                width: double.infinity,
-                height: 52,
-                child: BounceTapper(
-                  onTap: state.canSubmit && !state.isLoading
-                      ? () async {
-                          await viewModel.submit();
-                        }
-                      : null,
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 200),
-                    decoration: BoxDecoration(
-                      color: _buttonColor(state),
-                      borderRadius: BorderRadius.circular(14),
-                    ),
-                    alignment: Alignment.center,
-                    child: state.isLoading
-                        ? const SizedBox(
-                            height: 20,
-                            width: 20,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              color: Colors.white,
-                            ),
-                          )
-                        : Text(
-                            '시작하기',
-                            style: AppTheme.title14.copyWith(
-                              color: Colors.white,
-                            ),
-                          ),
+                      const Spacer(),
+                    ],
                   ),
                 ),
               ),
-            ],
-          ),
+
+              bottomNavigationBar: SafeArea(
+                top: false,
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(
+                    24,
+                    12,
+                    24,
+                    MediaQuery.of(context).viewInsets.bottom,
+                  ),
+                  child: SizedBox(
+                    height: 52,
+                    child: BounceTapper(
+                      onTap: state.canSubmit && !state.isLoading
+                          ? () async {
+                        await viewModel.submit();
+                      }
+                          : null,
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 150),
+                        decoration: BoxDecoration(
+                          color: _buttonColor(state),
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                        alignment: Alignment.center,
+                        child: Text(
+                          '시작하기',
+                          style: AppTheme.title14.copyWith(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+
+            if (state.isLoading)
+              Container(
+                color: Colors.black.withValues(alpha: 0.15),
+                child: const Center(
+                  child: CircularProgressIndicator(),
+                ),
+              ),
+          ],
         ),
       ),
     );

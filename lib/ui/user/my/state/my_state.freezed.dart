@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$MyState {
 
- String get nickname; String? get profileImagePath; AnswerStyle get answerStyle;
+ String get nickname; String? get profileImage; AnswerStyle get answerStyle;
 /// Create a copy of MyState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $MyStateCopyWith<MyState> get copyWith => _$MyStateCopyWithImpl<MyState>(this as
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is MyState&&(identical(other.nickname, nickname) || other.nickname == nickname)&&(identical(other.profileImagePath, profileImagePath) || other.profileImagePath == profileImagePath)&&(identical(other.answerStyle, answerStyle) || other.answerStyle == answerStyle));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is MyState&&(identical(other.nickname, nickname) || other.nickname == nickname)&&(identical(other.profileImage, profileImage) || other.profileImage == profileImage)&&(identical(other.answerStyle, answerStyle) || other.answerStyle == answerStyle));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,nickname,profileImagePath,answerStyle);
+int get hashCode => Object.hash(runtimeType,nickname,profileImage,answerStyle);
 
 @override
 String toString() {
-  return 'MyState(nickname: $nickname, profileImagePath: $profileImagePath, answerStyle: $answerStyle)';
+  return 'MyState(nickname: $nickname, profileImage: $profileImage, answerStyle: $answerStyle)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $MyStateCopyWith<$Res>  {
   factory $MyStateCopyWith(MyState value, $Res Function(MyState) _then) = _$MyStateCopyWithImpl;
 @useResult
 $Res call({
- String nickname, String? profileImagePath, AnswerStyle answerStyle
+ String nickname, String? profileImage, AnswerStyle answerStyle
 });
 
 
@@ -62,10 +62,10 @@ class _$MyStateCopyWithImpl<$Res>
 
 /// Create a copy of MyState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? nickname = null,Object? profileImagePath = freezed,Object? answerStyle = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? nickname = null,Object? profileImage = freezed,Object? answerStyle = null,}) {
   return _then(_self.copyWith(
 nickname: null == nickname ? _self.nickname : nickname // ignore: cast_nullable_to_non_nullable
-as String,profileImagePath: freezed == profileImagePath ? _self.profileImagePath : profileImagePath // ignore: cast_nullable_to_non_nullable
+as String,profileImage: freezed == profileImage ? _self.profileImage : profileImage // ignore: cast_nullable_to_non_nullable
 as String?,answerStyle: null == answerStyle ? _self.answerStyle : answerStyle // ignore: cast_nullable_to_non_nullable
 as AnswerStyle,
   ));
@@ -152,10 +152,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String nickname,  String? profileImagePath,  AnswerStyle answerStyle)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String nickname,  String? profileImage,  AnswerStyle answerStyle)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _MyState() when $default != null:
-return $default(_that.nickname,_that.profileImagePath,_that.answerStyle);case _:
+return $default(_that.nickname,_that.profileImage,_that.answerStyle);case _:
   return orElse();
 
 }
@@ -173,10 +173,10 @@ return $default(_that.nickname,_that.profileImagePath,_that.answerStyle);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String nickname,  String? profileImagePath,  AnswerStyle answerStyle)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String nickname,  String? profileImage,  AnswerStyle answerStyle)  $default,) {final _that = this;
 switch (_that) {
 case _MyState():
-return $default(_that.nickname,_that.profileImagePath,_that.answerStyle);case _:
+return $default(_that.nickname,_that.profileImage,_that.answerStyle);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -193,10 +193,10 @@ return $default(_that.nickname,_that.profileImagePath,_that.answerStyle);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String nickname,  String? profileImagePath,  AnswerStyle answerStyle)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String nickname,  String? profileImage,  AnswerStyle answerStyle)?  $default,) {final _that = this;
 switch (_that) {
 case _MyState() when $default != null:
-return $default(_that.nickname,_that.profileImagePath,_that.answerStyle);case _:
+return $default(_that.nickname,_that.profileImage,_that.answerStyle);case _:
   return null;
 
 }
@@ -208,11 +208,11 @@ return $default(_that.nickname,_that.profileImagePath,_that.answerStyle);case _:
 
 
 class _MyState implements MyState {
-  const _MyState({required this.nickname, this.profileImagePath, required this.answerStyle});
+  const _MyState({required this.nickname, this.profileImage, required this.answerStyle});
   
 
 @override final  String nickname;
-@override final  String? profileImagePath;
+@override final  String? profileImage;
 @override final  AnswerStyle answerStyle;
 
 /// Create a copy of MyState
@@ -225,16 +225,16 @@ _$MyStateCopyWith<_MyState> get copyWith => __$MyStateCopyWithImpl<_MyState>(thi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MyState&&(identical(other.nickname, nickname) || other.nickname == nickname)&&(identical(other.profileImagePath, profileImagePath) || other.profileImagePath == profileImagePath)&&(identical(other.answerStyle, answerStyle) || other.answerStyle == answerStyle));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MyState&&(identical(other.nickname, nickname) || other.nickname == nickname)&&(identical(other.profileImage, profileImage) || other.profileImage == profileImage)&&(identical(other.answerStyle, answerStyle) || other.answerStyle == answerStyle));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,nickname,profileImagePath,answerStyle);
+int get hashCode => Object.hash(runtimeType,nickname,profileImage,answerStyle);
 
 @override
 String toString() {
-  return 'MyState(nickname: $nickname, profileImagePath: $profileImagePath, answerStyle: $answerStyle)';
+  return 'MyState(nickname: $nickname, profileImage: $profileImage, answerStyle: $answerStyle)';
 }
 
 
@@ -245,7 +245,7 @@ abstract mixin class _$MyStateCopyWith<$Res> implements $MyStateCopyWith<$Res> {
   factory _$MyStateCopyWith(_MyState value, $Res Function(_MyState) _then) = __$MyStateCopyWithImpl;
 @override @useResult
 $Res call({
- String nickname, String? profileImagePath, AnswerStyle answerStyle
+ String nickname, String? profileImage, AnswerStyle answerStyle
 });
 
 
@@ -262,10 +262,10 @@ class __$MyStateCopyWithImpl<$Res>
 
 /// Create a copy of MyState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? nickname = null,Object? profileImagePath = freezed,Object? answerStyle = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? nickname = null,Object? profileImage = freezed,Object? answerStyle = null,}) {
   return _then(_MyState(
 nickname: null == nickname ? _self.nickname : nickname // ignore: cast_nullable_to_non_nullable
-as String,profileImagePath: freezed == profileImagePath ? _self.profileImagePath : profileImagePath // ignore: cast_nullable_to_non_nullable
+as String,profileImage: freezed == profileImage ? _self.profileImage : profileImage // ignore: cast_nullable_to_non_nullable
 as String?,answerStyle: null == answerStyle ? _self.answerStyle : answerStyle // ignore: cast_nullable_to_non_nullable
 as AnswerStyle,
   ));

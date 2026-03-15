@@ -12,7 +12,7 @@ abstract class UserRepository {
 
   Future<void> updateNickname(String nickname);
 
-  Future<void> updateProfile({String? nickname, String? profileImagePath});
+  Future<void> updateProfile({String? nickname, String? profileImage});
 
   Future<void> updateAnswerStyle(AnswerStyle style);
 

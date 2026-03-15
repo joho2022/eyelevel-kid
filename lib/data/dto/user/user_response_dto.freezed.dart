@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$UserResponseDto {
 
- int get id; String get nickname; String? get profileImagePath;
+ int get id; String get nickname; String? get profileImage;
 /// Create a copy of UserResponseDto
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $UserResponseDtoCopyWith<UserResponseDto> get copyWith => _$UserResponseDtoCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserResponseDto&&(identical(other.id, id) || other.id == id)&&(identical(other.nickname, nickname) || other.nickname == nickname)&&(identical(other.profileImagePath, profileImagePath) || other.profileImagePath == profileImagePath));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserResponseDto&&(identical(other.id, id) || other.id == id)&&(identical(other.nickname, nickname) || other.nickname == nickname)&&(identical(other.profileImage, profileImage) || other.profileImage == profileImage));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,nickname,profileImagePath);
+int get hashCode => Object.hash(runtimeType,id,nickname,profileImage);
 
 @override
 String toString() {
-  return 'UserResponseDto(id: $id, nickname: $nickname, profileImagePath: $profileImagePath)';
+  return 'UserResponseDto(id: $id, nickname: $nickname, profileImage: $profileImage)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $UserResponseDtoCopyWith<$Res>  {
   factory $UserResponseDtoCopyWith(UserResponseDto value, $Res Function(UserResponseDto) _then) = _$UserResponseDtoCopyWithImpl;
 @useResult
 $Res call({
- int id, String nickname, String? profileImagePath
+ int id, String nickname, String? profileImage
 });
 
 
@@ -65,11 +65,11 @@ class _$UserResponseDtoCopyWithImpl<$Res>
 
 /// Create a copy of UserResponseDto
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? nickname = null,Object? profileImagePath = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? nickname = null,Object? profileImage = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,nickname: null == nickname ? _self.nickname : nickname // ignore: cast_nullable_to_non_nullable
-as String,profileImagePath: freezed == profileImagePath ? _self.profileImagePath : profileImagePath // ignore: cast_nullable_to_non_nullable
+as String,profileImage: freezed == profileImage ? _self.profileImage : profileImage // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
@@ -155,10 +155,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String nickname,  String? profileImagePath)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String nickname,  String? profileImage)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _UserResponseDto() when $default != null:
-return $default(_that.id,_that.nickname,_that.profileImagePath);case _:
+return $default(_that.id,_that.nickname,_that.profileImage);case _:
   return orElse();
 
 }
@@ -176,10 +176,10 @@ return $default(_that.id,_that.nickname,_that.profileImagePath);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String nickname,  String? profileImagePath)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String nickname,  String? profileImage)  $default,) {final _that = this;
 switch (_that) {
 case _UserResponseDto():
-return $default(_that.id,_that.nickname,_that.profileImagePath);case _:
+return $default(_that.id,_that.nickname,_that.profileImage);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -196,10 +196,10 @@ return $default(_that.id,_that.nickname,_that.profileImagePath);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String nickname,  String? profileImagePath)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String nickname,  String? profileImage)?  $default,) {final _that = this;
 switch (_that) {
 case _UserResponseDto() when $default != null:
-return $default(_that.id,_that.nickname,_that.profileImagePath);case _:
+return $default(_that.id,_that.nickname,_that.profileImage);case _:
   return null;
 
 }
@@ -211,12 +211,12 @@ return $default(_that.id,_that.nickname,_that.profileImagePath);case _:
 @JsonSerializable()
 
 class _UserResponseDto implements UserResponseDto {
-  const _UserResponseDto({required this.id, required this.nickname, this.profileImagePath});
+  const _UserResponseDto({required this.id, required this.nickname, this.profileImage});
   factory _UserResponseDto.fromJson(Map<String, dynamic> json) => _$UserResponseDtoFromJson(json);
 
 @override final  int id;
 @override final  String nickname;
-@override final  String? profileImagePath;
+@override final  String? profileImage;
 
 /// Create a copy of UserResponseDto
 /// with the given fields replaced by the non-null parameter values.
@@ -231,16 +231,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserResponseDto&&(identical(other.id, id) || other.id == id)&&(identical(other.nickname, nickname) || other.nickname == nickname)&&(identical(other.profileImagePath, profileImagePath) || other.profileImagePath == profileImagePath));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserResponseDto&&(identical(other.id, id) || other.id == id)&&(identical(other.nickname, nickname) || other.nickname == nickname)&&(identical(other.profileImage, profileImage) || other.profileImage == profileImage));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,nickname,profileImagePath);
+int get hashCode => Object.hash(runtimeType,id,nickname,profileImage);
 
 @override
 String toString() {
-  return 'UserResponseDto(id: $id, nickname: $nickname, profileImagePath: $profileImagePath)';
+  return 'UserResponseDto(id: $id, nickname: $nickname, profileImage: $profileImage)';
 }
 
 
@@ -251,7 +251,7 @@ abstract mixin class _$UserResponseDtoCopyWith<$Res> implements $UserResponseDto
   factory _$UserResponseDtoCopyWith(_UserResponseDto value, $Res Function(_UserResponseDto) _then) = __$UserResponseDtoCopyWithImpl;
 @override @useResult
 $Res call({
- int id, String nickname, String? profileImagePath
+ int id, String nickname, String? profileImage
 });
 
 
@@ -268,11 +268,11 @@ class __$UserResponseDtoCopyWithImpl<$Res>
 
 /// Create a copy of UserResponseDto
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? nickname = null,Object? profileImagePath = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? nickname = null,Object? profileImage = freezed,}) {
   return _then(_UserResponseDto(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,nickname: null == nickname ? _self.nickname : nickname // ignore: cast_nullable_to_non_nullable
-as String,profileImagePath: freezed == profileImagePath ? _self.profileImagePath : profileImagePath // ignore: cast_nullable_to_non_nullable
+as String,profileImage: freezed == profileImage ? _self.profileImage : profileImage // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }

@@ -12,6 +12,8 @@ class ImageCompressService {
       file.absolute.path,
       targetPath,
       quality: 60,
+      minWidth: 256,
+      minHeight: 256,
     );
 
     return File(compressed!.path);

@@ -7,11 +7,11 @@ class UpdateProfileUseCase {
 
   Future<void> call({
     String? nickname,
-    String? profileImagePath,
+    String? profileImage,
   }) async {
     await repository.updateProfile(
       nickname: nickname,
-      profileImagePath: profileImagePath,
+      profileImage: profileImage,
     );
   }
 }

@@ -3,26 +3,26 @@ import '../values/answer_style.dart';
 class User {
   final int id;
   final String nickname;
-  final String? profileImagePath;
+  final String? profileImage;
   final AnswerStyle answerStyle;
 
   const User({
     required this.id,
     required this.nickname,
-    this.profileImagePath,
+    this.profileImage,
     required this.answerStyle,
   });
 
   User copyWith({
     int? id,
     String? nickname,
-    String? profileImagePath,
+    String? profileImage,
     AnswerStyle? answerStyle,
   }) {
     return User(
       id: id ?? this.id,
       nickname: nickname ?? this.nickname,
-      profileImagePath: profileImagePath ?? this.profileImagePath,
+      profileImage: profileImage ?? this.profileImage,
       answerStyle: answerStyle ?? this.answerStyle,
     );
   }

@@ -37,7 +37,7 @@ class ProfileEditViewModel extends ChangeNotifier {
 
     state = state.copyWith(
       nickname: user.nickname,
-      imagePath: user.profileImagePath,
+      imagePath: user.profileImage,
       imageFile: null,
       errorMessage: null,
       canSubmit: false,
@@ -125,13 +125,26 @@ class ProfileEditViewModel extends ChangeNotifier {
       String? imageUrl = state.imagePath;
 
       if (state.imageFile != null) {
-        imageUrl = await uploadProfileImageUseCase(state.imageFile!);
+        final result = await uploadProfileImageUseCase(state.imageFile!);
+
+        debugPrint("==== upload 결과 ====");
+        debugPrint("value: $result");
+        debugPrint("type: ${result.runtimeType}");
+
+        imageUrl = result;
       }
+
+      debugPrint("==== 서버 업데이트 요청 ====");
+      debugPrint("nickname: ${state.nickname.trim()}");
+      debugPrint("profileImagePath: $imageUrl");
+      debugPrint("profileImagePath type: ${imageUrl.runtimeType}");
 
       await updateProfileUseCase(
         nickname: state.nickname.trim(),
-        profileImagePath: imageUrl,
+        profileImage: imageUrl,
       );
+
+      debugPrint("==== updateProfile 성공 ====");
 
       state = state.copyWith(isLoading: false);
       notifyListeners();
@@ -142,13 +155,26 @@ class ProfileEditViewModel extends ChangeNotifier {
       String message = '저장 중 오류가 발생했어요';
 
       if (e is DioException) {
-        message = e.response?.data['message'] ?? message;
+
+        final data = e.response?.data;
+
+        if (data is Map && data['message'] != null) {
+          final msg = data['message'];
+
+          if (msg is String) {
+            message = msg;
+          } else if (msg is List && msg.isNotEmpty) {
+            message = msg.first.toString();
+          }
+        }
       }
 
       state = state.copyWith(
         isLoading: false,
         errorMessage: message,
       );
+
+      notifyListeners();
 
       notifyListeners();
 

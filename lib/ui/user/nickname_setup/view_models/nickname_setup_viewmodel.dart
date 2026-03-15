@@ -81,20 +81,23 @@ class NicknameSetupViewModel extends ChangeNotifier {
 
       return;
     } catch (e) {
-      String message = "알 수 없는 오류가 발생했습니다";
+
+      String message = '알 수 없는 오류가 발생했어요';
 
       if (e is DioException) {
+
         final data = e.response?.data;
 
-        print(data);
+        if (data is Map && data['message'] != null) {
+          final msg = data['message'];
 
-        if (data != null && data['message'] != null) {
-          message = data['message'];
+          if (msg is String) {
+            message = msg;
+          } else if (msg is List && msg.isNotEmpty) {
+            message = msg.first.toString();
+          }
         }
       }
-
-      print("==== submit 에러 발생 ====");
-      print(message);
 
       state = state.copyWith(
         isLoading: false,

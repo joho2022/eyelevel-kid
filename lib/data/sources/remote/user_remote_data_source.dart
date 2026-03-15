@@ -10,13 +10,13 @@ class UserRemoteDataSource {
 
   Future<UserResponseDto> updateUser({
     String? nickname,
-    String? profileImagePath,
+    String? profileImage,
   }) async {
     final response = await dio.patch(
       '/user',
       data: {
         if (nickname != null) 'nickname': nickname,
-        if (profileImagePath != null) 'profileImagePath': profileImagePath,
+        if (profileImage != null) 'profileImage': profileImage,
       },
     );
 
@@ -29,7 +29,7 @@ class UserRemoteDataSource {
   }
 
   Future<UploadUrlResponseDto> createProfileImageUploadUrl() async {
-    final response = await dio.post("/users/profile-image-upload-url");
+    final response = await dio.post("/user/profile-image/upload-url");
 
     return UploadUrlResponseDto.fromJson(response.data);
   }

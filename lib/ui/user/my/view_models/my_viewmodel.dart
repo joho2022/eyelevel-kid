@@ -37,7 +37,7 @@ class MyViewModel extends ChangeNotifier {
     _subscription = observeUserUseCase().listen((user) {
       state = state.copyWith(
         nickname: user.nickname,
-        profileImagePath: user.profileImagePath,
+        profileImage: user.profileImage,
         answerStyle: user.answerStyle,
       );
 

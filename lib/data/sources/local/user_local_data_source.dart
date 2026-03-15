@@ -7,7 +7,7 @@ class UserLocalDataSource {
   User _user = const User(
     id: 0,
     nickname: '',
-    profileImagePath: null,
+    profileImage: null,
     answerStyle: AnswerStyle.story,
   );
 
