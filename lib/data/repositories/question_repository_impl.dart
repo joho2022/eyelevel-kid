@@ -38,8 +38,11 @@ class QuestionRepositoryImpl implements QuestionRepository {
   }) async {
     final dto = await remote.fetchPage(cursor: cursor, limit: limit);
 
-    print("==== server items ====");
-    print(dto.items.length);
+
+    if (kDebugMode) {
+      print("==== server items ====");
+      print(dto.items.length);
+    }
 
     final page = dto.toDomain();
 

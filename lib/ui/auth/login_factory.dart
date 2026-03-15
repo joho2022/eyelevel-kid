@@ -8,8 +8,8 @@ import '../../domain/usecases/social_login_usecase.dart';
 
 LoginViewModel createLoginViewModel() {
   return LoginViewModel(
-    googleAuthDataSource: serviceLocator<GoogleAuthService>(),
-    appleAuthDataSource: serviceLocator<AppleAuthService>(),
+    googleAuthService: serviceLocator<GoogleAuthService>(),
+    appleAuthService: serviceLocator<AppleAuthService>(),
     socialLoginUseCase: serviceLocator<SocialLoginUseCase>(),
     appAuthViewModel: serviceLocator<AppAuthViewModel>(),
   );

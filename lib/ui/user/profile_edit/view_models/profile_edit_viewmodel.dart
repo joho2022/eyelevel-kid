@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
 import '../../../../core/image/image_compress_service.dart';
@@ -137,7 +138,17 @@ class ProfileEditViewModel extends ChangeNotifier {
 
       return true;
     } catch (e) {
-      state = state.copyWith(isLoading: false, errorMessage: '저장 중 오류가 발생했어요');
+
+      String message = '저장 중 오류가 발생했어요';
+
+      if (e is DioException) {
+        message = e.response?.data['message'] ?? message;
+      }
+
+      state = state.copyWith(
+        isLoading: false,
+        errorMessage: message,
+      );
 
       notifyListeners();
 

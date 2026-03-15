@@ -106,10 +106,18 @@ class __LoginViewState extends State<_LoginView>
                 icon: AppImages.appleIcon,
                 text: 'Apple로 계속하기',
                 isLoading: state.isAppleLoading,
-                onPressed: () {
-                  // MARK: - 애플 로그인 구현
-                  debugPrint('Apple 로그인 클릭');
-                  context.pushNamed('nickname-setup');
+                onPressed: () async {
+                  final isNewUser = await context.read<LoginViewModel>().login(
+                    SocialProvider.apple,
+                  );
+
+                  if (isNewUser == null || !context.mounted) return;
+
+                  if (isNewUser) {
+                    context.pushNamed('nickname-setup');
+                  } else {
+                    context.goNamed('home');
+                  }
                 },
               ),
 

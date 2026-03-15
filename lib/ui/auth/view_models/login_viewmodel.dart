@@ -5,8 +5,8 @@ import '../../../domain/usecases/social_login_usecase.dart';
 import '../state/login_state.dart';
 
 class LoginViewModel extends ChangeNotifier {
-  final SocialAuthService googleAuthDataSource;
-  final SocialAuthService appleAuthDataSource;
+  final SocialAuthService googleAuthService;
+  final SocialAuthService appleAuthService;
   final SocialLoginUseCase socialLoginUseCase;
   final AppAuthViewModel appAuthViewModel;
 
@@ -15,8 +15,8 @@ class LoginViewModel extends ChangeNotifier {
   LoginState get state => _state;
 
   LoginViewModel({
-    required this.googleAuthDataSource,
-    required this.appleAuthDataSource,
+    required this.googleAuthService,
+    required this.appleAuthService,
     required this.socialLoginUseCase,
     required this.appAuthViewModel,
   });
@@ -67,9 +67,9 @@ class LoginViewModel extends ChangeNotifier {
   Future<String> _getIdToken(SocialProvider provider) {
     switch (provider) {
       case SocialProvider.google:
-        return googleAuthDataSource.getIdToken();
+        return googleAuthService.getIdToken();
       case SocialProvider.apple:
-        return appleAuthDataSource.getIdToken();
+        return appleAuthService.getIdToken();
     }
   }
 
