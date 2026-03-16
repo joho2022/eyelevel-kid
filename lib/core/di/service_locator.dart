@@ -1,4 +1,5 @@
 import 'package:eyelevel_kid/data/sources/remote/user_remote_data_source.dart';
+import 'package:eyelevel_kid/domain/usecases/auth/withdraw_usecase.dart';
 import 'package:eyelevel_kid/domain/usecases/question/get_question_use_case.dart';
 import 'package:eyelevel_kid/domain/usecases/user/fetch_user_use_case.dart';
 import 'package:eyelevel_kid/domain/usecases/user/observe_user_use_case.dart';
@@ -33,18 +34,18 @@ import '../../domain/repositories/question_repository.dart';
 import '../../domain/repositories/token_repository.dart';
 import '../../domain/repositories/user_repository.dart';
 
+import '../../domain/usecases/auth/refresh_token_usecase.dart';
+import '../../domain/usecases/auth/social_login_usecase.dart';
 import '../../domain/usecases/question/ask_question_use_case.dart';
 import '../../domain/usecases/question/delete_question_use_case.dart';
 import '../../domain/usecases/calendar/get_calendar_summary_use_case.dart';
 import '../../domain/usecases/question/get_question_page_use_case.dart';
 import '../../domain/usecases/calendar/get_questions_by_date_use_case.dart';
 import '../../domain/usecases/user/get_user_use_case.dart';
-import '../../domain/usecases/logout_usecase.dart';
+import '../../domain/usecases/auth/logout_usecase.dart';
 import '../../domain/usecases/question/observe_all_questions_use_case.dart';
-import '../../domain/usecases/refresh_token_usecase.dart';
 import '../../domain/usecases/user/update_nickname_use_case.dart';
 import '../../domain/usecases/user/update_profile_use_case.dart';
-import '../../domain/usecases/social_login_usecase.dart';
 import '../../domain/usecases/question/toggle_bookmark_usecase.dart';
 import '../../domain/usecases/user/update_answer_style_use_case.dart';
 import '../auth/app_auth_viewmodel.dart';
@@ -62,10 +63,26 @@ void setupDependencies() {
     () => TokenRepositoryImpl(serviceLocator<TokenLocalDataSource>()),
   );
 
-  // MARK: - UseCase (refresh / logout 먼저 필요)
+  // MARK: - UseCase (Auth)
   serviceLocator.registerLazySingleton(
-    () => LogoutUseCase(serviceLocator<TokenRepository>()),
+    () => LogoutUseCase(serviceLocator<AuthRepository>(), serviceLocator<TokenRepository>()),
   );
+
+  serviceLocator.registerLazySingleton(
+        () => SocialLoginUseCase(serviceLocator<AuthRepository>()),
+  );
+
+  serviceLocator.registerLazySingleton(
+        () => RefreshTokenUseCase(
+      serviceLocator<AuthRepository>(),
+      serviceLocator<TokenRepository>(),
+    ),
+  );
+
+  serviceLocator.registerLazySingleton(
+        () => WithdrawUseCase(serviceLocator<AuthRepository>(), serviceLocator<TokenRepository>())
+  );
+
 
   // MARK: - Dio
   serviceLocator.registerLazySingleton<Dio>(
@@ -208,19 +225,6 @@ void setupDependencies() {
 
   serviceLocator.registerLazySingleton(
         () => GetQuestionUseCase(serviceLocator<QuestionRepository>()),
-  );
-
-  // MARK: - UseCase
-
-  serviceLocator.registerLazySingleton(
-    () => SocialLoginUseCase(serviceLocator<AuthRepository>()),
-  );
-
-  serviceLocator.registerLazySingleton(
-    () => RefreshTokenUseCase(
-      serviceLocator<AuthRepository>(),
-      serviceLocator<TokenRepository>(),
-    ),
   );
 
   // MARK: - ViewModel (전역 상태)

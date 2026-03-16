@@ -21,4 +21,15 @@ class AuthRepositoryImpl implements AuthRepository {
       ) {
     return remote.refresh(refreshToken);
   }
+
+  @override
+  Future<void> logout(String refreshToken) {
+    return remote.logout(refreshToken);
+  }
+
+
+  @override
+  Future<void> withdraw() async {
+    await remote.withdraw();
+  }
 }

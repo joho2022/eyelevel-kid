@@ -1,5 +1,5 @@
-import '../repositories/auth_repository.dart';
-import '../repositories/token_repository.dart';
+import '../../repositories/auth_repository.dart';
+import '../../repositories/token_repository.dart';
 
 class RefreshTokenUseCase {
   final AuthRepository authRepository;

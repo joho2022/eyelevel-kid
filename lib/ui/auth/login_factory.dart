@@ -4,7 +4,7 @@ import 'package:eyelevel_kid/ui/auth/view_models/login_viewmodel.dart';
 
 import '../../core/auth/app_auth_viewmodel.dart';
 import '../../core/di/service_locator.dart';
-import '../../domain/usecases/social_login_usecase.dart';
+import '../../domain/usecases/auth/social_login_usecase.dart';
 
 LoginViewModel createLoginViewModel() {
   return LoginViewModel(

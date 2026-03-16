@@ -25,4 +25,17 @@ class AuthRemoteDataSource {
 
     return response.data;
   }
+
+  Future<void> logout(String refreshToken) async {
+    await dio.post(
+      "/auth/logout",
+      data: {
+        "refreshToken": refreshToken,
+      },
+    );
+  }
+
+  Future<void> withdraw() async {
+    await dio.delete('/auth/withdraw');
+  }
 }

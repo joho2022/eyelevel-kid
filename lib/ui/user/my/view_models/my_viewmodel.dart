@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 
 import '../../../../domain/entities/user.dart';
+import '../../../../domain/usecases/auth/logout_usecase.dart';
+import '../../../../domain/usecases/auth/withdraw_usecase.dart';
 import '../../../../domain/usecases/user/fetch_user_use_case.dart';
 import '../../../../domain/usecases/user/observe_user_use_case.dart';
 import '../../../../domain/usecases/user/update_answer_style_use_case.dart';
@@ -13,6 +15,8 @@ class MyViewModel extends ChangeNotifier {
   final ObserveUserUseCase observeUserUseCase;
   final FetchUserUseCase fetchUserUseCase;
   final UpdateAnswerStyleUseCase updateAnswerStyleUseCase;
+  final LogoutUseCase logoutUseCase;
+  final WithdrawUseCase withdrawUseCase;
 
   MyState state = MyState.initial();
 
@@ -22,6 +26,8 @@ class MyViewModel extends ChangeNotifier {
     required this.observeUserUseCase,
     required this.fetchUserUseCase,
     required this.updateAnswerStyleUseCase,
+    required this.logoutUseCase,
+    required this.withdrawUseCase,
   }) {
     _init();
   }
@@ -68,12 +74,46 @@ class MyViewModel extends ChangeNotifier {
   }
 
   // MARK: - 계정
-  void logout() {
-    debugPrint('[MyViewModel] 로그아웃 클릭');
+  Future<bool> logout() async {
+    state = state.copyWith(isLoading: true, errorMessage: null);
+    notifyListeners();
+
+    try {
+      await logoutUseCase();
+      return true;
+    } catch (e) {
+      debugPrint("logout error: $e");
+
+      state = state.copyWith(
+        errorMessage: "로그아웃에 실패했습니다",
+      );
+
+      return false;
+    } finally {
+      state = state.copyWith(isLoading: false);
+      notifyListeners();
+    }
   }
 
-  void withdraw() {
-    debugPrint('[MyViewModel] 회원탈퇴 클릭');
+  Future<bool> withdraw() async {
+    state = state.copyWith(isLoading: true, errorMessage: null);
+    notifyListeners();
+
+    try {
+      await withdrawUseCase();
+      return true;
+    } catch (e) {
+      debugPrint("withdraw error: $e");
+
+      state = state.copyWith(
+        errorMessage: "회원탈퇴에 실패했습니다",
+      );
+
+      return false;
+    } finally {
+      state = state.copyWith(isLoading: false);
+      notifyListeners();
+    }
   }
 
   @override

@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:dio/dio.dart';
-import '../../domain/usecases/refresh_token_usecase.dart';
-import '../../domain/usecases/logout_usecase.dart';
+import '../../domain/usecases/auth/refresh_token_usecase.dart';
+import '../../domain/usecases/auth/logout_usecase.dart';
 
 class _RefreshManager {
   bool _isRefreshing = false;
