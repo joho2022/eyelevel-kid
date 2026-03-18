@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import '../../core/routes/route_paths.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_theme.dart';
+import '../../core/widgets/app_background.dart';
 import '../../core/widgets/confirm_dialog.dart';
 
 class MyScreen extends StatelessWidget {
@@ -32,124 +33,136 @@ class _MyView extends StatelessWidget {
     final viewModel = context.watch<MyViewModel>();
     final state = viewModel.state;
 
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            children: [
-              const SizedBox(height: 32),
-
-              ProfileHeader(
-                nickname: state.nickname,
-                imagePath: state.profileImage,
-                onImageTap: () {
-                  context.push(RoutePaths.profileEdit);
-                },
-              ),
-
-              const SizedBox(height: 32),
-
-              AnswerStyleSlider(
-                  selected: state.answerStyle,
-                  onChanged: viewModel.changePreferredStyle
-              ),
-
-              const SizedBox(height: 32),
-
-              SettingsSection(
-                title: '앱 정보',
-                items: [
-                  (
-                  title: '현재 버전',
-                  trailing: Text(
-                    '1.0.0',
-                    style: AppTheme.title14.copyWith(
-                        color: AppColors.iconSecondary
+    return AppBackground(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: Stack(
+          children: [
+            SafeArea(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 32),
+                    ProfileHeader(
+                      nickname: state.nickname,
+                      imagePath: state.profileImage,
+                      onImageTap: () {
+                        context.push(RoutePaths.profileEdit);
+                      },
                     ),
-                  ),
-                  onTap: viewModel.onTapAppVersion,
-                  textColor: AppColors.textDefault
-                  ),
-                  (
-                  title: '평가하기',
-                  trailing: const Icon(
-                    Icons.chevron_right,
-                    color: AppColors.iconSecondary,
-                  ),
-                  onTap: viewModel.onTapRateApp,
-                  textColor: AppColors.textDefault
-                  ),
-                  (
-                  title: '공유하기',
-                  trailing: const Icon(
-                    Icons.chevron_right,
-                    color: AppColors.iconSecondary,
-                  ),
-                  onTap: viewModel.onTapShareApp,
-                  textColor: AppColors.textDefault
-                  ),
-                  (
-                  title: '문의하기',
-                  trailing: const Icon(
-                    Icons.chevron_right,
-                    color: AppColors.iconSecondary,
-                  ),
-                  onTap: viewModel.onTapContact,
-                  textColor: AppColors.textDefault
-                  ),
-
-                ],
+                    const SizedBox(height: 32),
+                    AnswerStyleSlider(
+                      selected: state.answerStyle,
+                      onChanged: viewModel.changePreferredStyle,
+                    ),
+                    const SizedBox(height: 32),
+                    SettingsSection(
+                      title: '앱 정보',
+                      items: [
+                        (
+                          title: '현재 버전',
+                          trailing: Text(
+                            '1.0.0',
+                            style: AppTheme.title14.copyWith(
+                              color: AppColors.iconSecondary,
+                            ),
+                          ),
+                          onTap: viewModel.onTapAppVersion,
+                          textColor: AppColors.textDefault
+                        ),
+                        (
+                          title: '평가하기',
+                          trailing: const Icon(
+                            Icons.chevron_right,
+                            color: AppColors.iconSecondary,
+                          ),
+                          onTap: viewModel.onTapRateApp,
+                          textColor: AppColors.textDefault
+                        ),
+                        (
+                          title: '공유하기',
+                          trailing: const Icon(
+                            Icons.chevron_right,
+                            color: AppColors.iconSecondary,
+                          ),
+                          onTap: viewModel.onTapShareApp,
+                          textColor: AppColors.textDefault
+                        ),
+                        (
+                          title: '문의하기',
+                          trailing: const Icon(
+                            Icons.chevron_right,
+                            color: AppColors.iconSecondary,
+                          ),
+                          onTap: viewModel.onTapContact,
+                          textColor: AppColors.textDefault
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 32),
+                    SettingsSection(
+                      items: [
+                        (
+                          title: '로그아웃',
+                          trailing: const Icon(
+                            Icons.chevron_right,
+                            color: AppColors.iconSecondary,
+                          ),
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (_) => ConfirmDialog(
+                                title: '로그아웃 하시겠어요?',
+                                description: '다시 로그인해야 사용할 수 있어요.',
+                                confirmText: '로그아웃',
+                                onConfirm: () async {
+                                  await viewModel.logout();
+                                },
+                              ),
+                            );
+                          },
+                          textColor: AppColors.textDefault
+                        ),
+                        (
+                          title: '탈퇴하기',
+                          trailing: const Icon(
+                            Icons.chevron_right,
+                            color: AppColors.iconSecondary,
+                          ),
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (_) => ConfirmDialog(
+                                title: '정말 탈퇴하시겠어요?',
+                                description: '모든 기록이 삭제되고 복구할 수 없어요.',
+                                confirmText: '탈퇴하기',
+                                isDanger: true,
+                                onConfirm: () async {
+                                  await viewModel.withdraw();
+                                },
+                              ),
+                            );
+                          },
+                          textColor: AppColors.iconSecondary,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 32),
+                  ],
+                ),
               ),
-
-              const SizedBox(height: 32),
-
-              SettingsSection(
-                items: [
-                  (
-                  title: '로그아웃',
-                  trailing: const Icon(
-                      Icons.chevron_right,
-                      color: AppColors.iconSecondary
+            ),
+            if (state.isLoading)
+              Positioned.fill(
+                child: ColoredBox(
+                  color: Colors.black.withValues(alpha: 0.15),
+                  child: const Center(
+                    child: CircularProgressIndicator(),
                   ),
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (_) => ConfirmDialog(
-                        title: '로그아웃 하시겠어요?',
-                        description: '다시 로그인해야 사용할 수 있어요.',
-                        confirmText: '로그아웃',
-                        onConfirm: viewModel.logout,
-                      ),
-                    );
-                  },
-                  textColor: AppColors.textDefault
-                  ),
-                  (
-                  title: '탈퇴하기',
-                  trailing: const Icon(
-                      Icons.chevron_right,
-                      color: AppColors.iconSecondary
-                  ),
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (_) => ConfirmDialog(
-                        title: '정말 탈퇴하시겠어요?',
-                        description: '모든 기록이 삭제되고 복구할 수 없어요.',
-                        confirmText: '탈퇴하기',
-                        isDanger: true,
-                        onConfirm: viewModel.withdraw,
-                      ),
-                    );
-                  },
-                  textColor: AppColors.iconSecondary,
-                  ),
-                ],
+                ),
               ),
-              const SizedBox(height: 32),
-            ],
-          ),
+          ],
         ),
       ),
     );

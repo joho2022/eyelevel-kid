@@ -12,6 +12,7 @@ import '../../../domain/values/answer_style.dart';
 import '../../core/routes/route_paths.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_theme.dart';
+import '../../core/widgets/app_background.dart';
 
 class DetailScreen extends StatelessWidget {
   final int questionId;
@@ -41,50 +42,51 @@ class _DetailView extends StatelessWidget {
     final record = state.record;
 
     if (record == null) {
-      return Scaffold(
-        body: Center(
-          child: Text(
-            '질문을 불러오지 못했습니다',
-            style: AppTheme.subtitle12.copyWith(
-              color: AppColors.textTertiary,
+      return AppBackground(
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          body: Center(
+            child: Text(
+              '질문을 불러오지 못했습니다',
+              style: AppTheme.subtitle12.copyWith(
+                color: AppColors.textTertiary,
+              ),
             ),
           ),
         ),
       );
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.white,
-        elevation: 0,
-        leading: BackButton(
-          color: AppColors.storyPurple,
+    return AppBackground(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          leading: BackButton(
+            color: AppColors.storyPurple,
+          ),
         ),
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-
-            _QuestionCard(record: record),
-
-            const SizedBox(height: 20),
-
-            _AnswerCard(
-              answer: record.answer,
-              style: record.style,
-            ),
-
-            const SizedBox(height: 20),
-
-            _DetailBottomBar(
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            children: [
+              _QuestionCard(record: record),
+              const SizedBox(height: 20),
+              _AnswerCard(
+                answer: record.answer,
+                style: record.style,
+              ),
+              const SizedBox(height: 20),
+              _DetailBottomBar(
                 isBookmarked: record.isBookmarked,
                 onBookmark: viewModel.toggleBookmark,
                 onReAsk: () {
                   context.push(RoutePaths.askQuestion);
                 },
-            ),
-          ],
+              ),
+            ],
+          ),
         ),
       ),
     );

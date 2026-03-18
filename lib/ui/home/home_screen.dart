@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import 'package:eyelevel_kid/ui/core/theme/app_colors.dart';
 import 'package:eyelevel_kid/ui/core/theme/app_theme.dart';
+import 'package:eyelevel_kid/ui/core/widgets/app_background.dart';
 import 'package:eyelevel_kid/ui/home/widgets/home_header.dart';
 import 'package:eyelevel_kid/ui/home/view_models/home_viewmodel.dart';
 import 'package:eyelevel_kid/ui/core/widgets/inline_banner_ad.dart';
@@ -62,105 +63,108 @@ class _HomeViewState extends State<HomeView> {
     final viewModel = context.read<HomeViewModel>();
     final state = context.watch<HomeViewModel>().state;
 
-    return Scaffold(
-      floatingActionButton: _AskFloatingButton(
-        isCollapsed: _isCollapsed,
-        onTap: () {
-          context.push(RoutePaths.askQuestion);
-        },
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          controller: _scrollController,
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 12),
-
-              if (state.isInitialLoading)
-                const SizedBox(
-                  height: 120,
-                  child: Center(child: CircularProgressIndicator()),
-                )
-              else
-                HomeHeader(
-                  title: state.title,
-                  subtitle: state.subtitle,
-                ),
-
-              const SizedBox(height: 32),
-
-              const InlineBannerAd(),
-
-              const SizedBox(height: 32),
-
-              QuestionCalendar(
-                currentMonth: state.currentMonth,
-                questionDates: state.questionDates,
-                selectedDay: state.selectedDay,
-                onMonthChanged: viewModel.loadCalendarSummary,
-                onDateSelected: viewModel.selectDate,
-                onQuestionSelected: (question) {
-                  context.push(
-                    RoutePaths.questionDetailPath(question.id),
-                  );
-                },
-              ),
-
-              const SizedBox(height: 32),
-
-              if (state.recentQuestions.isEmpty) ...[
-                Text(
-                  '아직 질문이 없어요',
-                  style: AppTheme.title20.copyWith(
-                    color: AppColors.textDefault,
-                  ),
-                ),
-
-                Text(
-                  '아이의 첫 시선을 남겨보세요!',
-                  style: AppTheme.subtitle14.copyWith(
-                    color: AppColors.textSub,
-                  ),
-                ),
-              ] else ...[
-                Text(
-                  '최근 질문',
-                  style: AppTheme.title20.copyWith(
-                    color: AppColors.textDefault,
-                  ),
-                ),
-
+    return AppBackground(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        floatingActionButton: _AskFloatingButton(
+          isCollapsed: _isCollapsed,
+          onTap: () {
+            context.push(RoutePaths.askQuestion);
+          },
+        ),
+        body: SafeArea(
+          child: SingleChildScrollView(
+            controller: _scrollController,
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
                 const SizedBox(height: 12),
 
-                Column(
-                  children: List.generate(
-                    state.recentQuestions.length,
-                        (index) {
-                      final question = state.recentQuestions[index];
-
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 20),
-                        child: QuestionSummaryCard(
-                          key: ValueKey(question.id),
-                          question: question,
-                          onTap: () {
-                            context.push(
-                              RoutePaths.questionDetailPath(question.id),
-                            );
-                          },
-                          onBookmarkTap: () =>
-                              viewModel.toggleBookmark(question),
-                        ),
-                      );
-                    },
+                if (state.isInitialLoading)
+                  const SizedBox(
+                    height: 120,
+                    child: Center(child: CircularProgressIndicator()),
+                  )
+                else
+                  HomeHeader(
+                    title: state.title,
+                    subtitle: state.subtitle,
                   ),
-                ),
-              ],
 
-              const SizedBox(height: 100),
-            ],
+                const SizedBox(height: 32),
+
+                const InlineBannerAd(),
+
+                const SizedBox(height: 32),
+
+                QuestionCalendar(
+                  currentMonth: state.currentMonth,
+                  questionDates: state.questionDates,
+                  selectedDay: state.selectedDay,
+                  onMonthChanged: viewModel.loadCalendarSummary,
+                  onDateSelected: viewModel.selectDate,
+                  onQuestionSelected: (question) {
+                    context.push(
+                      RoutePaths.questionDetailPath(question.id),
+                    );
+                  },
+                ),
+
+                const SizedBox(height: 32),
+
+                if (state.recentQuestions.isEmpty) ...[
+                  Text(
+                    '아직 질문이 없어요',
+                    style: AppTheme.title20.copyWith(
+                      color: AppColors.textDefault,
+                    ),
+                  ),
+
+                  Text(
+                    '아이의 첫 시선을 남겨보세요!',
+                    style: AppTheme.subtitle14.copyWith(
+                      color: AppColors.textSub,
+                    ),
+                  ),
+                ] else ...[
+                  Text(
+                    '최근 질문',
+                    style: AppTheme.title20.copyWith(
+                      color: AppColors.textDefault,
+                    ),
+                  ),
+
+                  const SizedBox(height: 12),
+
+                  Column(
+                    children: List.generate(
+                      state.recentQuestions.length,
+                      (index) {
+                        final question = state.recentQuestions[index];
+
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 20),
+                          child: QuestionSummaryCard(
+                            key: ValueKey(question.id),
+                            question: question,
+                            onTap: () {
+                              context.push(
+                                RoutePaths.questionDetailPath(question.id),
+                              );
+                            },
+                            onBookmarkTap: () =>
+                                viewModel.toggleBookmark(question),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+
+                const SizedBox(height: 100),
+              ],
+            ),
           ),
         ),
       ),

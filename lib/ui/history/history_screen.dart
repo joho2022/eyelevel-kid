@@ -9,6 +9,7 @@ import '../core/routes/route_paths.dart';
 import '../core/theme/app_colors.dart';
 import '../core/theme/app_images.dart';
 import '../core/theme/app_theme.dart';
+import '../core/widgets/app_background.dart';
 import 'history_factory.dart';
 
 class HistoryScreen extends StatelessWidget {
@@ -116,53 +117,56 @@ class _HistoryViewState extends State<_HistoryView> {
     final viewModel = context.watch<HistoryViewModel>();
     final state = viewModel.state;
 
-    return Scaffold(
-      body: SafeArea(
-        child: CustomScrollView(
-          controller: _scrollController,
-          slivers: [
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(20, 24, 20, 16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '기록',
-                      style: AppTheme.title24.copyWith(
-                        color: AppColors.textDefault,
+    return AppBackground(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: SafeArea(
+          child: CustomScrollView(
+            controller: _scrollController,
+            slivers: [
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 24, 20, 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '기록',
+                        style: AppTheme.title24.copyWith(
+                          color: AppColors.textDefault,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      '이전에 물어본 질문들이에요',
-                      style: AppTheme.subtitle14.copyWith(
-                        color: AppColors.textSub,
+                      const SizedBox(height: 2),
+                      Text(
+                        '이전에 물어본 질문들이에요',
+                        style: AppTheme.subtitle14.copyWith(
+                          color: AppColors.textSub,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
 
-            SliverPersistentHeader(
-              pinned: true,
-              delegate: HistoryFilterHeaderDelegate(
-                selected: state.filter,
-                onChanged: (filter) {
-                  viewModel.changeFilter(filter);
+              SliverPersistentHeader(
+                pinned: true,
+                delegate: HistoryFilterHeaderDelegate(
+                  selected: state.filter,
+                  onChanged: (filter) {
+                    viewModel.changeFilter(filter);
 
-                  _scrollController.animateTo(
-                    0,
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeOutCubic,
-                  );
-                },
+                    _scrollController.animateTo(
+                      0,
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeOutCubic,
+                    );
+                  },
+                ),
               ),
-            ),
 
-            ..._buildBody(viewModel),
-          ],
+              ..._buildBody(viewModel),
+            ],
+          ),
         ),
       ),
     );

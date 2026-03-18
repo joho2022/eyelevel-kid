@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../widgets/app_background.dart';
 import 'main_tab.dart';
 
 class MainTabScaffold extends StatelessWidget {
@@ -12,22 +13,25 @@ class MainTabScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: navigationShell,
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: navigationShell.currentIndex,
-        onTap: (index) {
-          navigationShell.goBranch(
-            index,
-            initialLocation: index == navigationShell.currentIndex,
-          );
-        },
-        items: MainTab.values.map((tab) {
-          return BottomNavigationBarItem(
-            icon: Icon(tab.icon),
-            label: tab.label,
-          );
-        }).toList(),
+    return AppBackground(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: navigationShell,
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: navigationShell.currentIndex,
+          onTap: (index) {
+            navigationShell.goBranch(
+              index,
+              initialLocation: index == navigationShell.currentIndex,
+            );
+          },
+          items: MainTab.values.map((tab) {
+            return BottomNavigationBarItem(
+              icon: Icon(tab.icon),
+              label: tab.label,
+            );
+          }).toList(),
+        ),
       ),
     );
   }

@@ -17,7 +17,7 @@ abstract class MyState with _$MyState {
   }) = _MyState;
 
   factory MyState.initial() => const MyState(
-    nickname: '카이',
+    nickname: '',
     profileImage: null,
     answerStyle: AnswerStyle.story,
     isLoading: false,

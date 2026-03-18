@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_theme.dart';
+import '../../core/widgets/app_background.dart';
 import '../shared/nickname_text_field.dart';
 
 class NicknameSetupScreen extends StatelessWidget {
@@ -43,12 +44,14 @@ class _NicknameSetupView extends StatelessWidget {
 
     return PopScope(
       canPop: !state.isLoading,
-      child: GestureDetector(
-        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-        child: Stack(
-          children: [
-            Scaffold(
-              resizeToAvoidBottomInset: true,
+      child: AppBackground(
+        child: GestureDetector(
+          onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+          child: Stack(
+            children: [
+              Scaffold(
+                backgroundColor: Colors.transparent,
+                resizeToAvoidBottomInset: true,
 
               appBar: AppBar(
                 backgroundColor: Colors.transparent,
@@ -130,14 +133,15 @@ class _NicknameSetupView extends StatelessWidget {
               ),
             ),
 
-            if (state.isLoading)
-              Container(
-                color: Colors.black.withValues(alpha: 0.15),
-                child: const Center(
-                  child: CircularProgressIndicator(),
+              if (state.isLoading)
+                Container(
+                  color: Colors.black.withValues(alpha: 0.15),
+                  child: const Center(
+                    child: CircularProgressIndicator(),
+                  ),
                 ),
-              ),
-          ],
+            ],
+          ),
         ),
       ),
     );

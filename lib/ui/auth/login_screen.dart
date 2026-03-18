@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:eyelevel_kid/ui/auth/state/login_state.dart';
 import 'package:eyelevel_kid/ui/auth/view_models/login_viewmodel.dart';
 import 'package:eyelevel_kid/ui/auth/widgets/social_login_button.dart';
@@ -6,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:eyelevel_kid/ui/core/theme/app_colors.dart';
 import 'package:eyelevel_kid/ui/core/theme/app_theme.dart';
 import 'package:eyelevel_kid/ui/core/theme/app_images.dart';
+import 'package:eyelevel_kid/ui/core/widgets/app_background.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -86,88 +89,93 @@ class __LoginViewState extends State<_LoginView>
     final viewModel = context.watch<LoginViewModel>();
     final state = viewModel.state;
 
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(AppImages.appLogo, width: 120),
+    return AppBackground(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(AppImages.appLogo, width: 120),
 
-              const SizedBox(height: 20),
+                const SizedBox(height: 20),
 
-              _buildAnimatedTitle(),
+                _buildAnimatedTitle(),
 
-              const SizedBox(height: 80),
+                const SizedBox(height: 80),
 
-              SocialLoginButton(
-                icon: AppImages.appleIcon,
-                text: 'Apple로 계속하기',
-                isLoading: state.isAppleLoading,
-                onPressed: () async {
-                  final isNewUser = await context.read<LoginViewModel>().login(
-                    SocialProvider.apple,
-                  );
+                if (Platform.isIOS) ... [
+                  SocialLoginButton(
+                    icon: AppImages.appleIcon,
+                    text: 'Apple로 계속하기',
+                    isLoading: state.isAppleLoading,
+                    onPressed: () async {
+                      final isNewUser = await context.read<LoginViewModel>().login(
+                        SocialProvider.apple,
+                      );
 
-                  if (isNewUser == null || !context.mounted) return;
+                      if (isNewUser == null || !context.mounted) return;
 
-                  if (isNewUser) {
-                    context.pushNamed('nickname-setup');
-                  } else {
-                    context.goNamed('home');
-                  }
-                },
-              ),
+                      if (isNewUser) {
+                        context.pushNamed('nickname-setup');
+                      } else {
+                        context.goNamed('home');
+                      }
+                    },
+                  ),
 
-              const SizedBox(height: 12),
+                  const SizedBox(height: 12),
+                ],
 
-              SocialLoginButton(
-                icon: AppImages.googleIcon,
-                text: 'Google로 계속하기',
-                isLoading: state.isGoogleLoading,
-                onPressed: () async {
-                  final isNewUser = await context.read<LoginViewModel>().login(
-                    SocialProvider.google,
-                  );
 
-                  if (isNewUser == null || !context.mounted) return;
+                SocialLoginButton(
+                  icon: AppImages.googleIcon,
+                  text: 'Google로 계속하기',
+                  isLoading: state.isGoogleLoading,
+                  onPressed: () async {
+                    final isNewUser = await context.read<LoginViewModel>().login(
+                      SocialProvider.google,
+                    );
 
-                  if (isNewUser) {
-                    context.pushNamed('nickname-setup');
-                  } else {
-                    context.goNamed('home');
-                  }
-                },
-              ),
+                    if (isNewUser == null || !context.mounted) return;
 
-              const SizedBox(height: 30),
-
-              RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(
-                  style: AppTheme.label12.copyWith(color: AppColors.textInfo),
-                  children: [
-                    const TextSpan(text: '계속 진행하시면 '),
-                    TextSpan(
-                      text: '서비스 이용약관',
-                      style: const TextStyle(
-                        decoration: TextDecoration.underline,
-                      ),
-                    ),
-                    const TextSpan(text: ' 및\n'),
-                    TextSpan(
-                      text: '개인정보 처리방침',
-                      style: const TextStyle(
-                        decoration: TextDecoration.underline,
-                      ),
-                    ),
-                    const TextSpan(text: '에 동의하는 것으로 간주됩니다.'),
-                  ],
+                    if (isNewUser) {
+                      context.pushNamed('nickname-setup');
+                    } else {
+                      context.goNamed('home');
+                    }
+                  },
                 ),
-              ),
-            ],
+
+                const SizedBox(height: 30),
+
+                RichText(
+                  textAlign: TextAlign.center,
+                  text: TextSpan(
+                    style: AppTheme.label12.copyWith(color: AppColors.textInfo),
+                    children: [
+                      const TextSpan(text: '계속 진행하시면 '),
+                      TextSpan(
+                        text: '서비스 이용약관',
+                        style: const TextStyle(
+                          decoration: TextDecoration.underline,
+                        ),
+                      ),
+                      const TextSpan(text: ' 및\n'),
+                      TextSpan(
+                        text: '개인정보 처리방침',
+                        style: const TextStyle(
+                          decoration: TextDecoration.underline,
+                        ),
+                      ),
+                      const TextSpan(text: '에 동의하는 것으로 간주됩니다.'),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

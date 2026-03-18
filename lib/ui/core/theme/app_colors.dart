@@ -5,14 +5,15 @@ class AppColors {
 
   static const backgroundGradientStart = Color(0xFFF6DFF1); // 246, 223, 241
   static const backgroundGradientEnd   = Color(0xFFE1E9FF); // 225, 233, 255
-  static const cardGradientStart = Color(0xFFF4E3F0); // 244, 227, 240
-  static const cardGradientEnd = Color(0xFFECEBFF);
+  static const cardBackground = Color(0xFFEFD6E8);
+  static const cardGradientStart = Color(0xFFEED8EA);
+  static const cardGradientEnd   = Color(0xFFE4E5FF);
   static const calendarPurple = Color(0xFFE1C7FF);
   static const calendarPink   = Color(0xFFFFC1E3);
   static const questionBackground = Color(0xFFF3EEFD);
   static const reasonChipBackground = Color(0xFFF5E8F2);
   static const storyChipBackground = Color(0xFFF3EEFD);
-  static const profilePlaceholderBackground = Color(0xFFEDE6FF);
+  static const profilePlaceholderBackground = Color(0xFFE0D4FF);
   static const cameraButtonBackgroundVivid = Color(0xFF6E35C9);
   static const storySliderBackground = Color(0xFFEDE7FD);
   static const reasonSliderBackground = Color(0xFFF0DDEB);
