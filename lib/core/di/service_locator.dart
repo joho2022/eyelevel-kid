@@ -34,7 +34,6 @@ import '../../domain/repositories/question_repository.dart';
 import '../../domain/repositories/token_repository.dart';
 import '../../domain/repositories/user_repository.dart';
 
-import '../../domain/usecases/auth/refresh_token_usecase.dart';
 import '../../domain/usecases/auth/social_login_usecase.dart';
 import '../../domain/usecases/question/ask_question_use_case.dart';
 import '../../domain/usecases/question/delete_question_use_case.dart';
@@ -65,24 +64,22 @@ void setupDependencies() {
 
   // MARK: - UseCase (Auth)
   serviceLocator.registerLazySingleton(
-    () => LogoutUseCase(serviceLocator<AuthRepository>(), serviceLocator<TokenRepository>()),
-  );
-
-  serviceLocator.registerLazySingleton(
-        () => SocialLoginUseCase(serviceLocator<AuthRepository>()),
-  );
-
-  serviceLocator.registerLazySingleton(
-        () => RefreshTokenUseCase(
+    () => LogoutUseCase(
       serviceLocator<AuthRepository>(),
       serviceLocator<TokenRepository>(),
     ),
   );
 
   serviceLocator.registerLazySingleton(
-        () => WithdrawUseCase(serviceLocator<AuthRepository>(), serviceLocator<TokenRepository>())
+    () => SocialLoginUseCase(serviceLocator<AuthRepository>()),
   );
 
+  serviceLocator.registerLazySingleton(
+    () => WithdrawUseCase(
+      serviceLocator<AuthRepository>(),
+      serviceLocator<TokenRepository>(),
+    ),
+  );
 
   // MARK: - Dio
   serviceLocator.registerLazySingleton<Dio>(
@@ -99,8 +96,16 @@ void setupDependencies() {
     dio.interceptors.add(
       RefreshInterceptor(
         retryDio: retryDio,
-        refreshUseCase: serviceLocator<RefreshTokenUseCase>(),
-        logoutUseCase: serviceLocator<LogoutUseCase>(),
+        tokenRepository: serviceLocator<TokenRepository>(),
+      ),
+    );
+
+    dio.interceptors.add(
+      LogInterceptor(
+        request: true,
+        requestHeader: true,
+        requestBody: true,
+        responseBody: true,
       ),
     );
 
@@ -109,7 +114,10 @@ void setupDependencies() {
 
   // MARK: - Remote DataSource
   serviceLocator.registerLazySingleton<AuthRemoteDataSource>(
-    () => AuthRemoteDataSource(serviceLocator<Dio>(instanceName: 'retryDio')),
+    () => AuthRemoteDataSource(
+      dio: serviceLocator<Dio>(instanceName: 'mainDio'),
+      retryDio: serviceLocator<Dio>(instanceName: 'retryDio'),
+    ),
   );
 
   serviceLocator.registerLazySingleton(
@@ -133,12 +141,8 @@ void setupDependencies() {
   );
 
   // MARK: - Core Service
-  serviceLocator.registerLazySingleton(
-        () => ImagePickerService(),
-  );
-  serviceLocator.registerLazySingleton(
-        () => ImageCompressService(),
-  );
+  serviceLocator.registerLazySingleton(() => ImagePickerService());
+  serviceLocator.registerLazySingleton(() => ImageCompressService());
 
   // MARK: - Repository
   serviceLocator.registerLazySingleton<CalendarRepository>(
@@ -166,19 +170,19 @@ void setupDependencies() {
 
   // MARK: - UseCase (User)
   serviceLocator.registerLazySingleton(
-        () => FetchUserUseCase(serviceLocator<UserRepository>()),
+    () => FetchUserUseCase(serviceLocator<UserRepository>()),
   );
 
   serviceLocator.registerLazySingleton(
-        () => GetUserUseCase(serviceLocator<UserRepository>()),
+    () => GetUserUseCase(serviceLocator<UserRepository>()),
   );
 
   serviceLocator.registerLazySingleton(
-        () => ObserveUserUseCase(serviceLocator<UserRepository>()),
+    () => ObserveUserUseCase(serviceLocator<UserRepository>()),
   );
 
   serviceLocator.registerLazySingleton(
-        () => UpdateAnswerStyleUseCase(serviceLocator<UserRepository>()),
+    () => UpdateAnswerStyleUseCase(serviceLocator<UserRepository>()),
   );
 
   serviceLocator.registerLazySingleton(
@@ -190,7 +194,7 @@ void setupDependencies() {
   );
 
   serviceLocator.registerLazySingleton(
-        () => UploadProfileImageUseCase(serviceLocator<UserRepository>()),
+    () => UploadProfileImageUseCase(serviceLocator<UserRepository>()),
   );
 
   // MARK: - UseCase (Calendar)
@@ -224,7 +228,7 @@ void setupDependencies() {
   );
 
   serviceLocator.registerLazySingleton(
-        () => GetQuestionUseCase(serviceLocator<QuestionRepository>()),
+    () => GetQuestionUseCase(serviceLocator<QuestionRepository>()),
   );
 
   // MARK: - ViewModel (전역 상태)

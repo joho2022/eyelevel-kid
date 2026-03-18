@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:dio/dio.dart';
-import '../../domain/usecases/auth/refresh_token_usecase.dart';
-import '../../domain/usecases/auth/logout_usecase.dart';
+import '../../domain/repositories/token_repository.dart';
 
 class _RefreshManager {
   bool _isRefreshing = false;
@@ -30,15 +29,13 @@ class _RefreshManager {
 
 class RefreshInterceptor extends Interceptor {
   final Dio retryDio;
-  final RefreshTokenUseCase refreshUseCase;
-  final LogoutUseCase logoutUseCase;
+  final TokenRepository tokenRepository;
 
   final _RefreshManager _refreshManager = _RefreshManager();
 
   RefreshInterceptor({
     required this.retryDio,
-    required this.refreshUseCase,
-    required this.logoutUseCase,
+    required this.tokenRepository,
   });
 
   @override
@@ -47,18 +44,46 @@ class RefreshInterceptor extends Interceptor {
       return handler.next(err);
     }
 
-    try {
-      final newAccess = await _refreshManager.execute(() => refreshUseCase());
+    final requestOptions = err.requestOptions;
+    final isRefreshRequest = requestOptions.path == '/auth/refresh';
+    final isRetriedRequest = requestOptions.extra['retried'] == true;
 
-      final requestOptions = err.requestOptions;
+    if (isRefreshRequest || isRetriedRequest) {
+      await tokenRepository.clear();
+      return handler.next(err);
+    }
+
+    try {
+      final newAccess = await _refreshManager.execute(() async {
+        final refreshToken = await tokenRepository.getRefreshToken();
+
+        if (refreshToken == null) {
+          throw Exception('No refresh token');
+        }
+
+        final response = await retryDio.post(
+          '/auth/refresh',
+          data: {'refreshToken': refreshToken},
+        );
+
+        final result = Map<String, dynamic>.from(response.data as Map);
+        final access = result['accessToken'] as String;
+        final nextRefresh = (result['refreshToken'] as String?) ?? refreshToken;
+
+        await tokenRepository.saveTokens(access, nextRefresh);
+
+        return access;
+      });
 
       requestOptions.headers['Authorization'] = 'Bearer $newAccess';
+      requestOptions.extra['retried'] = true;
 
       final response = await retryDio.fetch(requestOptions);
 
       return handler.resolve(response);
     } catch (_) {
-      await logoutUseCase();
+      await tokenRepository.clear();
+
       return handler.next(err);
     }
   }

@@ -2,13 +2,17 @@ import 'package:dio/dio.dart';
 
 class AuthRemoteDataSource {
   final Dio dio;
+  final Dio retryDio;
 
-  AuthRemoteDataSource(this.dio);
+  AuthRemoteDataSource({
+    required this.dio,
+    required this.retryDio,
+  });
 
   Future<Map<String, dynamic>> socialLogin(
-    String provider,
-    String idToken,
-  ) async {
+      String provider,
+      String idToken,
+      ) async {
     final response = await dio.post(
       "/auth/social-login",
       data: {"provider": provider, "idToken": idToken},
@@ -18,7 +22,7 @@ class AuthRemoteDataSource {
   }
 
   Future<Map<String, dynamic>> refresh(String refreshToken) async {
-    final response = await dio.post(
+    final response = await retryDio.post(
       "/auth/refresh",
       data: {"refreshToken": refreshToken},
     );
@@ -29,9 +33,7 @@ class AuthRemoteDataSource {
   Future<void> logout(String refreshToken) async {
     await dio.post(
       "/auth/logout",
-      data: {
-        "refreshToken": refreshToken,
-      },
+      data: {"refreshToken": refreshToken},
     );
   }
 

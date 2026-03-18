@@ -15,6 +15,8 @@ class LogoutUseCase {
   Future<void> call() async {
 
     final refreshToken = await tokenRepository.getRefreshToken();
+    debugPrint("==== logout refreshToken ====");
+    debugPrint(refreshToken);
 
     if (refreshToken != null) {
       try {
