@@ -6,6 +6,7 @@ import 'package:eyelevel_kid/domain/usecases/user/observe_user_use_case.dart';
 import 'package:eyelevel_kid/domain/usecases/user/upload_profile_image_Use_Case.dart';
 import 'package:get_it/get_it.dart';
 import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../core/network/dio_client.dart';
 import '../../core/network/auth_interceptor.dart';
@@ -53,7 +54,13 @@ import '../image/image_picker_service.dart';
 
 final serviceLocator = GetIt.instance;
 
-void setupDependencies() {
+Future<void> setupDependencies() async {
+  final sharedPreferences = await SharedPreferences.getInstance();
+
+  serviceLocator.registerLazySingleton<SharedPreferences>(
+    () => sharedPreferences,
+  );
+
   // MARK: - TokenLocalDataSource
   serviceLocator.registerLazySingleton(() => TokenLocalDataSource());
 
@@ -131,7 +138,9 @@ void setupDependencies() {
 
   // MARK: - Local DataSource
   serviceLocator.registerLazySingleton(() => QuestionLocalDataSource());
-  serviceLocator.registerLazySingleton(() => UserLocalDataSource());
+  serviceLocator.registerLazySingleton(
+    () => UserLocalDataSource(serviceLocator<SharedPreferences>()),
+  );
 
   // MARK: - external DataSource
   serviceLocator.registerLazySingleton(() => GoogleAuthService());

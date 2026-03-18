@@ -12,7 +12,7 @@ Future<void> main() async {
 
   await dotenv.load(fileName: ".env");
 
-  setupDependencies();
+  await setupDependencies();
 
   MobileAds.instance.initialize();
 
