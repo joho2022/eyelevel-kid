@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../domain/entities/user.dart';
 import '../../../../domain/usecases/auth/logout_usecase.dart';
@@ -69,8 +71,26 @@ class MyViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void onTapRateApp() {
-    debugPrint('[MyViewModel] 평가하기 클릭');
+  Future<void> onTapRateApp() async {
+    final url = _getStoreUrl();
+    if (url == null) return;
+
+    final uri = Uri.parse(url);
+
+    try {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    } catch (e) {
+      debugPrint('스토어 이동 실패: $e');
+    }
+  }
+
+  String? _getStoreUrl() {
+    if (Platform.isIOS) {
+      return 'https://apps.apple.com/app/id6741756312?action=write-review';
+    } else if (Platform.isAndroid) {
+      return 'market://details?id=com.your.package';
+    }
+    return null;
   }
 
   void onTapShareApp() {
@@ -103,21 +123,16 @@ class MyViewModel extends ChangeNotifier {
     }
   }
 
-  Future<bool> withdraw() async {
+  Future<void> withdraw() async {
     state = state.copyWith(isLoading: true, errorMessage: null);
     notifyListeners();
 
     try {
       await withdrawUseCase();
-      return true;
     } catch (e) {
       debugPrint("withdraw error: $e");
 
-      state = state.copyWith(
-        errorMessage: "회원탈퇴에 실패했습니다",
-      );
-
-      return false;
+      state = state.copyWith(errorMessage: "회원탈퇴에 실패했습니다");
     } finally {
       state = state.copyWith(isLoading: false);
       notifyListeners();
