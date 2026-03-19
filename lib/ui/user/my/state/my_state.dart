@@ -12,6 +12,7 @@ abstract class MyState with _$MyState {
     String? profileImage,
     required AnswerStyle answerStyle,
     required bool isLoading,
+    required String appVersion,
 
     String? errorMessage,
   }) = _MyState;
@@ -21,6 +22,7 @@ abstract class MyState with _$MyState {
     profileImage: null,
     answerStyle: AnswerStyle.story,
     isLoading: false,
+    appVersion: '',
     errorMessage: null,
   );
 }

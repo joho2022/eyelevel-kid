@@ -63,12 +63,12 @@ class _MyView extends StatelessWidget {
                         (
                           title: '현재 버전',
                           trailing: Text(
-                            '1.0.0',
+                            state.appVersion,
                             style: AppTheme.title14.copyWith(
                               color: AppColors.iconSecondary,
                             ),
                           ),
-                          onTap: viewModel.onTapAppVersion,
+                          onTap: null,
                           textColor: AppColors.textDefault
                         ),
                         (

@@ -52,6 +52,7 @@ dependencies:
   flutter_native_splash: ^2.4.7
   sign_in_with_apple: ^7.0.1
   shared_preferences: ^2.5.4
+  package_info_plus: ^9.0.0
 
 
 

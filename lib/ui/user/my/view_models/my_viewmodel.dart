@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import '../../../../domain/entities/user.dart';
 import '../../../../domain/usecases/auth/logout_usecase.dart';
@@ -36,6 +37,7 @@ class MyViewModel extends ChangeNotifier {
   void _init() {
     _observeUser();
     fetchUserUseCase();
+    _loadAppVersion();
   }
 
   // MARK: - 유저 상태 구독
@@ -57,8 +59,14 @@ class MyViewModel extends ChangeNotifier {
   }
 
   // MARK: - 앱 정보
-  void onTapAppVersion() {
-    debugPrint('[MyViewModel] 앱 버전 클릭');
+  Future<void> _loadAppVersion() async {
+    final info = await PackageInfo.fromPlatform();
+
+    state = state.copyWith(
+      appVersion: '${info.version} (${info.buildNumber})',
+    );
+
+    notifyListeners();
   }
 
   void onTapRateApp() {
