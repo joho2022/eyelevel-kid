@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$UploadUrlResponseDto {
 
- String get uploadUrl; String get token; String get imageUrl;
+ String get uploadUrl; String get key;
 /// Create a copy of UploadUrlResponseDto
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $UploadUrlResponseDtoCopyWith<UploadUrlResponseDto> get copyWith => _$UploadUrlR
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is UploadUrlResponseDto&&(identical(other.uploadUrl, uploadUrl) || other.uploadUrl == uploadUrl)&&(identical(other.token, token) || other.token == token)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UploadUrlResponseDto&&(identical(other.uploadUrl, uploadUrl) || other.uploadUrl == uploadUrl)&&(identical(other.key, key) || other.key == key));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,uploadUrl,token,imageUrl);
+int get hashCode => Object.hash(runtimeType,uploadUrl,key);
 
 @override
 String toString() {
-  return 'UploadUrlResponseDto(uploadUrl: $uploadUrl, token: $token, imageUrl: $imageUrl)';
+  return 'UploadUrlResponseDto(uploadUrl: $uploadUrl, key: $key)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $UploadUrlResponseDtoCopyWith<$Res>  {
   factory $UploadUrlResponseDtoCopyWith(UploadUrlResponseDto value, $Res Function(UploadUrlResponseDto) _then) = _$UploadUrlResponseDtoCopyWithImpl;
 @useResult
 $Res call({
- String uploadUrl, String token, String imageUrl
+ String uploadUrl, String key
 });
 
 
@@ -65,11 +65,10 @@ class _$UploadUrlResponseDtoCopyWithImpl<$Res>
 
 /// Create a copy of UploadUrlResponseDto
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? uploadUrl = null,Object? token = null,Object? imageUrl = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? uploadUrl = null,Object? key = null,}) {
   return _then(_self.copyWith(
 uploadUrl: null == uploadUrl ? _self.uploadUrl : uploadUrl // ignore: cast_nullable_to_non_nullable
-as String,token: null == token ? _self.token : token // ignore: cast_nullable_to_non_nullable
-as String,imageUrl: null == imageUrl ? _self.imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
+as String,key: null == key ? _self.key : key // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }
@@ -155,10 +154,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String uploadUrl,  String token,  String imageUrl)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String uploadUrl,  String key)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _UploadUrlResponseDto() when $default != null:
-return $default(_that.uploadUrl,_that.token,_that.imageUrl);case _:
+return $default(_that.uploadUrl,_that.key);case _:
   return orElse();
 
 }
@@ -176,10 +175,10 @@ return $default(_that.uploadUrl,_that.token,_that.imageUrl);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String uploadUrl,  String token,  String imageUrl)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String uploadUrl,  String key)  $default,) {final _that = this;
 switch (_that) {
 case _UploadUrlResponseDto():
-return $default(_that.uploadUrl,_that.token,_that.imageUrl);case _:
+return $default(_that.uploadUrl,_that.key);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -196,10 +195,10 @@ return $default(_that.uploadUrl,_that.token,_that.imageUrl);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String uploadUrl,  String token,  String imageUrl)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String uploadUrl,  String key)?  $default,) {final _that = this;
 switch (_that) {
 case _UploadUrlResponseDto() when $default != null:
-return $default(_that.uploadUrl,_that.token,_that.imageUrl);case _:
+return $default(_that.uploadUrl,_that.key);case _:
   return null;
 
 }
@@ -211,12 +210,11 @@ return $default(_that.uploadUrl,_that.token,_that.imageUrl);case _:
 @JsonSerializable()
 
 class _UploadUrlResponseDto implements UploadUrlResponseDto {
-  const _UploadUrlResponseDto({required this.uploadUrl, required this.token, required this.imageUrl});
+  const _UploadUrlResponseDto({required this.uploadUrl, required this.key});
   factory _UploadUrlResponseDto.fromJson(Map<String, dynamic> json) => _$UploadUrlResponseDtoFromJson(json);
 
 @override final  String uploadUrl;
-@override final  String token;
-@override final  String imageUrl;
+@override final  String key;
 
 /// Create a copy of UploadUrlResponseDto
 /// with the given fields replaced by the non-null parameter values.
@@ -231,16 +229,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UploadUrlResponseDto&&(identical(other.uploadUrl, uploadUrl) || other.uploadUrl == uploadUrl)&&(identical(other.token, token) || other.token == token)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UploadUrlResponseDto&&(identical(other.uploadUrl, uploadUrl) || other.uploadUrl == uploadUrl)&&(identical(other.key, key) || other.key == key));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,uploadUrl,token,imageUrl);
+int get hashCode => Object.hash(runtimeType,uploadUrl,key);
 
 @override
 String toString() {
-  return 'UploadUrlResponseDto(uploadUrl: $uploadUrl, token: $token, imageUrl: $imageUrl)';
+  return 'UploadUrlResponseDto(uploadUrl: $uploadUrl, key: $key)';
 }
 
 
@@ -251,7 +249,7 @@ abstract mixin class _$UploadUrlResponseDtoCopyWith<$Res> implements $UploadUrlR
   factory _$UploadUrlResponseDtoCopyWith(_UploadUrlResponseDto value, $Res Function(_UploadUrlResponseDto) _then) = __$UploadUrlResponseDtoCopyWithImpl;
 @override @useResult
 $Res call({
- String uploadUrl, String token, String imageUrl
+ String uploadUrl, String key
 });
 
 
@@ -268,11 +266,10 @@ class __$UploadUrlResponseDtoCopyWithImpl<$Res>
 
 /// Create a copy of UploadUrlResponseDto
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? uploadUrl = null,Object? token = null,Object? imageUrl = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? uploadUrl = null,Object? key = null,}) {
   return _then(_UploadUrlResponseDto(
 uploadUrl: null == uploadUrl ? _self.uploadUrl : uploadUrl // ignore: cast_nullable_to_non_nullable
-as String,token: null == token ? _self.token : token // ignore: cast_nullable_to_non_nullable
-as String,imageUrl: null == imageUrl ? _self.imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
+as String,key: null == key ? _self.key : key // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }

@@ -9,7 +9,7 @@ part 'my_state.freezed.dart';
 abstract class MyState with _$MyState {
   const factory MyState({
     required String nickname,
-    String? profileImage,
+    String? profileImageUrl,
     required AnswerStyle answerStyle,
     required bool isLoading,
     required String appVersion,
@@ -19,7 +19,7 @@ abstract class MyState with _$MyState {
 
   factory MyState.initial() => const MyState(
     nickname: '',
-    profileImage: null,
+    profileImageUrl: null,
     answerStyle: AnswerStyle.story,
     isLoading: false,
     appVersion: '',

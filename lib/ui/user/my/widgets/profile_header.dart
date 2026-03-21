@@ -3,49 +3,72 @@ import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 
-class ProfileHeader extends StatelessWidget {
+class ProfileHeader extends StatefulWidget {
   final String nickname;
   final String? imagePath;
   final VoidCallback onImageTap;
+  final Future<void> Function()? onImageLoadFailed;
 
   const ProfileHeader({
     super.key,
     required this.nickname,
     required this.imagePath,
     required this.onImageTap,
+    this.onImageLoadFailed,
   });
 
+  @override
+  State<ProfileHeader> createState() => _ProfileHeaderState();
+}
+
+class _ProfileHeaderState extends State<ProfileHeader> {
+  bool _didRetryForCurrentUrl = false;
+
+  @override
+  void didUpdateWidget(covariant ProfileHeader oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.imagePath != widget.imagePath) {
+      _didRetryForCurrentUrl = false;
+    }
+  }
+
+  Widget _buildFallbackIcon() {
+    return const Icon(
+      Icons.person,
+      size: 42,
+      color: AppColors.profilePlaceholderIcon,
+    );
+  }
+
   Widget _buildProfileImage() {
-    if (imagePath == null) {
-      return const Icon(
-        Icons.person,
-        size: 42,
-        color: AppColors.profilePlaceholderIcon,
-      );
+    final imagePath = widget.imagePath;
+
+    if (imagePath == null || imagePath.isEmpty) {
+      return _buildFallbackIcon();
     }
 
     return Image.network(
-      imagePath!,
+      imagePath,
       fit: BoxFit.cover,
       width: 72,
       height: 72,
 
       loadingBuilder: (context, child, progress) {
         if (progress == null) return child;
-
-        return const Icon(
-          Icons.person,
-          size: 42,
-          color: AppColors.profilePlaceholderIcon,
-        );
+        return _buildFallbackIcon();
       },
 
       errorBuilder: (context, error, stackTrace) {
-        return const Icon(
-          Icons.person,
-          size: 42,
-          color: AppColors.profilePlaceholderIcon,
-        );
+        if (!_didRetryForCurrentUrl && widget.onImageLoadFailed != null) {
+          _didRetryForCurrentUrl = true;
+
+          WidgetsBinding.instance.addPostFrameCallback((_) async {
+            await widget.onImageLoadFailed?.call();
+          });
+        }
+
+        return _buildFallbackIcon();
       },
     );
   }
@@ -60,7 +83,7 @@ class ProfileHeader extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '$nickname님!',
+                '${widget.nickname}님!',
                 style: AppTheme.title24.copyWith(
                   color: AppColors.storyPurple,
                 ),
@@ -74,11 +97,9 @@ class ProfileHeader extends StatelessWidget {
             ],
           ),
         ),
-
         const SizedBox(width: 16),
-
         GestureDetector(
-          onTap: onImageTap,
+          onTap: widget.onImageTap,
           child: Stack(
             clipBehavior: Clip.none,
             children: [
@@ -93,7 +114,6 @@ class ProfileHeader extends StatelessWidget {
                   child: _buildProfileImage(),
                 ),
               ),
-
               Positioned(
                 right: -2,
                 bottom: -2,

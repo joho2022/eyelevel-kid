@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$MyState {
 
- String get nickname; String? get profileImage; AnswerStyle get answerStyle; bool get isLoading; String get appVersion; String? get errorMessage;
+ String get nickname; String? get profileImageUrl; AnswerStyle get answerStyle; bool get isLoading; String get appVersion; String? get errorMessage;
 /// Create a copy of MyState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $MyStateCopyWith<MyState> get copyWith => _$MyStateCopyWithImpl<MyState>(this as
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is MyState&&(identical(other.nickname, nickname) || other.nickname == nickname)&&(identical(other.profileImage, profileImage) || other.profileImage == profileImage)&&(identical(other.answerStyle, answerStyle) || other.answerStyle == answerStyle)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.appVersion, appVersion) || other.appVersion == appVersion)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is MyState&&(identical(other.nickname, nickname) || other.nickname == nickname)&&(identical(other.profileImageUrl, profileImageUrl) || other.profileImageUrl == profileImageUrl)&&(identical(other.answerStyle, answerStyle) || other.answerStyle == answerStyle)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.appVersion, appVersion) || other.appVersion == appVersion)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,nickname,profileImage,answerStyle,isLoading,appVersion,errorMessage);
+int get hashCode => Object.hash(runtimeType,nickname,profileImageUrl,answerStyle,isLoading,appVersion,errorMessage);
 
 @override
 String toString() {
-  return 'MyState(nickname: $nickname, profileImage: $profileImage, answerStyle: $answerStyle, isLoading: $isLoading, appVersion: $appVersion, errorMessage: $errorMessage)';
+  return 'MyState(nickname: $nickname, profileImageUrl: $profileImageUrl, answerStyle: $answerStyle, isLoading: $isLoading, appVersion: $appVersion, errorMessage: $errorMessage)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $MyStateCopyWith<$Res>  {
   factory $MyStateCopyWith(MyState value, $Res Function(MyState) _then) = _$MyStateCopyWithImpl;
 @useResult
 $Res call({
- String nickname, String? profileImage, AnswerStyle answerStyle, bool isLoading, String appVersion, String? errorMessage
+ String nickname, String? profileImageUrl, AnswerStyle answerStyle, bool isLoading, String appVersion, String? errorMessage
 });
 
 
@@ -62,10 +62,10 @@ class _$MyStateCopyWithImpl<$Res>
 
 /// Create a copy of MyState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? nickname = null,Object? profileImage = freezed,Object? answerStyle = null,Object? isLoading = null,Object? appVersion = null,Object? errorMessage = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? nickname = null,Object? profileImageUrl = freezed,Object? answerStyle = null,Object? isLoading = null,Object? appVersion = null,Object? errorMessage = freezed,}) {
   return _then(_self.copyWith(
 nickname: null == nickname ? _self.nickname : nickname // ignore: cast_nullable_to_non_nullable
-as String,profileImage: freezed == profileImage ? _self.profileImage : profileImage // ignore: cast_nullable_to_non_nullable
+as String,profileImageUrl: freezed == profileImageUrl ? _self.profileImageUrl : profileImageUrl // ignore: cast_nullable_to_non_nullable
 as String?,answerStyle: null == answerStyle ? _self.answerStyle : answerStyle // ignore: cast_nullable_to_non_nullable
 as AnswerStyle,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
 as bool,appVersion: null == appVersion ? _self.appVersion : appVersion // ignore: cast_nullable_to_non_nullable
@@ -155,10 +155,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String nickname,  String? profileImage,  AnswerStyle answerStyle,  bool isLoading,  String appVersion,  String? errorMessage)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String nickname,  String? profileImageUrl,  AnswerStyle answerStyle,  bool isLoading,  String appVersion,  String? errorMessage)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _MyState() when $default != null:
-return $default(_that.nickname,_that.profileImage,_that.answerStyle,_that.isLoading,_that.appVersion,_that.errorMessage);case _:
+return $default(_that.nickname,_that.profileImageUrl,_that.answerStyle,_that.isLoading,_that.appVersion,_that.errorMessage);case _:
   return orElse();
 
 }
@@ -176,10 +176,10 @@ return $default(_that.nickname,_that.profileImage,_that.answerStyle,_that.isLoad
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String nickname,  String? profileImage,  AnswerStyle answerStyle,  bool isLoading,  String appVersion,  String? errorMessage)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String nickname,  String? profileImageUrl,  AnswerStyle answerStyle,  bool isLoading,  String appVersion,  String? errorMessage)  $default,) {final _that = this;
 switch (_that) {
 case _MyState():
-return $default(_that.nickname,_that.profileImage,_that.answerStyle,_that.isLoading,_that.appVersion,_that.errorMessage);case _:
+return $default(_that.nickname,_that.profileImageUrl,_that.answerStyle,_that.isLoading,_that.appVersion,_that.errorMessage);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -196,10 +196,10 @@ return $default(_that.nickname,_that.profileImage,_that.answerStyle,_that.isLoad
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String nickname,  String? profileImage,  AnswerStyle answerStyle,  bool isLoading,  String appVersion,  String? errorMessage)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String nickname,  String? profileImageUrl,  AnswerStyle answerStyle,  bool isLoading,  String appVersion,  String? errorMessage)?  $default,) {final _that = this;
 switch (_that) {
 case _MyState() when $default != null:
-return $default(_that.nickname,_that.profileImage,_that.answerStyle,_that.isLoading,_that.appVersion,_that.errorMessage);case _:
+return $default(_that.nickname,_that.profileImageUrl,_that.answerStyle,_that.isLoading,_that.appVersion,_that.errorMessage);case _:
   return null;
 
 }
@@ -211,11 +211,11 @@ return $default(_that.nickname,_that.profileImage,_that.answerStyle,_that.isLoad
 
 
 class _MyState implements MyState {
-  const _MyState({required this.nickname, this.profileImage, required this.answerStyle, required this.isLoading, required this.appVersion, this.errorMessage});
+  const _MyState({required this.nickname, this.profileImageUrl, required this.answerStyle, required this.isLoading, required this.appVersion, this.errorMessage});
   
 
 @override final  String nickname;
-@override final  String? profileImage;
+@override final  String? profileImageUrl;
 @override final  AnswerStyle answerStyle;
 @override final  bool isLoading;
 @override final  String appVersion;
@@ -231,16 +231,16 @@ _$MyStateCopyWith<_MyState> get copyWith => __$MyStateCopyWithImpl<_MyState>(thi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MyState&&(identical(other.nickname, nickname) || other.nickname == nickname)&&(identical(other.profileImage, profileImage) || other.profileImage == profileImage)&&(identical(other.answerStyle, answerStyle) || other.answerStyle == answerStyle)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.appVersion, appVersion) || other.appVersion == appVersion)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MyState&&(identical(other.nickname, nickname) || other.nickname == nickname)&&(identical(other.profileImageUrl, profileImageUrl) || other.profileImageUrl == profileImageUrl)&&(identical(other.answerStyle, answerStyle) || other.answerStyle == answerStyle)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.appVersion, appVersion) || other.appVersion == appVersion)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,nickname,profileImage,answerStyle,isLoading,appVersion,errorMessage);
+int get hashCode => Object.hash(runtimeType,nickname,profileImageUrl,answerStyle,isLoading,appVersion,errorMessage);
 
 @override
 String toString() {
-  return 'MyState(nickname: $nickname, profileImage: $profileImage, answerStyle: $answerStyle, isLoading: $isLoading, appVersion: $appVersion, errorMessage: $errorMessage)';
+  return 'MyState(nickname: $nickname, profileImageUrl: $profileImageUrl, answerStyle: $answerStyle, isLoading: $isLoading, appVersion: $appVersion, errorMessage: $errorMessage)';
 }
 
 
@@ -251,7 +251,7 @@ abstract mixin class _$MyStateCopyWith<$Res> implements $MyStateCopyWith<$Res> {
   factory _$MyStateCopyWith(_MyState value, $Res Function(_MyState) _then) = __$MyStateCopyWithImpl;
 @override @useResult
 $Res call({
- String nickname, String? profileImage, AnswerStyle answerStyle, bool isLoading, String appVersion, String? errorMessage
+ String nickname, String? profileImageUrl, AnswerStyle answerStyle, bool isLoading, String appVersion, String? errorMessage
 });
 
 
@@ -268,10 +268,10 @@ class __$MyStateCopyWithImpl<$Res>
 
 /// Create a copy of MyState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? nickname = null,Object? profileImage = freezed,Object? answerStyle = null,Object? isLoading = null,Object? appVersion = null,Object? errorMessage = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? nickname = null,Object? profileImageUrl = freezed,Object? answerStyle = null,Object? isLoading = null,Object? appVersion = null,Object? errorMessage = freezed,}) {
   return _then(_MyState(
 nickname: null == nickname ? _self.nickname : nickname // ignore: cast_nullable_to_non_nullable
-as String,profileImage: freezed == profileImage ? _self.profileImage : profileImage // ignore: cast_nullable_to_non_nullable
+as String,profileImageUrl: freezed == profileImageUrl ? _self.profileImageUrl : profileImageUrl // ignore: cast_nullable_to_non_nullable
 as String?,answerStyle: null == answerStyle ? _self.answerStyle : answerStyle // ignore: cast_nullable_to_non_nullable
 as AnswerStyle,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
 as bool,appVersion: null == appVersion ? _self.appVersion : appVersion // ignore: cast_nullable_to_non_nullable

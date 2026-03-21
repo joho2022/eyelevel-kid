@@ -8,8 +8,7 @@ part 'upload_url_response_dto.g.dart';
 abstract class UploadUrlResponseDto with _$UploadUrlResponseDto {
   const factory UploadUrlResponseDto({
     required String uploadUrl,
-    required String token,
-    required String imageUrl,
+    required String key,
   }) = _UploadUrlResponseDto;
 
   factory UploadUrlResponseDto.fromJson(Map<String, dynamic> json) =>

@@ -7,7 +7,7 @@ class UploadProfileImageUseCase {
 
   UploadProfileImageUseCase(this.repository);
 
-  Future<String> call(File file) async {
-    return repository.uploadProfileImage(file);
+  Future<void> call(File file) async {
+    await repository.uploadProfileImage(file);
   }
 }

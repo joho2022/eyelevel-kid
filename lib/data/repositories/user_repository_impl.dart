@@ -26,7 +26,7 @@ class UserRepositoryImpl implements UserRepository {
     final updatedUser = local.getUser().copyWith(
       id: dto.id,
       nickname: dto.nickname,
-      profileImage: dto.profileImage,
+      profileImageUrl: dto.profileImageUrl,
     );
 
     local.saveUser(updatedUser);
@@ -35,17 +35,17 @@ class UserRepositoryImpl implements UserRepository {
   @override
   Future<void> updateProfile({
     String? nickname,
-    String? profileImage,
+    String? profileImageKey,
   }) async {
     final dto = await remote.updateUser(
       nickname: nickname,
-      profileImage: profileImage,
+      profileImageKey: profileImageKey,
     );
 
     final updatedUser = local.getUser().copyWith(
       id: dto.id,
       nickname: dto.nickname,
-      profileImage: dto.profileImage,
+      profileImageUrl: dto.profileImageUrl,
     );
 
     local.saveUser(updatedUser);
@@ -58,7 +58,7 @@ class UserRepositoryImpl implements UserRepository {
     final updatedUser = local.getUser().copyWith(
       id: dto.id,
       nickname: dto.nickname,
-      profileImage: dto.profileImage,
+      profileImageUrl: dto.profileImageUrl,
     );
 
     local.saveUser(updatedUser);
@@ -70,20 +70,45 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
+  Future<void> clearLocalUser() async {
+    local.clearUser();
+  }
+
+  @override
   User getUser() => local.getUser();
 
   @override
   Stream<User> observeUser() => local.observeUser();
 
+  // MARK: - 프로필 이미지 업로드
   @override
-  Future<String> uploadProfileImage(File file) async {
+  Future<void> uploadProfileImage(File file) async {
+    // 1. 서버에서 uploadUrl + key 발급
     final uploadInfo = await remote.createProfileImageUploadUrl();
 
-    final uploadUrl = uploadInfo.uploadUrl;
-    final imageUrl = uploadInfo.imageUrl;
+    // 2. S3에 직접 업로드
+    await imageUpload.uploadImage(uploadUrl: uploadInfo.uploadUrl, file: file);
 
-    await imageUpload.uploadImage(uploadUrl: uploadUrl, file: file);
+    // 3. 서버에 key 저장
+    final dto = await remote.updateUser(profileImageKey: uploadInfo.key);
 
-    return imageUrl;
+    // 4. 서버 응답의 최신 profileImageUrl로 로컬 유저 갱신
+    final updatedUser = local.getUser().copyWith(
+      id: dto.id,
+      nickname: dto.nickname,
+      profileImageUrl: dto.profileImageUrl,
+    );
+
+    local.saveUser(updatedUser);
+  }
+
+  // MARK: - 만료 시 profileImageUrl만 재발급
+  @override
+  Future<String?> refreshProfileImageUrl() async {
+    final profileImageUrl = await remote.refreshProfileImageUrl();
+
+    local.updateProfileImageUrl(profileImageUrl);
+
+    return profileImageUrl;
   }
 }

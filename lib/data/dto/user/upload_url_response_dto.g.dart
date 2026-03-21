@@ -10,14 +10,9 @@ _UploadUrlResponseDto _$UploadUrlResponseDtoFromJson(
   Map<String, dynamic> json,
 ) => _UploadUrlResponseDto(
   uploadUrl: json['uploadUrl'] as String,
-  token: json['token'] as String,
-  imageUrl: json['imageUrl'] as String,
+  key: json['key'] as String,
 );
 
 Map<String, dynamic> _$UploadUrlResponseDtoToJson(
   _UploadUrlResponseDto instance,
-) => <String, dynamic>{
-  'uploadUrl': instance.uploadUrl,
-  'token': instance.token,
-  'imageUrl': instance.imageUrl,
-};
+) => <String, dynamic>{'uploadUrl': instance.uploadUrl, 'key': instance.key};

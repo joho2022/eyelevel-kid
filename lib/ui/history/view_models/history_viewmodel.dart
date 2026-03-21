@@ -6,7 +6,7 @@ import '../../../domain/entities/question_record.dart';
 import '../../../domain/usecases/question/delete_question_use_case.dart';
 import '../../../domain/usecases/question/get_question_page_use_case.dart';
 import '../../../domain/usecases/question/observe_all_questions_use_case.dart';
-import '../../../domain/usecases/question/toggle_bookmark_usecase.dart';
+import '../../../domain/usecases/question/toggle_bookmark_use_case.dart';
 import '../state/history_state.dart';
 
 class HistoryViewModel extends ChangeNotifier {

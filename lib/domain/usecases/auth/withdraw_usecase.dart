@@ -2,14 +2,17 @@ import 'package:flutter/foundation.dart';
 
 import '../../repositories/auth_repository.dart';
 import '../../repositories/token_repository.dart';
+import '../../repositories/user_repository.dart';
 
 class WithdrawUseCase {
   final AuthRepository authRepository;
   final TokenRepository tokenRepository;
+  final UserRepository userRepository;
 
   WithdrawUseCase(
       this.authRepository,
       this.tokenRepository,
+      this.userRepository,
       );
 
   Future<void> call() async {
@@ -20,5 +23,6 @@ class WithdrawUseCase {
     }
 
     await tokenRepository.clear();
+    await userRepository.clearLocalUser();
   }
 }

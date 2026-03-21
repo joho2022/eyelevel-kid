@@ -1,6 +1,6 @@
 import 'package:eyelevel_kid/domain/usecases/question/delete_question_use_case.dart';
 import 'package:eyelevel_kid/domain/usecases/question/observe_all_questions_use_case.dart';
-import 'package:eyelevel_kid/domain/usecases/question/toggle_bookmark_usecase.dart';
+import 'package:eyelevel_kid/domain/usecases/question/toggle_bookmark_use_case.dart';
 import 'package:eyelevel_kid/ui/history/view_models/history_viewmodel.dart';
 
 import '../../core/di/service_locator.dart';

@@ -12,9 +12,16 @@ abstract class UserRepository {
 
   Future<void> updateNickname(String nickname);
 
-  Future<void> updateProfile({String? nickname, String? profileImage});
+  Future<void> updateProfile({
+    String? nickname,
+    String? profileImageKey,
+  });
 
   Future<void> updateAnswerStyle(AnswerStyle style);
 
-  Future<String> uploadProfileImage(File file);
+  Future<void> clearLocalUser();
+
+  Future<void> uploadProfileImage(File file);
+
+  Future<String?> refreshProfileImageUrl();
 }

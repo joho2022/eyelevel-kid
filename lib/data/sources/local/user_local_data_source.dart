@@ -13,7 +13,7 @@ class UserLocalDataSource {
   User _user = const User(
     id: 0,
     nickname: '',
-    profileImage: null,
+    profileImageUrl: null,
     answerStyle: AnswerStyle.story,
   );
 
@@ -39,6 +39,23 @@ class UserLocalDataSource {
     _controller.add(_user);
   }
 
+  void updateProfileImageUrl(String? profileImageUrl) {
+    _user = _user.copyWith(profileImageUrl: profileImageUrl);
+    _persistUser(_user);
+    _controller.add(_user);
+  }
+
+  void clearUser() {
+    _user = const User(
+      id: 0,
+      nickname: '',
+      profileImageUrl: null,
+      answerStyle: AnswerStyle.story,
+    );
+    sharedPreferences.remove(_userCacheKey);
+    _controller.add(_user);
+  }
+
   User _restoreUser() {
     final raw = sharedPreferences.getString(_userCacheKey);
 
@@ -52,9 +69,9 @@ class UserLocalDataSource {
       return User(
         id: json['id'] as int? ?? 0,
         nickname: json['nickname'] as String? ?? '',
-        profileImage: json['profileImage'] as String?,
+        profileImageUrl: json['profileImageUrl'] as String?,
         answerStyle: AnswerStyle.values.firstWhere(
-          (style) => style.name == json['answerStyle'],
+              (style) => style.name == json['answerStyle'],
           orElse: () => AnswerStyle.story,
         ),
       );
@@ -68,7 +85,7 @@ class UserLocalDataSource {
     final json = <String, dynamic>{
       'id': user.id,
       'nickname': user.nickname,
-      'profileImage': user.profileImage,
+      'profileImageUrl': user.profileImageUrl,
       'answerStyle': user.answerStyle.name,
     };
 

@@ -5,7 +5,7 @@ import '../../../../core/image/image_compress_service.dart';
 import '../../../../core/image/image_picker_service.dart';
 import '../../../../domain/usecases/user/get_user_use_case.dart';
 import '../../../../domain/usecases/user/update_profile_use_case.dart';
-import '../../../../domain/usecases/user/upload_profile_image_Use_Case.dart';
+import '../../../../domain/usecases/user/upload_profile_image_use_case.dart';
 import '../state/profile_edit_state.dart';
 
 class ProfileEditViewModel extends ChangeNotifier {
@@ -16,7 +16,7 @@ class ProfileEditViewModel extends ChangeNotifier {
   final ImagePickerService imagePickerService;
   final ImageCompressService imageCompressService;
 
-  late final String _originalNickname;
+  late String _originalNickname;
 
   ProfileEditState state = const ProfileEditState();
 
@@ -37,7 +37,7 @@ class ProfileEditViewModel extends ChangeNotifier {
 
     state = state.copyWith(
       nickname: user.nickname,
-      imagePath: user.profileImage,
+      imagePath: user.profileImageUrl,
       imageFile: null,
       errorMessage: null,
       canSubmit: false,
@@ -54,7 +54,6 @@ class ProfileEditViewModel extends ChangeNotifier {
       errorMessage: error,
       canSubmit: _computeCanSubmit(
         nickname: value,
-        imagePath: state.imagePath,
         error: error,
       ),
     );
@@ -69,11 +68,21 @@ class ProfileEditViewModel extends ChangeNotifier {
 
       final compressed = await imageCompressService.compress(file);
 
-      state = state.copyWith(imageFile: compressed, canSubmit: true);
+      state = state.copyWith(
+        imageFile: compressed,
+        canSubmit: true,
+        errorMessage: null,
+      );
 
       notifyListeners();
     } catch (e) {
-      state = state.copyWith(errorMessage: "이미지 선택 실패");
+      debugPrint('이미지 선택 실패: $e');
+
+      state = state.copyWith(
+        canSubmit: false,
+        errorMessage: '이미지 선택 실패',
+      );
+
       notifyListeners();
     }
   }
@@ -107,55 +116,69 @@ class ProfileEditViewModel extends ChangeNotifier {
 
   bool _computeCanSubmit({
     required String nickname,
-    required String? imagePath,
     required String? error,
   }) {
-    final isChanged = nickname != _originalNickname || state.imageFile != null;
+    final trimmedNickname = nickname.trim();
 
-    return error == null && nickname.isNotEmpty && isChanged;
+    final isNicknameChanged = trimmedNickname != _originalNickname;
+    final isImageChanged = state.imageFile != null;
+
+    return error == null &&
+        trimmedNickname.isNotEmpty &&
+        (isNicknameChanged || isImageChanged);
   }
 
   Future<bool> submit() async {
     if (!state.canSubmit || state.isLoading) return false;
 
-    state = state.copyWith(isLoading: true);
+    state = state.copyWith(
+      isLoading: true,
+      errorMessage: null,
+    );
     notifyListeners();
 
     try {
-      String? imageUrl = state.imagePath;
+      final trimmedNickname = state.nickname.trim();
 
-      if (state.imageFile != null) {
-        final result = await uploadProfileImageUseCase(state.imageFile!);
+      final isNicknameChanged = trimmedNickname != _originalNickname;
+      final isImageChanged = state.imageFile != null;
 
-        debugPrint("==== upload 결과 ====");
-        debugPrint("value: $result");
-        debugPrint("type: ${result.runtimeType}");
-
-        imageUrl = result;
+      // [변경] 닉네임 수정
+      // updateProfileUseCase는 이제 nickname / profileImageKey 구조지만
+      // 여기서는 닉네임만 수정하므로 nickname만 전달
+      if (isNicknameChanged) {
+        await updateProfileUseCase(
+          nickname: trimmedNickname,
+        );
       }
 
-      debugPrint("==== 서버 업데이트 요청 ====");
-      debugPrint("nickname: ${state.nickname.trim()}");
-      debugPrint("profileImagePath: $imageUrl");
-      debugPrint("profileImagePath type: ${imageUrl.runtimeType}");
+      // [변경] 이미지 수정
+      // uploadProfileImageUseCase 내부에서
+      // 1. 업로드 URL 발급
+      // 2. S3 업로드
+      // 3. key 저장
+      // 4. local user 갱신
+      // 까지 완료함
+      if (isImageChanged) {
+        await uploadProfileImageUseCase(state.imageFile!);
+      }
 
-      await updateProfileUseCase(
-        nickname: state.nickname.trim(),
-        profileImage: imageUrl,
+      // [변경] 저장 성공 후 기준값 갱신
+      _originalNickname = trimmedNickname;
+
+      state = state.copyWith(
+        isLoading: false,
+        imageFile: null,
+        errorMessage: null,
+        canSubmit: false,
       );
-
-      debugPrint("==== updateProfile 성공 ====");
-
-      state = state.copyWith(isLoading: false);
       notifyListeners();
 
       return true;
     } catch (e) {
-
       String message = '저장 중 오류가 발생했어요';
 
       if (e is DioException) {
-
         final data = e.response?.data;
 
         if (data is Map && data['message'] != null) {
@@ -173,8 +196,6 @@ class ProfileEditViewModel extends ChangeNotifier {
         isLoading: false,
         errorMessage: message,
       );
-
-      notifyListeners();
 
       notifyListeners();
 

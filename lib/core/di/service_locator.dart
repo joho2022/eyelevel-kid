@@ -3,7 +3,8 @@ import 'package:eyelevel_kid/domain/usecases/auth/withdraw_usecase.dart';
 import 'package:eyelevel_kid/domain/usecases/question/get_question_use_case.dart';
 import 'package:eyelevel_kid/domain/usecases/user/fetch_user_use_case.dart';
 import 'package:eyelevel_kid/domain/usecases/user/observe_user_use_case.dart';
-import 'package:eyelevel_kid/domain/usecases/user/upload_profile_image_Use_Case.dart';
+import 'package:eyelevel_kid/domain/usecases/user/refresh_profile_image_url_use_case.dart';
+import 'package:eyelevel_kid/domain/usecases/user/upload_profile_image_use_case.dart';
 import 'package:get_it/get_it.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -46,7 +47,7 @@ import '../../domain/usecases/auth/logout_usecase.dart';
 import '../../domain/usecases/question/observe_all_questions_use_case.dart';
 import '../../domain/usecases/user/update_nickname_use_case.dart';
 import '../../domain/usecases/user/update_profile_use_case.dart';
-import '../../domain/usecases/question/toggle_bookmark_usecase.dart';
+import '../../domain/usecases/question/toggle_bookmark_use_case.dart';
 import '../../domain/usecases/user/update_answer_style_use_case.dart';
 import '../auth/app_auth_viewmodel.dart';
 import '../image/image_compress_service.dart';
@@ -74,6 +75,7 @@ Future<void> setupDependencies() async {
     () => LogoutUseCase(
       serviceLocator<AuthRepository>(),
       serviceLocator<TokenRepository>(),
+      serviceLocator<UserRepository>(),
     ),
   );
 
@@ -85,6 +87,7 @@ Future<void> setupDependencies() async {
     () => WithdrawUseCase(
       serviceLocator<AuthRepository>(),
       serviceLocator<TokenRepository>(),
+      serviceLocator<UserRepository>(),
     ),
   );
 
@@ -204,6 +207,10 @@ Future<void> setupDependencies() async {
 
   serviceLocator.registerLazySingleton(
     () => UploadProfileImageUseCase(serviceLocator<UserRepository>()),
+  );
+
+  serviceLocator.registerLazySingleton(
+    () => RefreshProfileImageUrlUseCase(serviceLocator<UserRepository>()),
   );
 
   // MARK: - UseCase (Calendar)

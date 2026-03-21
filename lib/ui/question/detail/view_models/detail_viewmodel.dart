@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 import '../../../../domain/usecases/question/get_question_use_case.dart';
-import '../../../../domain/usecases/question/toggle_bookmark_usecase.dart';
+import '../../../../domain/usecases/question/toggle_bookmark_use_case.dart';
 import '../state/detail_state.dart';
 
 class DetailViewModel extends ChangeNotifier {
