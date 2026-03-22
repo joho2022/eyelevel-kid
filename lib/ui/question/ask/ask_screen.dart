@@ -134,7 +134,7 @@ class _AskQuestionView extends StatelessWidget {
                     20,
                     12,
                     20,
-                    MediaQuery.of(context).viewInsets.bottom,
+                    MediaQuery.of(context).viewInsets.bottom + 12,
                   ),
                   child: SizedBox(
                     height: 52,

@@ -19,23 +19,27 @@ import '../../data/sources/local/token_local_datasource.dart';
 import '../../data/sources/local/user_local_data_source.dart';
 
 import '../../data/sources/remote/auth_remote_data_source.dart';
+import '../../data/sources/remote/app_config_remote_data_source.dart';
 
 import 'package:eyelevel_kid/data/sources/external/google_auth_service.dart';
 import '../../data/sources/external/apple_auth_service.dart';
 
 import '../../data/repositories/auth_repository_impl.dart';
+import '../../data/repositories/app_config_repository_impl.dart';
 import '../../data/repositories/calendar_repository_impl.dart';
 import '../../data/repositories/question_repository_impl.dart';
 import '../../data/repositories/token_repository_impl.dart';
 import '../../data/repositories/user_repository_impl.dart';
 
 import '../../data/sources/remote/question_remote_data_source.dart';
+import '../../domain/repositories/app_config_repository.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../../domain/repositories/calendar_repository.dart';
 import '../../domain/repositories/question_repository.dart';
 import '../../domain/repositories/token_repository.dart';
 import '../../domain/repositories/user_repository.dart';
 
+import '../../domain/usecases/app_config/fetch_app_config_usecase.dart';
 import '../../domain/usecases/auth/social_login_usecase.dart';
 import '../../domain/usecases/question/ask_question_use_case.dart';
 import '../../domain/usecases/question/delete_question_use_case.dart';
@@ -135,6 +139,10 @@ Future<void> setupDependencies() async {
   );
 
   serviceLocator.registerLazySingleton(
+    () => AppConfigRemoteDataSource(serviceLocator<Dio>(instanceName: 'mainDio')),
+  );
+
+  serviceLocator.registerLazySingleton(
     () =>
         QuestionRemoteDataSource(serviceLocator<Dio>(instanceName: 'mainDio')),
   );
@@ -176,6 +184,12 @@ Future<void> setupDependencies() async {
     ),
   );
 
+  serviceLocator.registerLazySingleton<AppConfigRepository>(
+    () => AppConfigRepositoryImpl(
+      remote: serviceLocator<AppConfigRemoteDataSource>(),
+    ),
+  );
+
   serviceLocator.registerLazySingleton<AuthRepository>(
     () => AuthRepositoryImpl(serviceLocator<AuthRemoteDataSource>()),
   );
@@ -211,6 +225,10 @@ Future<void> setupDependencies() async {
 
   serviceLocator.registerLazySingleton(
     () => RefreshProfileImageUrlUseCase(serviceLocator<UserRepository>()),
+  );
+
+  serviceLocator.registerLazySingleton(
+    () => FetchAppConfigUseCase(serviceLocator<AppConfigRepository>()),
   );
 
   // MARK: - UseCase (Calendar)

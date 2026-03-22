@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import 'package:provider/provider.dart';
 
+import 'package:eyelevel_kid/ui/core/launch/app_config_prompt_presenter.dart';
 import 'package:eyelevel_kid/ui/core/theme/app_colors.dart';
 import 'package:eyelevel_kid/ui/core/theme/app_theme.dart';
 import 'package:eyelevel_kid/ui/core/widgets/app_background.dart';
@@ -22,19 +23,19 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => createHomeViewModel(),
-      child: const HomeView(),
+      child: const _HomeView(),
     );
   }
 }
 
-class HomeView extends StatefulWidget {
-  const HomeView({super.key});
+class _HomeView extends StatefulWidget {
+  const _HomeView();
 
   @override
-  State<HomeView> createState() => _HomeViewState();
+  State<_HomeView> createState() => _HomeViewState();
 }
 
-class _HomeViewState extends State<HomeView> {
+class _HomeViewState extends State<_HomeView> {
   final ScrollController _scrollController = ScrollController();
 
   bool _isCollapsed = false;
@@ -49,6 +50,11 @@ class _HomeViewState extends State<HomeView> {
       } else if (_scrollController.offset <= 80 && _isCollapsed) {
         setState(() => _isCollapsed = false);
       }
+    });
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      AppConfigPromptPresenter.present(context);
     });
   }
 
@@ -87,10 +93,7 @@ class _HomeViewState extends State<HomeView> {
                     child: Center(child: CircularProgressIndicator()),
                   )
                 else
-                  HomeHeader(
-                    title: state.title,
-                    subtitle: state.subtitle,
-                  ),
+                  HomeHeader(title: state.title, subtitle: state.subtitle),
 
                 const SizedBox(height: 32),
 
@@ -105,9 +108,7 @@ class _HomeViewState extends State<HomeView> {
                   onMonthChanged: viewModel.loadCalendarSummary,
                   onDateSelected: viewModel.selectDate,
                   onQuestionSelected: (question) {
-                    context.push(
-                      RoutePaths.questionDetailPath(question.id),
-                    );
+                    context.push(RoutePaths.questionDetailPath(question.id));
                   },
                 ),
 
@@ -138,27 +139,26 @@ class _HomeViewState extends State<HomeView> {
                   const SizedBox(height: 12),
 
                   Column(
-                    children: List.generate(
-                      state.recentQuestions.length,
-                      (index) {
-                        final question = state.recentQuestions[index];
+                    children: List.generate(state.recentQuestions.length, (
+                      index,
+                    ) {
+                      final question = state.recentQuestions[index];
 
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 20),
-                          child: QuestionSummaryCard(
-                            key: ValueKey(question.id),
-                            question: question,
-                            onTap: () {
-                              context.push(
-                                RoutePaths.questionDetailPath(question.id),
-                              );
-                            },
-                            onBookmarkTap: () =>
-                                viewModel.toggleBookmark(question),
-                          ),
-                        );
-                      },
-                    ),
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 20),
+                        child: QuestionSummaryCard(
+                          key: ValueKey(question.id),
+                          question: question,
+                          onTap: () {
+                            context.push(
+                              RoutePaths.questionDetailPath(question.id),
+                            );
+                          },
+                          onBookmarkTap: () =>
+                              viewModel.toggleBookmark(question),
+                        ),
+                      );
+                    }),
                   ),
                 ],
 
@@ -176,10 +176,7 @@ class _AskFloatingButton extends StatelessWidget {
   final bool isCollapsed;
   final VoidCallback onTap;
 
-  const _AskFloatingButton({
-    required this.isCollapsed,
-    required this.onTap,
-  });
+  const _AskFloatingButton({required this.isCollapsed, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -217,26 +214,23 @@ class _AskFloatingButton extends StatelessWidget {
                     sizeFactor: anim,
                     axis: Axis.horizontal,
                     axisAlignment: 0,
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: child,
-                    ),
+                    child: Align(alignment: Alignment.center, child: child),
                   ),
                 );
               },
               child: isCollapsed
                   ? const SizedBox.shrink(key: ValueKey('collapsed'))
                   : Padding(
-                key: const ValueKey('expanded'),
-                padding: const EdgeInsets.only(left: 8),
-                child: Text(
-                  '질문하기',
-                  style: AppTheme.title14.copyWith(
-                      color: AppColors.white,
+                      key: const ValueKey('expanded'),
+                      padding: const EdgeInsets.only(left: 8),
+                      child: Text(
+                        '질문하기',
+                        style: AppTheme.title14.copyWith(
+                          color: AppColors.white,
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-              ),
+            ),
           ],
         ),
       ),

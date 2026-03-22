@@ -103,7 +103,7 @@ class _NicknameSetupView extends StatelessWidget {
                     24,
                     12,
                     24,
-                    MediaQuery.of(context).viewInsets.bottom,
+                    MediaQuery.of(context).viewInsets.bottom + 12,
                   ),
                   child: SizedBox(
                     height: 52,

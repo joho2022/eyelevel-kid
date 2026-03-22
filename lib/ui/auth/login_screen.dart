@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:eyelevel_kid/ui/core/theme/app_colors.dart';
 import 'package:eyelevel_kid/ui/core/theme/app_theme.dart';
 import 'package:eyelevel_kid/ui/core/theme/app_images.dart';
+import 'package:eyelevel_kid/ui/core/launch/app_config_prompt_presenter.dart';
 import 'package:eyelevel_kid/ui/core/widgets/app_background.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -27,7 +28,7 @@ class LoginScreen extends StatelessWidget {
 }
 
 class _LoginView extends StatefulWidget {
-  const _LoginView({super.key});
+  const _LoginView();
 
   @override
   State<_LoginView> createState() => __LoginViewState();
@@ -45,6 +46,11 @@ class __LoginViewState extends State<_LoginView>
     super.initState();
 
     _initAnimations();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      AppConfigPromptPresenter.present(context);
+    });
   }
 
   void _initAnimations() {
@@ -106,15 +112,15 @@ class __LoginViewState extends State<_LoginView>
 
                 const SizedBox(height: 80),
 
-                if (Platform.isIOS) ... [
+                if (Platform.isIOS) ...[
                   SocialLoginButton(
                     icon: AppImages.appleIcon,
                     text: 'Apple로 계속하기',
                     isLoading: state.isAppleLoading,
                     onPressed: () async {
-                      final isNewUser = await context.read<LoginViewModel>().login(
-                        SocialProvider.apple,
-                      );
+                      final isNewUser = await context
+                          .read<LoginViewModel>()
+                          .login(SocialProvider.apple);
 
                       if (isNewUser == null || !context.mounted) return;
 
@@ -129,15 +135,14 @@ class __LoginViewState extends State<_LoginView>
                   const SizedBox(height: 12),
                 ],
 
-
                 SocialLoginButton(
                   icon: AppImages.googleIcon,
                   text: 'Google로 계속하기',
                   isLoading: state.isGoogleLoading,
                   onPressed: () async {
-                    final isNewUser = await context.read<LoginViewModel>().login(
-                      SocialProvider.google,
-                    );
+                    final isNewUser = await context
+                        .read<LoginViewModel>()
+                        .login(SocialProvider.google);
 
                     if (isNewUser == null || !context.mounted) return;
 

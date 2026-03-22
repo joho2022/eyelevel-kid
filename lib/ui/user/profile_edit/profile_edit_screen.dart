@@ -40,17 +40,11 @@ class _ProfileEditView extends StatelessWidget {
 
   Widget _buildProfileImage(ProfileEditState state) {
     if (state.imageFile != null) {
-      return Image.file(
-        state.imageFile!,
-        fit: BoxFit.cover,
-      );
+      return Image.file(state.imageFile!, fit: BoxFit.cover);
     }
 
     if (state.imagePath != null) {
-      return Image.network(
-        state.imagePath!,
-        fit: BoxFit.cover,
-      );
+      return Image.network(state.imagePath!, fit: BoxFit.cover);
     }
 
     return Icon(
@@ -76,106 +70,106 @@ class _ProfileEditView extends StatelessWidget {
                 backgroundColor: Colors.transparent,
                 resizeToAvoidBottomInset: true,
 
-              appBar: AppBar(
-                backgroundColor: Colors.transparent,
-                elevation: 0,
-                leading: BackButton(
-                  color: AppColors.storyPurple,
+                appBar: AppBar(
+                  backgroundColor: Colors.transparent,
+                  elevation: 0,
+                  leading: BackButton(color: AppColors.storyPurple),
                 ),
-              ),
 
-              body: SafeArea(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(24, 32, 24, 24),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Center(
-                        child: GestureDetector(
-                          onTap: viewModel.onImageTap,
-                          child: Stack(
-                            clipBehavior: Clip.none,
-                            children: [
-                              Container(
-                                width: 120,
-                                height: 120,
-                                decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: AppColors.profilePlaceholderBackground,
-                                ),
-                                child: ClipOval(
-                                  child: _buildProfileImage(state),
-                                ),
-                              ),
-
-                              Positioned(
-                                right: -2,
-                                bottom: -2,
-                                child: Container(
-                                  width: 36,
-                                  height: 36,
+                body: SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(24, 32, 24, 24),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Center(
+                          child: GestureDetector(
+                            onTap: viewModel.onImageTap,
+                            child: Stack(
+                              clipBehavior: Clip.none,
+                              children: [
+                                Container(
+                                  width: 120,
+                                  height: 120,
                                   decoration: const BoxDecoration(
-                                    color: Colors.black,
                                     shape: BoxShape.circle,
+                                    color:
+                                        AppColors.profilePlaceholderBackground,
                                   ),
-                                  child: const Icon(
-                                    Icons.camera_alt,
-                                    size: 18,
-                                    color: Colors.white,
+                                  child: ClipOval(
+                                    child: _buildProfileImage(state),
                                   ),
                                 ),
-                              ),
-                            ],
+
+                                Positioned(
+                                  right: -2,
+                                  bottom: -2,
+                                  child: Container(
+                                    width: 36,
+                                    height: 36,
+                                    decoration: const BoxDecoration(
+                                      color: Colors.black,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: const Icon(
+                                      Icons.camera_alt,
+                                      size: 18,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
 
-                      const SizedBox(height: 40),
+                        const SizedBox(height: 40),
 
-                      NicknameTextField(
-                        value: state.nickname,
-                        errorText: state.errorMessage,
-                        onChanged: viewModel.updateNickname,
-                      ),
+                        NicknameTextField(
+                          value: state.nickname,
+                          errorText: state.errorMessage,
+                          onChanged: viewModel.updateNickname,
+                        ),
 
-                      const Spacer(),
-                    ],
+                        const Spacer(),
+                      ],
+                    ),
                   ),
                 ),
-              ),
 
-              bottomNavigationBar: SafeArea(
-                top: false,
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(
-                    24,
-                    12,
-                    24,
-                    MediaQuery.of(context).viewInsets.bottom,
-                  ),
-                  child: SizedBox(
-                    height: 52,
-                    child: BounceTapper(
-                      onTap: state.canSubmit && !state.isLoading
-                          ? () async {
-                        final success = await viewModel.submit();
+                bottomNavigationBar: SafeArea(
+                  top: false,
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(
+                      24,
+                      12,
+                      24,
+                      MediaQuery.of(context).viewInsets.bottom + 12,
+                    ),
+                    child: SizedBox(
+                      height: 52,
+                      child: BounceTapper(
+                        onTap: state.canSubmit && !state.isLoading
+                            ? () async {
+                                final success = await viewModel.submit();
 
-                        if (success && context.mounted) {
-                          context.pop();
-                        }
-                      }
-                          : null,
-                      child: AnimatedContainer(
-                        duration: const Duration(milliseconds: 150),
-                        decoration: BoxDecoration(
-                          color: _buttonColor(state),
-                          borderRadius: BorderRadius.circular(14),
-                        ),
-                        alignment: Alignment.center,
-                        child: Text(
-                          '저장하기',
-                          style: AppTheme.title14.copyWith(
-                            color: Colors.white,
+                                if (success && context.mounted) {
+                                  context.pop();
+                                }
+                              }
+                            : null,
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 150),
+                          decoration: BoxDecoration(
+                            color: _buttonColor(state),
+                            borderRadius: BorderRadius.circular(14),
+                          ),
+                          alignment: Alignment.center,
+                          child: Text(
+                            '저장하기',
+                            style: AppTheme.title14.copyWith(
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ),
@@ -183,14 +177,11 @@ class _ProfileEditView extends StatelessWidget {
                   ),
                 ),
               ),
-            ),
 
               if (state.isLoading)
                 Container(
                   color: Colors.black.withValues(alpha: 0.15),
-                  child: const Center(
-                    child: CircularProgressIndicator(),
-                  ),
+                  child: const Center(child: CircularProgressIndicator()),
                 ),
             ],
           ),
