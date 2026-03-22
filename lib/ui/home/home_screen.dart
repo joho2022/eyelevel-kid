@@ -99,8 +99,6 @@ class _HomeViewState extends State<_HomeView> {
 
                 const InlineBannerAd(),
 
-                const SizedBox(height: 32),
-
                 QuestionCalendar(
                   currentMonth: state.currentMonth,
                   questionDates: state.questionDates,

@@ -11,9 +11,11 @@ class InlineBannerAd extends StatefulWidget {
   State<InlineBannerAd> createState() => _InlineBannerAdState();
 }
 
-class _InlineBannerAdState extends State<InlineBannerAd> {
+class _InlineBannerAdState extends State<InlineBannerAd>
+    with TickerProviderStateMixin {
   BannerAd? _bannerAd;
   AdSize? _adSize;
+  bool _isLoaded = false;
 
   @override
   void initState() {
@@ -33,52 +35,64 @@ class _InlineBannerAdState extends State<InlineBannerAd> {
     if (!mounted) return;
 
     final screenWidth = MediaQuery.of(context).size.width.truncate();
+    final availableWidth = screenWidth - 40;
 
-    final availableWidth = screenWidth - 42;
     final size = await AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(
       availableWidth,
     );
 
-    if (size == null) {
-      return;
-    }
+    if (!mounted || size == null) return;
 
-    if (mounted) {
-      setState(() {
-        _adSize = size;
-      });
-    }
-
-    BannerAd(
+    final bannerAd = BannerAd(
       adUnitId: AdHelper.bannerAdUnitId,
       request: const AdRequest(),
-      size: AdSize.largeBanner,
+      size: size,
       listener: BannerAdListener(
         onAdLoaded: (ad) {
-          if (mounted) {
-            setState(() {
-              _bannerAd = ad as BannerAd;
-            });
-          }
+          if (!mounted) return;
+
+          setState(() {
+            _bannerAd = ad as BannerAd;
+            _adSize = size;
+            _isLoaded = true;
+          });
         },
         onAdFailedToLoad: (ad, err) {
-          debugPrint("Ad failed to load with error: $err");
+          debugPrint('==== 배너 광고 로드 실패 ====');
+          debugPrint('$err');
           ad.dispose();
         },
       ),
-    ).load();
+    );
+
+    bannerAd.load();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_adSize == null) {
-      return const SizedBox();
-    }
+    final bannerHeight = (_isLoaded && _bannerAd != null && _adSize != null)
+        ? _adSize!.height.toDouble() + 32
+        : 0.0;
 
-    return SizedBox(
-      width: _adSize!.width.toDouble(),
-      height: _adSize!.height.toDouble(),
-      child: _bannerAd != null ? AdWidget(ad: _bannerAd!) : const SizedBox(),
+    return ClipRect(
+      child: AnimatedSize(
+        duration: const Duration(milliseconds: 150),
+        curve: Curves.easeOutCubic,
+        alignment: Alignment.topCenter,
+        child: SizedBox(
+          height: bannerHeight,
+          child: bannerHeight == 0
+              ? const SizedBox.shrink()
+              : Padding(
+            padding: const EdgeInsets.only(bottom: 32),
+            child: SizedBox(
+              width: _adSize!.width.toDouble(),
+              height: _adSize!.height.toDouble(),
+              child: AdWidget(ad: _bannerAd!),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
