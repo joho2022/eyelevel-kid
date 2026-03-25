@@ -217,16 +217,18 @@ https://yourapp.link
     }
   }
 
-  Future<void> withdraw() async {
+  Future<bool> withdraw() async {
     state = state.copyWith(isLoading: true, errorMessage: null);
     notifyListeners();
 
     try {
       await withdrawUseCase();
+      return true;
     } catch (e) {
       debugPrint('withdraw error: $e');
 
       state = state.copyWith(errorMessage: '회원탈퇴에 실패했습니다');
+      return false;
     } finally {
       state = state.copyWith(isLoading: false);
       notifyListeners();

@@ -26,7 +26,7 @@ class MyScreen extends StatelessWidget {
 }
 
 class _MyView extends StatelessWidget {
-  const _MyView({super.key});
+  const _MyView();
 
   @override
   Widget build(BuildContext context) {
@@ -117,7 +117,11 @@ class _MyView extends StatelessWidget {
                                 description: '다시 로그인해야 사용할 수 있어요.',
                                 confirmText: '로그아웃',
                                 onConfirm: () async {
-                                  await viewModel.logout();
+                                  final isSuccess = await viewModel.logout();
+
+                                  if (!context.mounted || !isSuccess) return;
+
+                                  context.go(RoutePaths.login);
                                 },
                               ),
                             );
@@ -139,7 +143,11 @@ class _MyView extends StatelessWidget {
                                 confirmText: '탈퇴하기',
                                 isDanger: true,
                                 onConfirm: () async {
-                                  await viewModel.withdraw();
+                                  final isSuccess = await viewModel.withdraw();
+
+                                  if (!context.mounted || !isSuccess) return;
+
+                                  context.go(RoutePaths.login);
                                 },
                               ),
                             );

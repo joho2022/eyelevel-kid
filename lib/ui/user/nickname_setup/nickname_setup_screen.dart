@@ -3,8 +3,10 @@ import 'package:eyelevel_kid/ui/user/nickname_setup/nickname_setup_factory.dart'
 import 'package:eyelevel_kid/ui/user/nickname_setup/state/nickname_setup_state.dart';
 import 'package:eyelevel_kid/ui/user/nickname_setup/view_models/nickname_setup_viewmodel.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import '../../core/routes/main_tab.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/widgets/app_background.dart';
@@ -110,7 +112,11 @@ class _NicknameSetupView extends StatelessWidget {
                     child: BounceTapper(
                       onTap: state.canSubmit && !state.isLoading
                           ? () async {
-                        await viewModel.submit();
+                        final isSuccess = await viewModel.submit();
+
+                        if (!context.mounted || !isSuccess) return;
+
+                        context.go(MainTab.home.path);
                       }
                           : null,
                       child: AnimatedContainer(

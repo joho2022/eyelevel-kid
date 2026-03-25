@@ -55,7 +55,7 @@ class NicknameSetupViewModel extends ChangeNotifier {
     return null;
   }
 
-  Future<void> submit() async {
+  Future<bool> submit() async {
     final cleaned = state.nickname.trim();
     final error = _validate(cleaned);
 
@@ -65,7 +65,7 @@ class NicknameSetupViewModel extends ChangeNotifier {
         canSubmit: false,
       );
       notifyListeners();
-      return;
+      return false;
     }
 
     state = state.copyWith(isLoading: true);
@@ -79,7 +79,7 @@ class NicknameSetupViewModel extends ChangeNotifier {
       state = state.copyWith(isLoading: false);
       notifyListeners();
 
-      return;
+      return true;
     } catch (e) {
 
       String message = '알 수 없는 오류가 발생했어요';
@@ -106,6 +106,7 @@ class NicknameSetupViewModel extends ChangeNotifier {
       );
 
       notifyListeners();
+      return false;
     }
   }
 }

@@ -15,6 +15,7 @@ class AppAuthViewModel extends ChangeNotifier {
   bool _needsOnboarding = false;
 
   bool _isInitializing = true;
+  bool _isInitialized = false;
   String? _pendingToken;
 
   AppAuthViewModel(this.tokenRepository) {
@@ -29,9 +30,12 @@ class AppAuthViewModel extends ChangeNotifier {
   }
 
   Future<void> initialize() async {
+    if (_isInitialized) return;
+
     await tokenRepository.hydrate();
 
     _isInitializing = false;
+    _isInitialized = true;
 
     _applyAuthState(_pendingToken);
   }

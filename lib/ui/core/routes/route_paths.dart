@@ -1,10 +1,10 @@
 class RoutePaths {
-  static const String splash = '/splash';
+  static const String splash = '/';
 
   static const String login = '/login';
   static const String nicknameSetup = 'nickname-setup';
 
-  static const String home = '/';
+  static const String home = '/home';
   static const String history = '/history';
   static const String my = '/my';
 

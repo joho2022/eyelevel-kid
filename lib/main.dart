@@ -35,9 +35,7 @@ class _MyAppState extends State<MyApp> {
     super.initState();
 
     _authViewModel = serviceLocator<AppAuthViewModel>();
-    _router = createAppRouter(_authViewModel);
-
-    _authViewModel.initialize();
+    _router = createAppRouter();
   }
 
   @override
