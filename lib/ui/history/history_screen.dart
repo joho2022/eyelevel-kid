@@ -10,22 +10,18 @@ import '../core/theme/app_colors.dart';
 import '../core/theme/app_images.dart';
 import '../core/theme/app_theme.dart';
 import '../core/widgets/app_background.dart';
-import 'history_factory.dart';
 
 class HistoryScreen extends StatelessWidget {
   const HistoryScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => createHistoryViewModel(),
-      child: const _HistoryView(),
-    );
+    return const _HistoryView();
   }
 }
 
 class _HistoryView extends StatefulWidget {
-  const _HistoryView({super.key});
+  const _HistoryView();
 
   @override
   State<_HistoryView> createState() => _HistoryViewState();

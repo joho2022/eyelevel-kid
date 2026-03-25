@@ -14,17 +14,13 @@ import 'package:eyelevel_kid/ui/core/widgets/inline_banner_ad.dart';
 import 'package:eyelevel_kid/ui/home/widgets/calendar/question_calendar.dart';
 import '../core/routes/route_paths.dart';
 import '../question/shared/question_summary_card.dart';
-import 'home_factory.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => createHomeViewModel(),
-      child: const _HomeView(),
-    );
+    return const _HomeView();
   }
 }
 
