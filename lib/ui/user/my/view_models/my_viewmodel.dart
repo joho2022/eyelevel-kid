@@ -27,7 +27,6 @@ class MyViewModel extends ChangeNotifier {
   MyState state = MyState.initial();
 
   StreamSubscription<User>? _subscription;
-
   bool _isRefreshingProfileImageUrl = false;
 
   MyViewModel({
@@ -41,6 +40,23 @@ class MyViewModel extends ChangeNotifier {
     _init();
   }
 
+  // MARK: - 해야할 주소 다시 입력
+  // MARK: - Store Constants
+  static const String _iosAppStoreUrl =
+      'https://apps.apple.com/app/id6760978295';
+
+  static const String _iosReviewUrl =
+      'https://apps.apple.com/app/id6760978295?action=write-review';
+
+  static const String _androidPackageName =
+      'com.your.package';
+
+  static const String _androidPlayStoreWebUrl =
+      'https://play.google.com/store/apps/details?id=$_androidPackageName';
+
+  static const String _androidMarketUrl =
+      'market://details?id=$_androidPackageName';
+
   // MARK: - 초기화
   void _init() {
     _observeUser();
@@ -52,10 +68,12 @@ class MyViewModel extends ChangeNotifier {
   Future<void> _fetchUser() async {
     try {
       await fetchUserUseCase();
-    } catch (e) {
-      debugPrint('fetchUser error: $e');
+    } catch (error) {
+      debugPrint('fetchUser error: $error');
 
-      state = state.copyWith(errorMessage: '유저 정보를 불러오지 못했습니다');
+      state = state.copyWith(
+        errorMessage: '유저 정보를 불러오지 못했습니다',
+      );
       notifyListeners();
     }
   }
@@ -81,11 +99,12 @@ class MyViewModel extends ChangeNotifier {
 
     try {
       await refreshProfileImageUrlUseCase();
+    } catch (error) {
+      debugPrint('refreshProfileImageUrl error: $error');
 
-    } catch (e) {
-      debugPrint('refreshProfileImageUrl error: $e');
-
-      state = state.copyWith(errorMessage: '프로필 이미지 URL을 새로 불러오지 못했습니다');
+      state = state.copyWith(
+        errorMessage: '프로필 이미지 URL을 새로 불러오지 못했습니다',
+      );
       notifyListeners();
     } finally {
       _isRefreshingProfileImageUrl = false;
@@ -96,48 +115,44 @@ class MyViewModel extends ChangeNotifier {
   Future<void> changePreferredStyle(AnswerStyle style) async {
     try {
       await updateAnswerStyleUseCase(style);
-    } catch (e) {
-      debugPrint('changePreferredStyle error: $e');
+    } catch (error) {
+      debugPrint('changePreferredStyle error: $error');
 
-      state = state.copyWith(errorMessage: '답변 스타일 변경에 실패했습니다');
+      state = state.copyWith(
+        errorMessage: '답변 스타일 변경에 실패했습니다',
+      );
       notifyListeners();
     }
   }
 
   // MARK: - 앱 정보
   Future<void> _loadAppVersion() async {
-    final info = await PackageInfo.fromPlatform();
+    final packageInfo = await PackageInfo.fromPlatform();
 
-    state = state.copyWith(appVersion: '${info.version} (${info.buildNumber})');
+    state = state.copyWith(
+      appVersion: '${packageInfo.version} (${packageInfo.buildNumber})',
+    );
 
     notifyListeners();
   }
 
+  // MARK: - 앱 평가하기
   Future<void> onTapRateApp() async {
-    final url = _getStoreUrl();
-    if (url == null) return;
+    final reviewUrl = _getReviewUrl();
+    if (reviewUrl == null) return;
 
-    final uri = Uri.parse(url);
-
-    try {
-      await launchUrl(uri, mode: LaunchMode.externalApplication);
-    } catch (e) {
-      debugPrint('스토어 이동 실패: $e');
-    }
+    await _launchExternalUrl(
+      reviewUrl,
+      failureLog: '리뷰 페이지 이동 실패',
+    );
   }
 
-  // MARK: - 앱주소 바꾸기
-  String? _getStoreUrl() {
-    if (Platform.isIOS) {
-      return 'https://apps.apple.com/app/id6741756312?action=write-review';
-    } else if (Platform.isAndroid) {
-      return 'market://details?id=com.your.package';
-    }
-    return null;
-  }
-
+  // MARK: - 앱 공유하기
   Future<void> onTapShareApp() async {
-    final params = ShareParams(text: _shareMessage(), title: '아이시선 공유');
+    final params = ShareParams(
+      text: _buildShareMessage(),
+      title: '아이시선 공유',
+    );
 
     try {
       final result = await SharePlus.instance.share(params);
@@ -147,45 +162,121 @@ class MyViewModel extends ChangeNotifier {
       } else if (result.status == ShareResultStatus.dismissed) {
         debugPrint('공유 취소');
       }
-    } catch (e) {
-      debugPrint('공유 실패: $e');
+    } catch (error) {
+      debugPrint('공유 실패: $error');
     }
   }
 
-  // MARK: - 앱주소 바꾸기
-  String _shareMessage() {
+  // MARK: - 문의하기
+  Future<void> onTapContact() async {
+    final uri = Uri(
+      scheme: 'mailto',
+      path: 'josama2022.dev@gmail.com',
+      query: _buildMailQuery(),
+    );
+
+    try {
+      await launchUrl(uri);
+    } catch (error) {
+      debugPrint('문의하기 실패: $error');
+    }
+  }
+
+  // MARK: - 계정
+  Future<bool> logout() async {
+    state = state.copyWith(
+      isLoading: true,
+      errorMessage: null,
+    );
+    notifyListeners();
+
+    try {
+      await logoutUseCase();
+      return true;
+    } catch (error) {
+      debugPrint('logout error: $error');
+
+      state = state.copyWith(
+        errorMessage: '로그아웃에 실패했습니다',
+      );
+      return false;
+    } finally {
+      state = state.copyWith(isLoading: false);
+      notifyListeners();
+    }
+  }
+
+  Future<bool> withdraw() async {
+    state = state.copyWith(
+      isLoading: true,
+      errorMessage: null,
+    );
+    notifyListeners();
+
+    try {
+      await withdrawUseCase();
+      return true;
+    } catch (error) {
+      debugPrint('withdraw error: $error');
+
+      state = state.copyWith(
+        errorMessage: '회원탈퇴에 실패했습니다',
+      );
+      return false;
+    } finally {
+      state = state.copyWith(isLoading: false);
+      notifyListeners();
+    }
+  }
+
+  // MARK: - Store Links
+  String? _getReviewUrl() {
+    if (Platform.isIOS) {
+      return _iosReviewUrl;
+    }
+
+    if (Platform.isAndroid) {
+      return _androidMarketUrl;
+    }
+
+    return null;
+  }
+
+  String? _getShareStoreUrl() {
+    if (Platform.isIOS) {
+      return _iosAppStoreUrl;
+    }
+
+    if (Platform.isAndroid) {
+      return _androidPlayStoreWebUrl;
+    }
+
+    return null;
+  }
+
+  // MARK: - Share Message
+  String _buildShareMessage() {
+    final storeUrl = _getShareStoreUrl() ?? '';
+
     return '''
 아이시선 앱 추천합니다 👀
 
 아이의 눈높이에서 질문에 답해주는 앱이에요!
 지금 한번 써보세요 👍
 
-https://yourapp.link
+$storeUrl
 ''';
   }
 
-  Future<void> onTapContact() async {
-    final uri = Uri(
-      scheme: 'mailto',
-      path: 'josama2022.dev@gmail.com',
-      query: _buildQuery(),
-    );
-
-    try {
-      await launchUrl(uri);
-    } catch (e) {
-      debugPrint('문의하기 실패: $e');
-    }
-  }
-
-  String _buildQuery() {
+  // MARK: - Mail
+  String _buildMailQuery() {
     final subject = Uri.encodeComponent('[아이시선] 문의드립니다');
-    final body = Uri.encodeComponent(_buildBody());
+    final body = Uri.encodeComponent(_buildMailBody());
 
     return 'subject=$subject&body=$body';
   }
 
-  String _buildBody() {
+  String _buildMailBody() {
     return '''
 안녕하세요.
 
@@ -197,41 +288,24 @@ https://yourapp.link
 ''';
   }
 
-  // MARK: - 계정
-  Future<bool> logout() async {
-    state = state.copyWith(isLoading: true, errorMessage: null);
-    notifyListeners();
+  // MARK: - URL Launcher
+  Future<void> _launchExternalUrl(
+      String url, {
+        required String failureLog,
+      }) async {
+    final uri = Uri.parse(url);
 
     try {
-      await logoutUseCase();
-      return true;
-    } catch (e) {
-      debugPrint('logout error: $e');
+      final didLaunch = await launchUrl(
+        uri,
+        mode: LaunchMode.externalApplication,
+      );
 
-      state = state.copyWith(errorMessage: '로그아웃에 실패했습니다');
-
-      return false;
-    } finally {
-      state = state.copyWith(isLoading: false);
-      notifyListeners();
-    }
-  }
-
-  Future<bool> withdraw() async {
-    state = state.copyWith(isLoading: true, errorMessage: null);
-    notifyListeners();
-
-    try {
-      await withdrawUseCase();
-      return true;
-    } catch (e) {
-      debugPrint('withdraw error: $e');
-
-      state = state.copyWith(errorMessage: '회원탈퇴에 실패했습니다');
-      return false;
-    } finally {
-      state = state.copyWith(isLoading: false);
-      notifyListeners();
+      if (!didLaunch) {
+        debugPrint('$failureLog: launchUrl returned false');
+      }
+    } catch (error) {
+      debugPrint('$failureLog: $error');
     }
   }
 

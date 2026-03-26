@@ -50,10 +50,10 @@ class LaunchGateViewModel extends ChangeNotifier {
 
   bool get hasCheckedThisSession => _checkedThisSession;
 
-  // MARK: - 주소 다시 입력
+  // MARK: - 해야할 주소 다시 입력
   String get storeUrl {
     if (Platform.isIOS) {
-      return 'https://apps.apple.com/app/id6741756312';
+      return 'https://apps.apple.com/app/id6760978295';
     }
 
     return 'https://play.google.com/store/apps/details?id=com.hogeunjo.eyelevel.eyelevel_kid';
