@@ -21,12 +21,14 @@ GoRouter createAppRouter() {
     routes: [
       GoRoute(
         path: RoutePaths.splash,
-        builder: (context, state) => const SplashScreen(),
+        pageBuilder: (context, state) =>
+            _buildFadePage(state: state, child: const SplashScreen()),
       ),
 
       GoRoute(
         path: RoutePaths.login,
-        builder: (context, state) => const LoginScreen(),
+        pageBuilder: (context, state) =>
+            _buildFadePage(state: state, child: const LoginScreen()),
         routes: [
           GoRoute(
             path: RoutePaths.nicknameSetup,
@@ -37,9 +39,10 @@ GoRouter createAppRouter() {
       ),
 
       StatefulShellRoute.indexedStack(
-        builder: (context, state, navigationShell) {
-          return MainTabScaffold(navigationShell: navigationShell);
-        },
+        pageBuilder: (context, state, navigationShell) => _buildFadePage(
+          state: state,
+          child: MainTabScaffold(navigationShell: navigationShell),
+        ),
         branches: [
           StatefulShellBranch(
             routes: [
@@ -76,9 +79,7 @@ GoRouter createAppRouter() {
           final id = int.tryParse(idString ?? '');
 
           if (id == null) {
-            return const Scaffold(
-              body: Center(child: Text('잘못된 접근입니다')),
-            );
+            return const Scaffold(body: Center(child: Text('잘못된 접근입니다')));
           }
 
           return DetailScreen(questionId: id);
@@ -95,5 +96,27 @@ GoRouter createAppRouter() {
         builder: (context, state) => const ProfileEditScreen(),
       ),
     ],
+  );
+}
+
+CustomTransitionPage<void> _buildFadePage({
+  required GoRouterState state,
+  required Widget child,
+}) {
+  return CustomTransitionPage<void>(
+    key: state.pageKey,
+    child: child,
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      return FadeTransition(
+        opacity: Tween<double>(
+          begin: 1.0,
+          end: 0.0,
+        ).animate(secondaryAnimation),
+        child: FadeTransition(
+          opacity: Tween<double>(begin: 0.0, end: 1.0).animate(animation),
+          child: child,
+        ),
+      );
+    },
   );
 }

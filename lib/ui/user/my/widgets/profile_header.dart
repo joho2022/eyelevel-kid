@@ -23,6 +23,7 @@ class ProfileHeader extends StatefulWidget {
 
 class _ProfileHeaderState extends State<ProfileHeader> {
   bool _didRetryForCurrentUrl = false;
+  bool _isImageLoaded = false;
 
   @override
   void didUpdateWidget(covariant ProfileHeader oldWidget) {
@@ -30,14 +31,21 @@ class _ProfileHeaderState extends State<ProfileHeader> {
 
     if (oldWidget.imagePath != widget.imagePath) {
       _didRetryForCurrentUrl = false;
+      _isImageLoaded = false;
     }
   }
 
   Widget _buildFallbackIcon() {
-    return const Icon(
-      Icons.person,
-      size: 42,
-      color: AppColors.profilePlaceholderIcon,
+    return Container(
+      width: 72,
+      height: 72,
+      color: AppColors.profilePlaceholderBackground,
+      alignment: Alignment.center,
+      child: const Icon(
+        Icons.person,
+        size: 42,
+        color: AppColors.profilePlaceholderIcon,
+      ),
     );
   }
 
@@ -48,28 +56,49 @@ class _ProfileHeaderState extends State<ProfileHeader> {
       return _buildFallbackIcon();
     }
 
-    return Image.network(
-      imagePath,
-      fit: BoxFit.cover,
-      width: 72,
-      height: 72,
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        AnimatedOpacity(
+          opacity: _isImageLoaded ? 1 : 0,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+          child: Image.network(
+            imagePath,
+            key: ValueKey(imagePath),
+            fit: BoxFit.cover,
+            width: 72,
+            height: 72,
 
-      loadingBuilder: (context, child, progress) {
-        if (progress == null) return child;
-        return _buildFallbackIcon();
-      },
+            frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+              if (wasSynchronouslyLoaded || frame != null) {
+                if (!_isImageLoaded) {
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    if (!mounted) return;
+                    setState(() {
+                      _isImageLoaded = true;
+                    });
+                  });
+                }
+              }
 
-      errorBuilder: (context, error, stackTrace) {
-        if (!_didRetryForCurrentUrl && widget.onImageLoadFailed != null) {
-          _didRetryForCurrentUrl = true;
+              return child;
+            },
 
-          WidgetsBinding.instance.addPostFrameCallback((_) async {
-            await widget.onImageLoadFailed?.call();
-          });
-        }
+            errorBuilder: (context, error, stackTrace) {
+              if (!_didRetryForCurrentUrl && widget.onImageLoadFailed != null) {
+                _didRetryForCurrentUrl = true;
 
-        return _buildFallbackIcon();
-      },
+                WidgetsBinding.instance.addPostFrameCallback((_) async {
+                  await widget.onImageLoadFailed?.call();
+                });
+              }
+
+              return const SizedBox.shrink();
+            },
+          ),
+        ),
+      ],
     );
   }
 

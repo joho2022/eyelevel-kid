@@ -72,7 +72,7 @@ class _SplashScreenState extends State<SplashScreen>
       orElse: () => RoutePaths.login,
     );
 
-    context.go(targetPath);
+    context.pushReplacement(targetPath);
   }
 
   @override
