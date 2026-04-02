@@ -39,8 +39,7 @@ class MyViewModel extends ChangeNotifier {
   }) {
     _init();
   }
-
-  // MARK: - 해야할 주소 다시 입력
+  
   // MARK: - Store Constants
   static const String _iosAppStoreUrl =
       'https://apps.apple.com/app/id6760978295';
@@ -49,7 +48,7 @@ class MyViewModel extends ChangeNotifier {
       'https://apps.apple.com/app/id6760978295?action=write-review';
 
   static const String _androidPackageName =
-      'com.your.package';
+      'com.hogeunjo.eyelevelkid';
 
   static const String _androidPlayStoreWebUrl =
       'https://play.google.com/store/apps/details?id=$_androidPackageName';
