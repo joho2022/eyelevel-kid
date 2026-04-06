@@ -175,6 +175,7 @@ class HomeViewModel extends ChangeNotifier {
 
   @override
   void dispose() {
+    _questionSubscription?.cancel();
     _calendarDebounce?.cancel();
     super.dispose();
   }
