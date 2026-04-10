@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:eyelevel_kid/ui/auth/state/login_state.dart';
-import 'package:eyelevel_kid/ui/auth/view_models/login_viewmodel.dart';
 import 'package:eyelevel_kid/ui/auth/widgets/social_login_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:eyelevel_kid/ui/core/theme/app_colors.dart';
 import 'package:eyelevel_kid/ui/core/theme/app_theme.dart';
@@ -11,30 +11,17 @@ import 'package:eyelevel_kid/ui/core/theme/app_images.dart';
 import 'package:eyelevel_kid/ui/core/launch/app_config_prompt_presenter.dart';
 import 'package:eyelevel_kid/ui/core/widgets/app_background.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 
-import 'login_factory.dart';
+import 'view_models/login_notifier.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => createLoginViewModel(),
-      child: const _LoginView(),
-    );
-  }
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginView extends StatefulWidget {
-  const _LoginView();
-
-  @override
-  State<_LoginView> createState() => __LoginViewState();
-}
-
-class __LoginViewState extends State<_LoginView>
+class _LoginScreenState extends ConsumerState<LoginScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _titleOpacity;
@@ -92,8 +79,7 @@ class __LoginViewState extends State<_LoginView>
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.watch<LoginViewModel>();
-    final state = viewModel.state;
+    final state = ref.watch(loginNotifierProvider);
 
     return AppBackground(
       child: Scaffold(
@@ -118,8 +104,8 @@ class __LoginViewState extends State<_LoginView>
                     text: 'Apple로 계속하기',
                     isLoading: state.isAppleLoading,
                     onPressed: () async {
-                      final isNewUser = await context
-                          .read<LoginViewModel>()
+                      final isNewUser = await ref
+                          .read(loginNotifierProvider.notifier)
                           .login(SocialProvider.apple);
 
                       if (isNewUser == null || !context.mounted) return;
@@ -140,8 +126,8 @@ class __LoginViewState extends State<_LoginView>
                   text: 'Google로 계속하기',
                   isLoading: state.isGoogleLoading,
                   onPressed: () async {
-                    final isNewUser = await context
-                        .read<LoginViewModel>()
+                    final isNewUser = await ref
+                        .read(loginNotifierProvider.notifier)
                         .login(SocialProvider.google);
 
                     if (isNewUser == null || !context.mounted) return;

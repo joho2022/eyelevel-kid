@@ -1,0 +1,111 @@
+import 'package:dio/dio.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../../../core/auth/view_models/app_auth_notifier.dart';
+import '../../../../core/di/service_locator.dart';
+import '../../../../domain/usecases/user/update_nickname_use_case.dart';
+import '../state/nickname_setup_state.dart';
+
+final nicknameSetupNotifierProvider =
+    NotifierProvider.autoDispose<NicknameSetupNotifier, NicknameSetupState>(
+      NicknameSetupNotifier.new,
+    );
+
+class NicknameSetupNotifier extends Notifier<NicknameSetupState> {
+  late final UpdateNicknameUseCase _saveNicknameUseCase;
+
+  // MARK: - Build
+  @override
+  NicknameSetupState build() {
+    _saveNicknameUseCase = serviceLocator<UpdateNicknameUseCase>();
+    return const NicknameSetupState();
+  }
+
+  // MARK: - 닉네임 변경
+  void updateNickname(String value) {
+    final error = _validate(value);
+
+    state = state.copyWith(
+      nickname: value,
+      errorMessage: error,
+      canSubmit: error == null && value.isNotEmpty,
+    );
+  }
+
+  // MARK: - 제출
+  Future<bool> submit() async {
+    final cleaned = state.nickname.trim();
+    final error = _validate(cleaned);
+
+    if (error != null || cleaned.isEmpty) {
+      state = state.copyWith(
+        errorMessage: error ?? '닉네임을 입력해주세요',
+        canSubmit: false,
+      );
+      return false;
+    }
+
+    state = state.copyWith(isLoading: true);
+
+    try {
+      await _saveNicknameUseCase(cleaned);
+
+      ref.read(appAuthNotifierProvider.notifier).completeOnboarding();
+
+      state = state.copyWith(isLoading: false);
+      return true;
+    } catch (e) {
+      var message = '알 수 없는 오류가 발생했어요';
+
+      if (e is DioException) {
+        final data = e.response?.data;
+
+        if (data is Map && data['message'] != null) {
+          final msg = data['message'];
+
+          if (msg is String) {
+            message = msg;
+          } else if (msg is List && msg.isNotEmpty) {
+            message = msg.first.toString();
+          }
+        }
+      }
+
+      state = state.copyWith(
+        isLoading: false,
+        errorMessage: message,
+        canSubmit: false,
+      );
+
+      return false;
+    }
+  }
+
+  // MARK: - 유효성 검사
+  String? _validate(String value) {
+    if (value.isEmpty) return null;
+
+    if (value != value.trim()) {
+      return '닉네임 앞뒤에 공백은 사용할 수 없어요';
+    }
+
+    if (value.contains(' ')) {
+      return '닉네임에는 공백을 사용할 수 없어요';
+    }
+
+    if (value.length < 2) {
+      return '닉네임은 2자 이상 입력해주세요';
+    }
+
+    if (value.length > 8) {
+      return '닉네임은 8자 이하로 입력해주세요';
+    }
+
+    final regex = RegExp(r'^[a-zA-Z0-9가-힣]+$');
+    if (!regex.hasMatch(value)) {
+      return '닉네임은 한글, 영어, 숫자만 가능해요';
+    }
+
+    return null;
+  }
+}

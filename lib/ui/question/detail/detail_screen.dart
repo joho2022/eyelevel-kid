@@ -1,11 +1,9 @@
 import 'package:bounce_tapper/bounce_tapper.dart';
 import 'package:eyelevel_kid/core/utils/date_format.dart';
-import 'package:eyelevel_kid/ui/question/detail/detail_factory.dart';
-import 'package:eyelevel_kid/ui/question/detail/view_models/detail_viewmodel.dart';
 import 'package:eyelevel_kid/ui/question/shared/style_chip.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 
 import '../../../domain/entities/question_record.dart';
 import '../../../domain/values/answer_style.dart';
@@ -13,33 +11,27 @@ import '../../core/routes/route_paths.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/widgets/app_background.dart';
+import 'view_models/detail_notifier.dart';
 
-class DetailScreen extends StatelessWidget {
+class DetailScreen extends ConsumerWidget {
   final int questionId;
 
-  const DetailScreen({
-    super.key,
-    required this.questionId,
-  });
+  const DetailScreen({super.key, required this.questionId});
 
   @override
-  Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => createDetailViewModel(questionId),
-      child: const _DetailView(),
-    );
-  }
-}
-
-class _DetailView extends StatelessWidget {
-  const _DetailView({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final viewModel = context.watch<DetailViewModel>();
-    final state = viewModel.state;
-
+  Widget build(BuildContext context, WidgetRef ref) {
+    final viewModel = ref.read(detailNotifierProvider(questionId).notifier);
+    final state = ref.watch(detailNotifierProvider(questionId));
     final record = state.record;
+
+    if (state.isInitialLoading) {
+      return AppBackground(
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          body: const Center(child: CircularProgressIndicator()),
+        ),
+      );
+    }
 
     if (record == null) {
       return AppBackground(
@@ -63,9 +55,7 @@ class _DetailView extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          leading: BackButton(
-            color: AppColors.storyPurple,
-          ),
+          leading: BackButton(color: AppColors.storyPurple),
         ),
         body: SingleChildScrollView(
           padding: const EdgeInsets.all(20),
@@ -73,10 +63,7 @@ class _DetailView extends StatelessWidget {
             children: [
               _QuestionCard(record: record),
               const SizedBox(height: 20),
-              _AnswerCard(
-                answer: record.answer,
-                style: record.style,
-              ),
+              _AnswerCard(answer: record.answer, style: record.style),
               const SizedBox(height: 20),
               _DetailBottomBar(
                 isBookmarked: record.isBookmarked,
@@ -118,9 +105,7 @@ class _QuestionCard extends StatelessWidget {
         children: [
           Text(
             record.title,
-            style: AppTheme.title14.copyWith(
-              color: AppColors.textDefault,
-            ),
+            style: AppTheme.title14.copyWith(color: AppColors.textDefault),
           ),
 
           const SizedBox(height: 12),
@@ -147,10 +132,7 @@ class _AnswerCard extends StatelessWidget {
   final String answer;
   final AnswerStyle style;
 
-  const _AnswerCard({
-    required this.answer,
-    required this.style,
-  });
+  const _AnswerCard({required this.answer, required this.style});
 
   Color _borderColor() {
     switch (style) {
@@ -169,10 +151,7 @@ class _AnswerCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: _borderColor(),
-          width: 2,
-        ),
+        border: Border.all(color: _borderColor(), width: 2),
         boxShadow: [
           BoxShadow(
             color: AppColors.shadow,
@@ -238,9 +217,7 @@ class _DetailBottomBar extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(
-                      isBookmarked
-                          ? Icons.bookmark
-                          : Icons.bookmark_border,
+                      isBookmarked ? Icons.bookmark : Icons.bookmark_border,
                       size: 18,
                       color: isBookmarked
                           ? AppColors.storyPurple
@@ -266,9 +243,7 @@ class _DetailBottomBar extends StatelessWidget {
                 ),
                 child: Text(
                   '다시 질문하기',
-                  style: AppTheme.title14.copyWith(
-                    color: AppColors.white,
-                  ),
+                  style: AppTheme.title14.copyWith(color: AppColors.white),
                 ),
               ),
             ),

@@ -1,37 +1,27 @@
 import 'package:bounce_tapper/bounce_tapper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-
-import 'package:provider/provider.dart';
 
 import 'package:eyelevel_kid/ui/core/launch/app_config_prompt_presenter.dart';
 import 'package:eyelevel_kid/ui/core/theme/app_colors.dart';
 import 'package:eyelevel_kid/ui/core/theme/app_theme.dart';
 import 'package:eyelevel_kid/ui/core/widgets/app_background.dart';
 import 'package:eyelevel_kid/ui/home/widgets/home_header.dart';
-import 'package:eyelevel_kid/ui/home/view_models/home_viewmodel.dart';
 import 'package:eyelevel_kid/ui/core/widgets/inline_banner_ad.dart';
 import 'package:eyelevel_kid/ui/home/widgets/calendar/question_calendar.dart';
 import '../core/routes/route_paths.dart';
 import '../question/shared/question_summary_card.dart';
+import 'view_models/home_notifier.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return const _HomeView();
-  }
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeView extends StatefulWidget {
-  const _HomeView();
-
-  @override
-  State<_HomeView> createState() => _HomeViewState();
-}
-
-class _HomeViewState extends State<_HomeView> {
+class _HomeScreenState extends ConsumerState<HomeScreen> {
   final ScrollController _scrollController = ScrollController();
 
   bool _isCollapsed = false;
@@ -62,8 +52,8 @@ class _HomeViewState extends State<_HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.read<HomeViewModel>();
-    final state = context.watch<HomeViewModel>().state;
+    final viewModel = ref.read(homeNotifierProvider.notifier);
+    final state = ref.watch(homeNotifierProvider);
 
     return AppBackground(
       child: Scaffold(

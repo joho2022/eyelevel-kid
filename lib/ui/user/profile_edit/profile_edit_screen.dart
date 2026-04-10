@@ -1,30 +1,22 @@
 import 'package:bounce_tapper/bounce_tapper.dart';
 import 'package:eyelevel_kid/ui/user/profile_edit/state/profile_edit_state.dart';
-import 'package:eyelevel_kid/ui/user/profile_edit/profile_edit_factory.dart';
-import 'package:eyelevel_kid/ui/user/profile_edit/view_models/profile_edit_viewmodel.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/widgets/app_background.dart';
 import '../shared/nickname_text_field.dart';
+import 'view_models/profile_edit_notifier.dart';
 
-class ProfileEditScreen extends StatelessWidget {
+class ProfileEditScreen extends ConsumerWidget {
   const ProfileEditScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => createProfileEditViewModel(),
-      child: const _ProfileEditView(),
-    );
-  }
-}
-
-class _ProfileEditView extends StatelessWidget {
-  const _ProfileEditView();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final viewModel = ref.read(profileEditNotifierProvider.notifier);
+    final state = ref.watch(profileEditNotifierProvider);
 
   Color _buttonColor(ProfileEditState state) {
     if (state.isLoading) {
@@ -53,11 +45,6 @@ class _ProfileEditView extends StatelessWidget {
       color: AppColors.profilePlaceholderIcon,
     );
   }
-
-  @override
-  Widget build(BuildContext context) {
-    final viewModel = context.watch<ProfileEditViewModel>();
-    final state = viewModel.state;
 
     return PopScope(
       canPop: !state.isLoading,

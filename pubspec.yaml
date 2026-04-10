@@ -36,6 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   flutter_svg: ^2.2.3
   provider: ^6.1.5+1
+  flutter_riverpod: ^3.0.3
   bounce_tapper: ^1.1.4
   google_mobile_ads: ^7.0.0
   freezed_annotation: ^3.1.0
@@ -57,7 +58,6 @@ dependencies:
   share_plus: ^12.0.1
   flutter_launcher_icons: ^0.14.4
   objective_c: 9.1.0
-  riverpod: ^3.2.1
 
 
 

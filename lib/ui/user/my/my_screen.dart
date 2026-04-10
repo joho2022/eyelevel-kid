@@ -1,33 +1,24 @@
-import 'package:eyelevel_kid/ui/user/my/view_models/my_viewmodel.dart';
 import 'package:eyelevel_kid/ui/core/widgets/answer_style_slider.dart';
 import 'package:eyelevel_kid/ui/user/my/widgets/profile_header.dart';
 import 'package:eyelevel_kid/ui/user/my/widgets/settings_section.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 
 import '../../core/routes/route_paths.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/widgets/app_background.dart';
 import '../../core/widgets/confirm_dialog.dart';
+import 'view_models/my_notifier.dart';
 
-class MyScreen extends StatelessWidget {
+class MyScreen extends ConsumerWidget {
   const MyScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return const _MyView();
-  }
-}
-
-class _MyView extends StatelessWidget {
-  const _MyView();
-
-  @override
-  Widget build(BuildContext context) {
-    final viewModel = context.watch<MyViewModel>();
-    final state = viewModel.state;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final viewModel = ref.read(myNotifierProvider.notifier);
+    final state = ref.watch(myNotifierProvider);
 
     return AppBackground(
       child: Scaffold(
@@ -65,7 +56,7 @@ class _MyView extends StatelessWidget {
                             ),
                           ),
                           onTap: null,
-                          textColor: AppColors.textDefault
+                          textColor: AppColors.textDefault,
                         ),
                         (
                           title: '평가하기',
@@ -74,7 +65,7 @@ class _MyView extends StatelessWidget {
                             color: AppColors.iconSecondary,
                           ),
                           onTap: viewModel.onTapRateApp,
-                          textColor: AppColors.textDefault
+                          textColor: AppColors.textDefault,
                         ),
                         (
                           title: '공유하기',
@@ -83,7 +74,7 @@ class _MyView extends StatelessWidget {
                             color: AppColors.iconSecondary,
                           ),
                           onTap: viewModel.onTapShareApp,
-                          textColor: AppColors.textDefault
+                          textColor: AppColors.textDefault,
                         ),
                         (
                           title: '문의하기',
@@ -92,7 +83,7 @@ class _MyView extends StatelessWidget {
                             color: AppColors.iconSecondary,
                           ),
                           onTap: viewModel.onTapContact,
-                          textColor: AppColors.textDefault
+                          textColor: AppColors.textDefault,
                         ),
                       ],
                     ),
@@ -122,7 +113,7 @@ class _MyView extends StatelessWidget {
                               ),
                             );
                           },
-                          textColor: AppColors.textDefault
+                          textColor: AppColors.textDefault,
                         ),
                         (
                           title: '탈퇴하기',
@@ -161,9 +152,7 @@ class _MyView extends StatelessWidget {
               Positioned.fill(
                 child: ColoredBox(
                   color: Colors.black.withValues(alpha: 0.15),
-                  child: const Center(
-                    child: CircularProgressIndicator(),
-                  ),
+                  child: const Center(child: CircularProgressIndicator()),
                 ),
               ),
           ],

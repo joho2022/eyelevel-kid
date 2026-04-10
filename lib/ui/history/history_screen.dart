@@ -1,33 +1,25 @@
-import 'package:eyelevel_kid/ui/history/view_models/history_viewmodel.dart';
 import 'package:eyelevel_kid/ui/history/widgets/history_filter_header_delegate.dart';
 import 'package:eyelevel_kid/ui/history/widgets/history_sliver_list.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 
 import '../core/routes/route_paths.dart';
 import '../core/theme/app_colors.dart';
 import '../core/theme/app_images.dart';
 import '../core/theme/app_theme.dart';
 import '../core/widgets/app_background.dart';
+import 'state/history_state.dart';
+import 'view_models/history_notifier.dart';
 
-class HistoryScreen extends StatelessWidget {
+class HistoryScreen extends ConsumerStatefulWidget {
   const HistoryScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return const _HistoryView();
-  }
+  ConsumerState<HistoryScreen> createState() => _HistoryScreenState();
 }
 
-class _HistoryView extends StatefulWidget {
-  const _HistoryView();
-
-  @override
-  State<_HistoryView> createState() => _HistoryViewState();
-}
-
-class _HistoryViewState extends State<_HistoryView> {
+class _HistoryScreenState extends ConsumerState<HistoryScreen> {
   late final ScrollController _scrollController;
 
   @override
@@ -44,7 +36,7 @@ class _HistoryViewState extends State<_HistoryView> {
   }
 
   void _onScroll() {
-    final viewModel = context.read<HistoryViewModel>();
+    final viewModel = ref.read(historyNotifierProvider.notifier);
 
     if (!_scrollController.hasClients) return;
 
@@ -56,8 +48,8 @@ class _HistoryViewState extends State<_HistoryView> {
     }
   }
 
-  List<Widget> _buildBody(HistoryViewModel viewModel) {
-    final state = viewModel.state;
+  List<Widget> _buildBody(HistoryState state) {
+    final viewModel = ref.read(historyNotifierProvider.notifier);
 
     if (state.isInitialLoading) {
       return const [
@@ -110,8 +102,8 @@ class _HistoryViewState extends State<_HistoryView> {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.watch<HistoryViewModel>();
-    final state = viewModel.state;
+    final state = ref.watch(historyNotifierProvider);
+    final viewModel = ref.read(historyNotifierProvider.notifier);
 
     return AppBackground(
       child: Scaffold(
@@ -160,7 +152,7 @@ class _HistoryViewState extends State<_HistoryView> {
                 ),
               ),
 
-              ..._buildBody(viewModel),
+              ..._buildBody(state),
             ],
           ),
         ),

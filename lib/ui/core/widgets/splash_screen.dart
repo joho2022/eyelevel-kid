@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 
 import '../../../core/auth/app_auth_state.dart';
-import '../../../core/auth/app_auth_viewmodel.dart';
+import '../../../core/auth/view_models/app_auth_notifier.dart';
 import '../routes/main_tab.dart';
 import '../routes/route_paths.dart';
 import '../theme/app_images.dart';
 import 'app_background.dart';
 
-class SplashScreen extends StatefulWidget {
+class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
+  ConsumerState<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen>
+class _SplashScreenState extends ConsumerState<SplashScreen>
     with SingleTickerProviderStateMixin {
   late final AnimationController fadeAnimationController;
   late final Animation<double> opacityAnimation;
@@ -30,14 +30,8 @@ class _SplashScreenState extends State<SplashScreen>
       duration: const Duration(milliseconds: 700),
     );
 
-    opacityAnimation = Tween<double>(
-      begin: 1.0,
-      end: 0.0,
-    ).animate(
-      CurvedAnimation(
-        parent: fadeAnimationController,
-        curve: Curves.easeOut,
-      ),
+    opacityAnimation = Tween<double>(begin: 1.0, end: 0.0).animate(
+      CurvedAnimation(parent: fadeAnimationController, curve: Curves.easeOut),
     );
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -46,13 +40,10 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   Future<void> startSplashFlow() async {
-    final appAuthViewModel = Provider.of<AppAuthViewModel>(
-      context,
-      listen: false,
-    );
+    final appAuthNotifier = ref.read(appAuthNotifierProvider.notifier);
 
     await Future.wait([
-      appAuthViewModel.initialize(),
+      appAuthNotifier.initialize(),
       Future.delayed(const Duration(seconds: 3)),
     ]);
 
@@ -60,17 +51,19 @@ class _SplashScreenState extends State<SplashScreen>
 
     if (!mounted) return;
 
-    final targetPath = appAuthViewModel.state.maybeWhen(
-      unauthenticated: () => RoutePaths.login,
-      authenticated: (needsOnboarding) {
-        if (needsOnboarding) {
-          return '${RoutePaths.login}/${RoutePaths.nicknameSetup}';
-        }
+    final targetPath = ref
+        .read(appAuthNotifierProvider)
+        .maybeWhen(
+          unauthenticated: () => RoutePaths.login,
+          authenticated: (needsOnboarding) {
+            if (needsOnboarding) {
+              return '${RoutePaths.login}/${RoutePaths.nicknameSetup}';
+            }
 
-        return MainTab.home.path;
-      },
-      orElse: () => RoutePaths.login,
-    );
+            return MainTab.home.path;
+          },
+          orElse: () => RoutePaths.login,
+        );
 
     context.pushReplacement(targetPath);
   }
