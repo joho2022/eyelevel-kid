@@ -10,24 +10,19 @@ class WeekdayRow extends StatelessWidget {
   Widget build(BuildContext context) {
     const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
 
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: weekdays.length,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 7,
-        crossAxisSpacing: 4,
-      ),
-      itemBuilder: (context, index) {
-        return Center(
-          child: Text(
-            weekdays[index],
-            style: AppTheme.subtitle14.copyWith(
-              color: AppColors.textSub,
+    return Row(
+      children: weekdays.map((weekday) {
+        return Expanded(
+          child: Center(
+            child: Text(
+              weekday,
+              style: AppTheme.subtitle14.copyWith(
+                color: AppColors.textSub,
+              ),
             ),
           ),
         );
-      },
+      }).toList(),
     );
   }
 }
