@@ -129,7 +129,7 @@ class MyViewModel extends ChangeNotifier {
     final packageInfo = await PackageInfo.fromPlatform();
 
     state = state.copyWith(
-      appVersion: '${packageInfo.version} (${packageInfo.buildNumber})',
+      appVersion: packageInfo.version,
     );
 
     notifyListeners();

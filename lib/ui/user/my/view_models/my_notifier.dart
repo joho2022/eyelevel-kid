@@ -122,7 +122,7 @@ class MyNotifier extends Notifier<MyState> {
     final packageInfo = await PackageInfo.fromPlatform();
 
     state = state.copyWith(
-      appVersion: '${packageInfo.version} (${packageInfo.buildNumber})',
+      appVersion: packageInfo.version,
     );
   }
 
