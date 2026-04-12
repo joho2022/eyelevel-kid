@@ -55,7 +55,17 @@ class DetailScreen extends ConsumerWidget {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          leading: BackButton(color: AppColors.storyPurple),
+          leading: IconButton(
+            onPressed: () => Navigator.maybePop(context),
+            style: const ButtonStyle(
+              overlayColor: WidgetStatePropertyAll(Colors.transparent),
+              splashFactory: NoSplash.splashFactory,
+            ),
+            icon: const Icon(
+              Icons.arrow_back_ios_new,
+              color: AppColors.storyPurple,
+            ),
+          ),
         ),
         body: SingleChildScrollView(
           padding: const EdgeInsets.all(20),
