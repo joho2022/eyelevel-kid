@@ -1,4 +1,5 @@
 import 'package:eyelevel_kid/ui/core/routes/route_paths.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -74,26 +75,38 @@ GoRouter createAppRouter() {
 
       GoRoute(
         path: RoutePaths.questionDetail,
-        builder: (context, state) {
+        pageBuilder: (context, state) {
           final idString = state.pathParameters['id'];
           final id = int.tryParse(idString ?? '');
 
           if (id == null) {
-            return const Scaffold(body: Center(child: Text('잘못된 접근입니다')));
+            return _buildPlatformSlidePage(
+              state: state,
+              child: const Scaffold(body: Center(child: Text('잘못된 접근입니다'))),
+            );
           }
 
-          return DetailScreen(questionId: id);
+          return _buildPlatformSlidePage(
+            state: state,
+            child: DetailScreen(questionId: id),
+          );
         },
       ),
 
       GoRoute(
         path: RoutePaths.askQuestion,
-        builder: (context, state) => const AskQuestionScreen(),
+        pageBuilder: (context, state) => _buildPlatformSlidePage(
+          state: state,
+          child: const AskQuestionScreen(),
+        ),
       ),
 
       GoRoute(
         path: RoutePaths.profileEdit,
-        builder: (context, state) => const ProfileEditScreen(),
+        pageBuilder: (context, state) => _buildPlatformSlidePage(
+          state: state,
+          child: const ProfileEditScreen(),
+        ),
       ),
     ],
   );
@@ -108,14 +121,38 @@ CustomTransitionPage<void> _buildFadePage({
     child: child,
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       return FadeTransition(
-        opacity: Tween<double>(
-          begin: 1.0,
-          end: 0.0,
-        ).animate(secondaryAnimation),
-        child: FadeTransition(
-          opacity: Tween<double>(begin: 0.0, end: 1.0).animate(animation),
-          child: child,
-        ),
+        opacity: Tween<double>(begin: 0.0, end: 1.0).animate(animation),
+        child: child,
+      );
+    },
+  );
+}
+
+Page<void> _buildPlatformSlidePage({
+  required GoRouterState state,
+  required Widget child,
+}) {
+  if (defaultTargetPlatform != TargetPlatform.android) {
+    return MaterialPage<void>(key: state.pageKey, child: child);
+  }
+
+  const curve = Curves.easeOutCubic;
+
+  return CustomTransitionPage<void>(
+    key: state.pageKey,
+    transitionDuration: const Duration(milliseconds: 280),
+    reverseTransitionDuration: const Duration(milliseconds: 280),
+    child: child,
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      final incoming = animation.drive(
+        Tween<Offset>(
+          begin: const Offset(1, 0),
+          end: Offset.zero,
+        ).chain(CurveTween(curve: curve)),
+      );
+
+      return ClipRect(
+        child: SlideTransition(position: incoming, child: child),
       );
     },
   );
