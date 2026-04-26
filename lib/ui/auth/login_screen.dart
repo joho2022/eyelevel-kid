@@ -1,15 +1,18 @@
 import 'dart:io';
+import 'dart:async';
 
 import 'package:eyelevel_kid/ui/auth/state/login_state.dart';
 import 'package:eyelevel_kid/ui/auth/widgets/social_login_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter/services.dart';
 
 import 'package:eyelevel_kid/ui/core/theme/app_colors.dart';
 import 'package:eyelevel_kid/ui/core/theme/app_theme.dart';
 import 'package:eyelevel_kid/ui/core/theme/app_images.dart';
 import 'package:eyelevel_kid/ui/core/launch/app_config_prompt_presenter.dart';
 import 'package:eyelevel_kid/ui/core/widgets/app_background.dart';
+import 'package:eyelevel_kid/ui/core/widgets/app_toast.dart';
 import 'package:go_router/go_router.dart';
 
 import 'view_models/login_notifier.dart';
@@ -23,10 +26,14 @@ class LoginScreen extends ConsumerStatefulWidget {
 
 class _LoginScreenState extends ConsumerState<LoginScreen>
     with SingleTickerProviderStateMixin {
+  static const Duration _exitGracePeriod = Duration(seconds: 2);
+
   late AnimationController _animationController;
   late Animation<double> _titleOpacity;
   late Animation<double> _subtitleOpacity;
   late Animation<Offset> _subtitleSlide;
+  Timer? _exitTimer;
+  bool _waitingForExitConfirmation = false;
 
   @override
   void initState() {
@@ -73,40 +80,91 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
 
   @override
   void dispose() {
+    _exitTimer?.cancel();
     _animationController.dispose();
     super.dispose();
+  }
+
+  void _handleAndroidBackPress() {
+    if (_waitingForExitConfirmation) {
+      SystemNavigator.pop();
+      return;
+    }
+
+    setState(() {
+      _waitingForExitConfirmation = true;
+    });
+
+    AppToast.show(context, '버튼을 한번 더 누르면 앱이 종료돼요.');
+
+    _exitTimer?.cancel();
+    _exitTimer = Timer(_exitGracePeriod, () {
+      if (!mounted) return;
+      setState(() {
+        _waitingForExitConfirmation = false;
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(loginNotifierProvider);
+    final isAndroid = Theme.of(context).platform == TargetPlatform.android;
 
     return AppBackground(
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset(AppImages.appLogo, width: 120),
+      child: PopScope(
+        canPop: !isAndroid,
+        onPopInvokedWithResult: (didPop, result) {
+          if (didPop || !isAndroid) return;
+          _handleAndroidBackPress();
+        },
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          body: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(AppImages.appLogo, width: 120),
 
-                const SizedBox(height: 20),
+                  const SizedBox(height: 20),
 
-                _buildAnimatedTitle(),
+                  _buildAnimatedTitle(),
 
-                const SizedBox(height: 80),
+                  const SizedBox(height: 80),
 
-                if (Platform.isIOS) ...[
+                  if (Platform.isIOS) ...[
+                    SocialLoginButton(
+                      icon: AppImages.appleIcon,
+                      text: 'Apple로 계속하기',
+                      isLoading: state.isAppleLoading,
+                      onPressed: () async {
+                        final isNewUser = await ref
+                            .read(loginNotifierProvider.notifier)
+                            .login(SocialProvider.apple);
+
+                        if (isNewUser == null || !context.mounted) return;
+
+                        if (isNewUser) {
+                          context.pushNamed('nickname-setup');
+                        } else {
+                          context.goNamed('home');
+                        }
+                      },
+                    ),
+
+                    const SizedBox(height: 12),
+                  ],
+
                   SocialLoginButton(
-                    icon: AppImages.appleIcon,
-                    text: 'Apple로 계속하기',
-                    isLoading: state.isAppleLoading,
+                    icon: AppImages.googleIcon,
+                    text: 'Google로 계속하기',
+                    isLoading: state.isGoogleLoading,
                     onPressed: () async {
                       final isNewUser = await ref
                           .read(loginNotifierProvider.notifier)
-                          .login(SocialProvider.apple);
+                          .login(SocialProvider.google);
 
                       if (isNewUser == null || !context.mounted) return;
 
@@ -118,54 +176,35 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                     },
                   ),
 
-                  const SizedBox(height: 12),
-                ],
+                  const SizedBox(height: 30),
 
-                SocialLoginButton(
-                  icon: AppImages.googleIcon,
-                  text: 'Google로 계속하기',
-                  isLoading: state.isGoogleLoading,
-                  onPressed: () async {
-                    final isNewUser = await ref
-                        .read(loginNotifierProvider.notifier)
-                        .login(SocialProvider.google);
-
-                    if (isNewUser == null || !context.mounted) return;
-
-                    if (isNewUser) {
-                      context.pushNamed('nickname-setup');
-                    } else {
-                      context.goNamed('home');
-                    }
-                  },
-                ),
-
-                const SizedBox(height: 30),
-
-                RichText(
-                  textAlign: TextAlign.center,
-                  text: TextSpan(
-                    style: AppTheme.label12.copyWith(color: AppColors.textInfo),
-                    children: [
-                      const TextSpan(text: '계속 진행하시면 '),
-                      TextSpan(
-                        text: '서비스 이용약관',
-                        style: const TextStyle(
-                          decoration: TextDecoration.underline,
-                        ),
+                  RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                      style: AppTheme.label12.copyWith(
+                        color: AppColors.textInfo,
                       ),
-                      const TextSpan(text: ' 및\n'),
-                      TextSpan(
-                        text: '개인정보 처리방침',
-                        style: const TextStyle(
-                          decoration: TextDecoration.underline,
+                      children: [
+                        const TextSpan(text: '계속 진행하시면 '),
+                        TextSpan(
+                          text: '서비스 이용약관',
+                          style: const TextStyle(
+                            decoration: TextDecoration.underline,
+                          ),
                         ),
-                      ),
-                      const TextSpan(text: '에 동의하는 것으로 간주됩니다.'),
-                    ],
+                        const TextSpan(text: ' 및\n'),
+                        TextSpan(
+                          text: '개인정보 처리방침',
+                          style: const TextStyle(
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
+                        const TextSpan(text: '에 동의하는 것으로 간주됩니다.'),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
