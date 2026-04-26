@@ -9,6 +9,7 @@ import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/widgets/app_background.dart';
 import '../../core/widgets/answer_style_slider.dart';
+import '../../core/widgets/app_toast.dart';
 import 'view_models/ask_question_notifier.dart';
 
 class AskQuestionScreen extends ConsumerWidget {
@@ -136,7 +137,7 @@ class AskQuestionScreen extends ConsumerWidget {
                     child: SizedBox(
                       height: 52,
                       child: BounceTapper(
-                        onTap: state.isLoading
+                        onTap: (!state.canSubmit || state.isLoading)
                             ? null
                             : () async {
                                 final record = await notifier.submit();
@@ -144,6 +145,11 @@ class AskQuestionScreen extends ConsumerWidget {
                                 if (record != null && context.mounted) {
                                   context.replace(
                                     RoutePaths.questionDetailPath(record.id),
+                                  );
+                                } else if (context.mounted) {
+                                  AppToast.show(
+                                    context,
+                                    '질문 전송에 실패했어요. 다시 시도해 주세요.',
                                   );
                                 }
                               },

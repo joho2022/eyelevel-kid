@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_theme.dart';
 import '../widgets/app_background.dart';
+import '../widgets/app_toast.dart';
 import 'main_tab.dart';
 import '../../history/view_models/history_notifier.dart';
 import '../../home/view_models/home_notifier.dart';
@@ -186,20 +187,7 @@ class _ExitToast extends StatelessWidget {
       opacity: fadeAnimation,
       child: Material(
         color: Colors.transparent,
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
-          decoration: BoxDecoration(
-            color: const Color(0xFF2B2B2F),
-            borderRadius: BorderRadius.circular(999),
-          ),
-          child: Text(
-            '버튼을 한번 더 누르면 앱이 종료돼요.',
-            textAlign: TextAlign.center,
-            style: AppTheme.subtitle12.copyWith(
-              color: Colors.white,
-            ),
-          ),
-        ),
+        child: const AppToastBody(message: '버튼을 한번 더 누르면 앱이 종료돼요.'),
       ),
     );
   }
