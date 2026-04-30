@@ -19,7 +19,7 @@ class GoogleAuthService implements SocialAuthService {
 
     debugPrint('initialize 시작');
     await _googleSignIn.initialize(
-      clientId: dotenv.env['GOOGLE_IOS_CLIENT_ID'],
+      clientId: dotenv.env['GOOGLE_ANDROID_CLIENT_ID'],
       serverClientId: webClientId,
     );
     debugPrint('initialize 완료');
