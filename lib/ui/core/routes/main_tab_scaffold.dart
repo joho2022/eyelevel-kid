@@ -1,28 +1,30 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
+
 import '../theme/app_colors.dart';
 import '../theme/app_theme.dart';
 import '../widgets/app_background.dart';
 import '../widgets/app_toast.dart';
 import 'main_tab.dart';
-import '../../history/view_models/history_notifier.dart';
-import '../../home/view_models/home_notifier.dart';
-import '../../user/my/view_models/my_notifier.dart';
 
-class MainTabScaffold extends ConsumerStatefulWidget {
+class MainTabScaffold extends StatefulWidget {
   final StatefulNavigationShell navigationShell;
+  final List<Widget> children;
 
-  const MainTabScaffold({super.key, required this.navigationShell});
+  const MainTabScaffold({
+    super.key,
+    required this.navigationShell,
+    required this.children,
+  });
 
   @override
-  ConsumerState<MainTabScaffold> createState() => _MainTabScaffoldState();
+  State<MainTabScaffold> createState() => _MainTabScaffoldState();
 }
 
-class _MainTabScaffoldState extends ConsumerState<MainTabScaffold>
+class _MainTabScaffoldState extends State<MainTabScaffold>
     with SingleTickerProviderStateMixin {
   static const Duration _exitGracePeriod = Duration(seconds: 2);
 
@@ -39,9 +41,6 @@ class _MainTabScaffoldState extends ConsumerState<MainTabScaffold>
       duration: const Duration(milliseconds: 520),
       reverseDuration: const Duration(milliseconds: 180),
     );
-    ref.read(homeNotifierProvider);
-    ref.read(historyNotifierProvider);
-    ref.read(myNotifierProvider);
   }
 
   @override
@@ -134,7 +133,10 @@ class _MainTabScaffoldState extends ConsumerState<MainTabScaffold>
         },
         child: Scaffold(
           backgroundColor: Colors.transparent,
-          body: widget.navigationShell,
+          body: _AnimatedBranchContainer(
+            currentIndex: widget.navigationShell.currentIndex,
+            children: widget.children,
+          ),
           bottomNavigationBar: Theme(
             data: Theme.of(context).copyWith(
               splashFactory: NoSplash.splashFactory,
@@ -152,10 +154,10 @@ class _MainTabScaffoldState extends ConsumerState<MainTabScaffold>
               selectedLabelStyle: AppTheme.title14.copyWith(fontSize: 12),
               unselectedLabelStyle: AppTheme.title14.copyWith(fontSize: 12),
               onTap: (index) {
-                widget.navigationShell.goBranch(
-                  index,
-                  initialLocation: index == widget.navigationShell.currentIndex,
-                );
+                if (index == widget.navigationShell.currentIndex) return;
+
+                HapticFeedback.selectionClick();
+                widget.navigationShell.goBranch(index, initialLocation: false);
               },
               items: MainTab.values.map((tab) {
                 return BottomNavigationBarItem(
@@ -167,6 +169,40 @@ class _MainTabScaffoldState extends ConsumerState<MainTabScaffold>
           ),
         ),
       ),
+    );
+  }
+}
+
+class _AnimatedBranchContainer extends StatelessWidget {
+  static const Duration _fadeDuration = Duration(milliseconds: 200);
+
+  const _AnimatedBranchContainer({
+    required this.currentIndex,
+    required this.children,
+  });
+
+  final int currentIndex;
+  final List<Widget> children;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        for (var index = 0; index < children.length; index++)
+          IgnorePointer(
+            ignoring: index != currentIndex,
+            child: AnimatedOpacity(
+              opacity: index == currentIndex ? 1 : 0,
+              duration: _fadeDuration,
+              curve: Curves.easeOutCubic,
+              child: TickerMode(
+                enabled: index == currentIndex,
+                child: children[index],
+              ),
+            ),
+          ),
+      ],
     );
   }
 }

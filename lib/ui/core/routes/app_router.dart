@@ -39,11 +39,15 @@ GoRouter createAppRouter() {
         ],
       ),
 
-      StatefulShellRoute.indexedStack(
-        pageBuilder: (context, state, navigationShell) => _buildFadePage(
-          state: state,
-          child: MainTabScaffold(navigationShell: navigationShell),
-        ),
+      StatefulShellRoute(
+        pageBuilder: (context, state, navigationShell) =>
+            _buildFadePage(state: state, child: navigationShell),
+        navigatorContainerBuilder: (context, navigationShell, children) {
+          return MainTabScaffold(
+            navigationShell: navigationShell,
+            children: children,
+          );
+        },
         branches: [
           StatefulShellBranch(
             routes: [
