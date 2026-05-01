@@ -11,9 +11,10 @@ import '../../../domain/usecases/question/observe_all_questions_use_case.dart';
 import '../../../domain/usecases/question/toggle_bookmark_use_case.dart';
 import '../state/history_state.dart';
 
-final historyNotifierProvider = NotifierProvider<HistoryNotifier, HistoryState>(
-  HistoryNotifier.new,
-);
+final historyNotifierProvider =
+    NotifierProvider.autoDispose<HistoryNotifier, HistoryState>(
+      HistoryNotifier.new,
+    );
 
 class HistoryNotifier extends Notifier<HistoryState> {
   late final ObserveAllQuestionsUseCase _observeAllQuestionsUseCase;

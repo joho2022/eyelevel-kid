@@ -52,6 +52,8 @@ class AppAuthNotifier extends Notifier<AppAuthState> {
     if (_isInitialized) return;
 
     await _tokenRepository.hydrate();
+    _pendingToken = await _tokenRepository.getAccessToken();
+
     await _resolveOnboardingState();
 
     _isInitializing = false;
@@ -98,7 +100,8 @@ class AppAuthNotifier extends Notifier<AppAuthState> {
       }
     }
 
-    _needsOnboarding = _getUserUseCase().nickname.trim().isEmpty;
+    final user = _getUserUseCase();
+    _needsOnboarding = user.nickname.trim().isEmpty;
   }
 
   // MARK: - 인증 상태 반영

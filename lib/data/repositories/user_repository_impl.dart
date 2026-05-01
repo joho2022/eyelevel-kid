@@ -25,7 +25,7 @@ class UserRepositoryImpl implements UserRepository {
 
     final updatedUser = local.getUser().copyWith(
       id: dto.id,
-      nickname: dto.nickname,
+      nickname: dto.nickname ?? '',
       profileImageUrl: dto.profileImageUrl,
     );
 
@@ -44,7 +44,7 @@ class UserRepositoryImpl implements UserRepository {
 
     final updatedUser = local.getUser().copyWith(
       id: dto.id,
-      nickname: dto.nickname,
+      nickname: dto.nickname ?? '',
       profileImageUrl: dto.profileImageUrl,
     );
 
@@ -57,7 +57,7 @@ class UserRepositoryImpl implements UserRepository {
 
     final updatedUser = local.getUser().copyWith(
       id: dto.id,
-      nickname: dto.nickname,
+      nickname: dto.nickname ?? '',
       profileImageUrl: dto.profileImageUrl,
     );
 
@@ -95,7 +95,7 @@ class UserRepositoryImpl implements UserRepository {
     // 4. 서버 응답의 최신 profileImageUrl로 로컬 유저 갱신
     final updatedUser = local.getUser().copyWith(
       id: dto.id,
-      nickname: dto.nickname,
+      nickname: dto.nickname ?? '',
       profileImageUrl: dto.profileImageUrl,
     );
 

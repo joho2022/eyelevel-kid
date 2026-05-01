@@ -9,7 +9,7 @@ part of 'user_response_dto.dart';
 _UserResponseDto _$UserResponseDtoFromJson(Map<String, dynamic> json) =>
     _UserResponseDto(
       id: (json['id'] as num).toInt(),
-      nickname: json['nickname'] as String,
+      nickname: json['nickname'] as String?,
       profileImageUrl: json['profileImageUrl'] as String?,
     );
 

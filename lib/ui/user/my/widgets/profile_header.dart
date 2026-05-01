@@ -104,6 +104,8 @@ class _ProfileHeaderState extends State<ProfileHeader> {
 
   @override
   Widget build(BuildContext context) {
+    final hasNickname = widget.nickname.trim().isNotEmpty;
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -111,17 +113,25 @@ class _ProfileHeaderState extends State<ProfileHeader> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                '${widget.nickname}님!',
-                style: AppTheme.title24.copyWith(
-                  color: AppColors.storyPurple,
-                ),
+              AnimatedSwitcher(
+                duration: const Duration(milliseconds: 300),
+                switchInCurve: Curves.easeInOut,
+                switchOutCurve: Curves.easeInOut,
+                transitionBuilder: (child, animation) =>
+                    FadeTransition(opacity: animation, child: child),
+                child: hasNickname
+                    ? Text(
+                        '${widget.nickname}님!',
+                        key: ValueKey(widget.nickname),
+                        style: AppTheme.title24.copyWith(
+                          color: AppColors.storyPurple,
+                        ),
+                      )
+                    : const SizedBox.shrink(key: ValueKey('empty-nickname')),
               ),
               Text(
                 '오늘은 어떤 세상을 알려드렸나요?',
-                style: AppTheme.title18.copyWith(
-                  color: AppColors.textDefault,
-                ),
+                style: AppTheme.title18.copyWith(color: AppColors.textDefault),
               ),
             ],
           ),
@@ -139,9 +149,7 @@ class _ProfileHeaderState extends State<ProfileHeader> {
                   shape: BoxShape.circle,
                   color: AppColors.profilePlaceholderBackground,
                 ),
-                child: ClipOval(
-                  child: _buildProfileImage(),
-                ),
+                child: ClipOval(child: _buildProfileImage()),
               ),
               Positioned(
                 right: -2,

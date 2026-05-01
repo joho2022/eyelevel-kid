@@ -25,7 +25,10 @@ class UserLocalDataSource {
 
   User getUser() => _user;
 
-  Stream<User> observeUser() => _controller.stream;
+  Stream<User> observeUser() async* {
+    yield _user;
+    yield* _controller.stream;
+  }
 
   void saveUser(User user) {
     _user = user;
@@ -71,7 +74,7 @@ class UserLocalDataSource {
         nickname: json['nickname'] as String? ?? '',
         profileImageUrl: json['profileImageUrl'] as String?,
         answerStyle: AnswerStyle.values.firstWhere(
-              (style) => style.name == json['answerStyle'],
+          (style) => style.name == json['answerStyle'],
           orElse: () => AnswerStyle.story,
         ),
       );

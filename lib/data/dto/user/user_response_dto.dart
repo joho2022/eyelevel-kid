@@ -10,7 +10,7 @@ part 'user_response_dto.g.dart';
 abstract class UserResponseDto with _$UserResponseDto {
   const factory UserResponseDto({
     required int id,
-    required String nickname,
+    String? nickname,
     String? profileImageUrl,
   }) = _UserResponseDto;
 
@@ -22,7 +22,7 @@ extension UserResponseDtoMapper on UserResponseDto {
   User toDomain(AnswerStyle localStyle) {
     return User(
       id: id,
-      nickname: nickname,
+      nickname: nickname ?? '',
       profileImageUrl: profileImageUrl,
       answerStyle: localStyle,
     );

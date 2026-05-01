@@ -12,17 +12,19 @@ import '../../../../domain/entities/user.dart';
 import '../../../../domain/usecases/auth/logout_usecase.dart';
 import '../../../../domain/usecases/auth/withdraw_usecase.dart';
 import '../../../../domain/usecases/user/fetch_user_use_case.dart';
+import '../../../../domain/usecases/user/get_user_use_case.dart';
 import '../../../../domain/usecases/user/observe_user_use_case.dart';
 import '../../../../domain/usecases/user/refresh_profile_image_url_use_case.dart';
 import '../../../../domain/usecases/user/update_answer_style_use_case.dart';
 import '../../../../domain/values/answer_style.dart';
 import '../state/my_state.dart';
 
-final myNotifierProvider = NotifierProvider<MyNotifier, MyState>(
+final myNotifierProvider = NotifierProvider.autoDispose<MyNotifier, MyState>(
   MyNotifier.new,
 );
 
 class MyNotifier extends Notifier<MyState> {
+  late final GetUserUseCase _getUserUseCase;
   late final ObserveUserUseCase _observeUserUseCase;
   late final FetchUserUseCase _fetchUserUseCase;
   late final RefreshProfileImageUrlUseCase _refreshProfileImageUrlUseCase;
@@ -41,11 +43,13 @@ class MyNotifier extends Notifier<MyState> {
   static const String _androidPackageName = 'com.hogeunjo.eyelevelkid';
   static const String _androidPlayStoreWebUrl =
       'https://play.google.com/store/apps/details?id=$_androidPackageName';
-  static const String _androidMarketUrl = 'market://details?id=$_androidPackageName';
+  static const String _androidMarketUrl =
+      'market://details?id=$_androidPackageName';
 
   // MARK: - Build
   @override
   MyState build() {
+    _getUserUseCase = serviceLocator<GetUserUseCase>();
     _observeUserUseCase = serviceLocator<ObserveUserUseCase>();
     _fetchUserUseCase = serviceLocator<FetchUserUseCase>();
     _refreshProfileImageUrlUseCase =
@@ -60,7 +64,16 @@ class MyNotifier extends Notifier<MyState> {
 
     _init();
 
-    return MyState.initial();
+    final user = _getUserUseCase();
+
+    return MyState(
+      nickname: user.nickname,
+      profileImageUrl: user.profileImageUrl,
+      answerStyle: user.answerStyle,
+      isLoading: false,
+      appVersion: '',
+      errorMessage: null,
+    );
   }
 
   // MARK: - 초기화
@@ -121,9 +134,7 @@ class MyNotifier extends Notifier<MyState> {
   Future<void> _loadAppVersion() async {
     final packageInfo = await PackageInfo.fromPlatform();
 
-    state = state.copyWith(
-      appVersion: packageInfo.version,
-    );
+    state = state.copyWith(appVersion: packageInfo.version);
   }
 
   // MARK: - 앱 평가하기
@@ -131,18 +142,12 @@ class MyNotifier extends Notifier<MyState> {
     final reviewUrl = _getReviewUrl();
     if (reviewUrl == null) return;
 
-    await _launchExternalUrl(
-      reviewUrl,
-      failureLog: '리뷰 페이지 이동 실패',
-    );
+    await _launchExternalUrl(reviewUrl, failureLog: '리뷰 페이지 이동 실패');
   }
 
   // MARK: - 앱 공유하기
   Future<void> onTapShareApp() async {
-    final params = ShareParams(
-      text: _buildShareMessage(),
-      title: '아이시선 공유',
-    );
+    final params = ShareParams(text: _buildShareMessage(), title: '아이시선 공유');
 
     try {
       final result = await SharePlus.instance.share(params);

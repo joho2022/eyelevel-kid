@@ -11,9 +11,8 @@ import '../../../domain/usecases/question/observe_all_questions_use_case.dart';
 import '../../../domain/usecases/question/toggle_bookmark_use_case.dart';
 import '../state/home_state.dart';
 
-final homeNotifierProvider = NotifierProvider<HomeNotifier, HomeState>(
-  HomeNotifier.new,
-);
+final homeNotifierProvider =
+    NotifierProvider.autoDispose<HomeNotifier, HomeState>(HomeNotifier.new);
 
 class HomeNotifier extends Notifier<HomeState> {
   late final ObserveAllQuestionsUseCase _observeQuestionsUseCase;

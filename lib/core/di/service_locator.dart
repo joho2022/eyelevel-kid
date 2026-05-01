@@ -114,14 +114,16 @@ Future<void> setupDependencies() async {
       ),
     );
 
-    dio.interceptors.add(
-      LogInterceptor(
-        request: true,
-        requestHeader: true,
-        requestBody: true,
-        responseBody: true,
-      ),
-    );
+    // if (kDebugMode) {
+    //   dio.interceptors.add(
+    //     LogInterceptor(
+    //       request: true,
+    //       requestHeader: false,
+    //       requestBody: true,
+    //       responseBody: true,
+    //     ),
+    //   );
+    // }
 
     return dio;
   }, instanceName: 'mainDio');
