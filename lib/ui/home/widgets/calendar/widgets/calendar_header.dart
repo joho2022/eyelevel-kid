@@ -20,7 +20,6 @@ class CalendarHeader extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Text(
             '질문 달력',
@@ -29,34 +28,37 @@ class CalendarHeader extends StatelessWidget {
             ),
           ),
 
-          const Spacer(),
+          const SizedBox(width: 20),
 
-          IconButton(
-            onPressed: onPrev,
-            splashColor: Colors.transparent,
-            highlightColor: Colors.transparent,
-            hoverColor: Colors.transparent,
-            icon: const Icon(Icons.chevron_left),
-          ),
+          Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
+                  onPressed: onPrev,
+                  splashColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                  hoverColor: Colors.transparent,
+                  icon: const Icon(Icons.chevron_left),
+                ),
 
-          const SizedBox(width: 16),
+                Text(
+                  '${currentMonth.year}년 ${currentMonth.month}월',
+                  style: AppTheme.subtitle14.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
+                ),
 
-          Text(
-            '${currentMonth.year}년 ${currentMonth.month}월',
-            style: AppTheme.subtitle14.copyWith(
-              color: AppColors.textSecondary,
+                IconButton(
+                  onPressed: onNext,
+                  splashColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                  hoverColor: Colors.transparent,
+                  icon: const Icon(Icons.chevron_right),
+                ),
+              ],
             ),
-          ),
-
-          const SizedBox(width: 16),
-
-          IconButton(
-            onPressed: onNext,
-            splashColor: Colors.transparent,
-            highlightColor: Colors.transparent,
-            hoverColor: Colors.transparent,
-            icon: const Icon(Icons.chevron_right),
-          ),
+          )
         ],
       ),
     );
