@@ -8,7 +8,6 @@ import '../../dto/question/response/question_page_response_dto.dart';
 import '../../dto/question/response/question_response_dto.dart';
 
 class QuestionRemoteDataSource {
-
   final Dio dio;
 
   QuestionRemoteDataSource(this.dio);
@@ -18,13 +17,9 @@ class QuestionRemoteDataSource {
     required int year,
     required int month,
   }) async {
-
     final response = await dio.get(
       '/questions/calendar-summary',
-      queryParameters: {
-        'year': year,
-        'month': month,
-      },
+      queryParameters: {'year': year, 'month': month},
     );
 
     return CalendarSummaryResponseDto.fromJson(response.data);
@@ -36,14 +31,9 @@ class QuestionRemoteDataSource {
     required int month,
     required int day,
   }) async {
-
     final response = await dio.get(
       '/questions/by-date',
-      queryParameters: {
-        'year': year,
-        'month': month,
-        'day': day,
-      },
+      queryParameters: {'year': year, 'month': month, 'day': day},
     );
 
     return CalendarDayResponseDto.fromJson(response.data);
@@ -64,10 +54,7 @@ class QuestionRemoteDataSource {
 
     final response = await dio.post(
       '/questions',
-      data: AskQuestionRequestDto(
-        question: question,
-        style: style,
-      ).toJson(),
+      data: AskQuestionRequestDto(question: question, style: style).toJson(),
     );
 
     return QuestionResponseDto.fromJson(response.data);
@@ -80,10 +67,7 @@ class QuestionRemoteDataSource {
   }) async {
     final response = await dio.get(
       '/questions',
-      queryParameters: {
-        'cursor': cursor,
-        'limit': limit,
-      },
+      queryParameters: {'cursor': cursor, 'limit': limit},
     );
 
     return QuestionPageResponseDto.fromJson(response.data);
@@ -91,9 +75,7 @@ class QuestionRemoteDataSource {
 
   // MARK: - 북마크 토글
   Future<QuestionResponseDto> toggleBookmark(int questionId) async {
-    final response = await dio.patch(
-      '/questions/$questionId/bookmark',
-    );
+    final response = await dio.patch('/questions/$questionId/bookmark');
 
     return QuestionResponseDto.fromJson(response.data);
   }
@@ -105,10 +87,7 @@ class QuestionRemoteDataSource {
 
   // MARK: - 단일 질문 조회
   Future<QuestionResponseDto> getQuestion(int questionId) async {
-
-    final response = await dio.get(
-      '/questions/$questionId',
-    );
+    final response = await dio.get('/questions/$questionId');
 
     return QuestionResponseDto.fromJson(response.data);
   }

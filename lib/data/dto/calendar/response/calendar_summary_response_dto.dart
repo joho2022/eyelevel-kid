@@ -1,5 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:flutter/foundation.dart';
 
+import '../../../../core/utils/date_format.dart';
 import '../../../../domain/entities/calendar_summary.dart';
 
 part 'calendar_summary_response_dto.freezed.dart';
@@ -18,14 +20,11 @@ abstract class CalendarSummaryResponseDto with _$CalendarSummaryResponseDto {
 }
 
 extension CalendarSummaryResponseDtoMapper on CalendarSummaryResponseDto {
-
   CalendarSummary toDomain() {
     return CalendarSummary(
       year: year,
       month: month,
-      questionDates: questionDates
-          .map((dateString) => DateTime.parse(dateString).toLocal())
-          .toSet(),
+      questionDates: questionDates.map(DateFormat.parseCalendarDate).toSet(),
     );
   }
 }

@@ -30,5 +30,19 @@ class DateFormat {
     return '$period ${_two(hour)}:${_two(d.minute)}';
   }
 
+  static DateTime parseCalendarDate(String value) {
+    final parts = value.split('-');
+
+    if (parts.length != 3) {
+      return DateTime.parse(value).toLocal();
+    }
+
+    return DateTime(
+      int.parse(parts[0]),
+      int.parse(parts[1]),
+      int.parse(parts[2]),
+    );
+  }
+
   static String _two(int v) => v.toString().padLeft(2, '0');
 }

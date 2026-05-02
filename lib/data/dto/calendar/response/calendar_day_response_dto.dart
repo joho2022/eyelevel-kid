@@ -1,4 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:flutter/foundation.dart';
+
+import '../../../../core/utils/date_format.dart';
 import '../../../../domain/entities/calendar_day_summary.dart';
 import 'calendar_question_preview_response_dto.dart';
 
@@ -17,13 +20,10 @@ abstract class CalendarDayResponseDto with _$CalendarDayResponseDto {
 }
 
 extension CalendarDayResponseDtoMapper on CalendarDayResponseDto {
-
   CalendarDaySummary toDomain() {
     return CalendarDaySummary(
-      date: DateTime.parse(date).toLocal(),
-      questions: questions
-          .map((question) => question.toDomain())
-          .toList(),
+      date: DateFormat.parseCalendarDate(date),
+      questions: questions.map((question) => question.toDomain()).toList(),
     );
   }
 }
