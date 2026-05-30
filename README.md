@@ -27,7 +27,7 @@
     <img src="https://github.com/user-attachments/assets/b68238d2-d0ef-4dac-bdb1-2110ae8b6f7e" alt="Download on the App Store" width="200"/>
 </a>
 
-<a href="https://play.google.com/store/apps/details?id=com.hogeunjo.eyelevelkid" target="_blank">
+<a href="https://play.google.com/store/apps/details?id=com.johogeun.eyelevelkid" target="_blank">
     <img src="https://github.com/user-attachments/assets/9b0eb6d0-13e6-4054-b6e6-b5ac2ead1f1e" alt="Download on the Google Store" width="200"/>
 </a>
 
